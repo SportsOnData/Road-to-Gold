@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Road to Gold | Sports Data</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <main class="aplicacion">
+
+    <!-- PANTALLA INICIAL -->
+    <section id="pantallaInicio" class="pantalla pantalla-inicio">
+
+      <p class="marca">SPORTS DATA</p>
+
+      <h1>Road to Gold</h1>
+
+      <p class="subtitulo">
+        Construye tu delegación olímpica tomando siete decisiones.
+      </p>
+
+      <button
+        id="botonEmpezar"
+        class="boton boton-principal"
+        type="button"
+      >
+        Comenzar partida
+      </button>
+
+    </section>
+    
+
+<!-- PRESENTACIÓN DE DEPORTES -->
+<section
+  id="pantallaDeportes"
+  class="pantalla pantalla-deportes oculto"
+>
+  <p class="marca">ROAD TO GOLD</p>
+
+  <h1>Los 7 deportes de estos JJOO son...</h1>
+
+  <div
+    id="presentacionDeportes"
+    class="presentacion-deportes"
+  ></div>
+
+  <button
+    id="botonComenzarDraft"
+    class="boton boton-principal"
+    type="button"
+    disabled
+  >
+    Comenzar draft
+  </button>
+</section>
+    <!-- PANTALLA DE JUEGO -->
+    <section id="pantallaJuego" class="pantalla oculto">
+
+      <header class="cabecera-juego">
+
+        <div>
+          <p class="marca">ROAD TO GOLD</p>
+          <strong id="progreso">DRAFT DE PAÍSES</strong>
+        </div>
+
+        <button
+          id="botonReroll"
+          class="boton boton-secundario"
+          type="button"
+        >
+          ↻ Usar reroll
+        </button>
+
+      </header>
+
+
+      <section class="pais-actual">
+
+        <p class="etiqueta">País disponible</p>
+
+        <div class="carta-pais">
+
+          <div class="marco-bandera">
+
+            <img
+              id="banderaActual"
+              src=""
+              alt=""
+            >
+
+            <span
+              id="banderaAlternativa"
+              class="bandera-alternativa"
+            >
+              ?
+            </span>
+
+          </div>
+
+          <div>
+            <h2 id="nombrePaisActual">—</h2>
+            <p id="textoPaisActual">Elige un deporte libre.</p>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="zona-deportes">
+
+        <div class="encabezado-seccion">
+
+          <div>
+            <p class="etiqueta">Tu delegación</p>
+            <h2>Deportes de la partida</h2>
+          </div>
+
+        
+        </div>
+
+        <div
+          id="tableroDeportes"
+          class="tablero-deportes"
+        ></div>
+
+      </section>
+
+      <p
+        id="mensajeJuego"
+        class="mensaje"
+        aria-live="polite"
+      ></p>
+
+    </section>
+
+
+    <!-- PANTALLA FINAL -->
+    <section
+      id="pantallaFinal"
+      class="pantalla pantalla-final oculto"
+    >
+
+      <p class="marca">DELEGACIÓN COMPLETADA</p>
+
+      <h1>Tu equipo está listo</h1>
+
+      <div
+        id="resumenFinal"
+        class="resumen-final"
+      ></div>
+
+      <button
+        id="botonComenzarJuegos"
+        class="boton boton-principal"
+        type="button"
+      >
+        Comienzan los Juegos
+      </button>
+
+    </section>
+   <!-- RESULTADOS DE LOS JUEGOS -->
+<section
+  id="pantallaResultados"
+  class="pantalla pantalla-resultados oculto"
+>
+  <p class="marca">JUEGOS FINALIZADOS</p>
+
+  <h1>Tu medallero</h1>
+
+  <div class="medallero-total">
+    <div class="medalla-total oro">
+      <span>🥇</span>
+      <strong id="totalOros">0</strong>
+      <small>Oros</small>
+    </div>
+
+    <div class="medalla-total plata">
+      <span>🥈</span>
+      <strong id="totalPlatas">0</strong>
+      <small>Platas</small>
+    </div>
+
+    <div class="medalla-total bronce">
+      <span>🥉</span>
+      <strong id="totalBronces">0</strong>
+      <small>Bronces</small>
+    </div>
+
+    <div class="medalla-total total">
+      <span>🏅</span>
+      <strong id="totalMedallas">0</strong>
+      <small>Total</small>
+    </div>
+  </div>
+
+  <div class="tabla-resultados">
+    <div class="cabecera-resultados">
+      <span>Deporte</span>
+      <span>País</span>
+      <span>🥇</span>
+      <span>🥈</span>
+      <span>🥉</span>
+    </div>
+
+    <div id="resultadosPorDeporte"></div>
+  </div>
+
+  <button
+    id="botonNuevaPartida"
+    class="boton boton-principal"
+    type="button"
+  >
+    Nueva partida
+  </button>
+</section> 
+
+  </main>
+
+
+  <!-- Primero se cargan los datos -->
+  <script src="datos/deportes.js"></script>
+  <script src="datos/paises.js"></script>
+
+  <!-- Después se carga el juego -->
+  <script src="script.js"></script>
+
+</body>
+</html>

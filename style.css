@@ -1,0 +1,758 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --fondo-principal: #081126;
+  --fondo-secundario: #111f3f;
+  --fondo-tarjeta: #17294d;
+
+  --texto-principal: #f5f7ff;
+  --texto-secundario: #b8c6e5;
+
+  --dorado: #f4c542;
+  --dorado-oscuro: #d9a91c;
+
+  --rojo: #d94343;
+  --amarillo: #e0b52f;
+  --verde: #25995c;
+  --azul: #2674c8;
+
+  --borde: rgba(255, 255, 255, 0.16);
+}
+
+body {
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--texto-principal);
+  background:
+    radial-gradient(
+      circle at top,
+      #172a56 0%,
+      var(--fondo-principal) 55%
+    );
+}
+
+button {
+  font: inherit;
+}
+
+.aplicacion {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.pantalla {
+  width: min(1200px, 100%);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.oculto {
+  display: none !important;
+}
+
+
+/* -------------------------------- */
+/* BOTONES                          */
+/* -------------------------------- */
+
+.boton {
+  border: none;
+  border-radius: 12px;
+  padding: 14px 22px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.boton:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.boton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.boton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.boton-principal {
+  color: #101010;
+  background-color: var(--dorado);
+}
+
+.boton-principal:hover:not(:disabled) {
+  background-color: var(--dorado-oscuro);
+}
+
+.boton-secundario {
+  color: var(--texto-principal);
+  border: 1px solid var(--borde);
+  background-color: var(--fondo-secundario);
+}
+
+
+/* -------------------------------- */
+/* PANTALLA INICIAL                 */
+/* -------------------------------- */
+
+.pantalla-inicio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.marca {
+  margin-bottom: 12px;
+  color: var(--dorado);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 4px;
+}
+
+.pantalla-inicio h1,
+.pantalla-final h1 {
+  margin-bottom: 14px;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  line-height: 1;
+}
+
+.subtitulo {
+  max-width: 620px;
+  margin-bottom: 30px;
+  color: var(--texto-secundario);
+  font-size: 1.1rem;
+}
+
+
+/* -------------------------------- */
+/* CABECERA DEL JUEGO               */
+/* -------------------------------- */
+
+.cabecera-juego {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.cabecera-juego .marca {
+  margin-bottom: 6px;
+}
+
+#progreso {
+  font-size: 1.15rem;
+}
+
+
+/* -------------------------------- */
+/* PAÍS ACTUAL                      */
+/* -------------------------------- */
+
+.pais-actual {
+  margin-bottom: 36px;
+}
+
+.etiqueta {
+  margin-bottom: 10px;
+  color: var(--texto-secundario);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.carta-pais {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 24px;
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  background-color: var(--fondo-secundario);
+}
+
+.carta-pais h2 {
+  margin-bottom: 5px;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+}
+
+.carta-pais p {
+  color: var(--texto-secundario);
+}
+
+.marco-bandera {
+  position: relative;
+  display: grid;
+  flex: 0 0 auto;
+  width: 94px;
+  height: 62px;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.marco-bandera img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bandera-alternativa {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #17213a;
+  background-color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+
+/* -------------------------------- */
+/* DEPORTES                         */
+/* -------------------------------- */
+
+.zona-deportes {
+  width: 100%;
+}
+
+.encabezado-seccion {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.encabezado-seccion h2 {
+  font-size: 1.65rem;
+}
+
+.leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.leyenda span {
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.leyenda-rojo {
+  background-color: var(--rojo);
+}
+
+.leyenda-amarillo {
+  color: #1d1d1d !important;
+  background-color: var(--amarillo);
+}
+
+.leyenda-verde {
+  background-color: var(--verde);
+}
+
+.leyenda-azul {
+  background-color: var(--azul);
+}
+
+.tablero-deportes {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tarjeta-deporte {
+  grid-column: span 2;
+}
+
+.tarjeta-deporte:nth-child(5) {
+  grid-column: 2 / span 2;
+}
+
+.tarjeta-deporte:nth-child(6) {
+  grid-column: 4 / span 2;
+}
+
+.tarjeta-deporte:nth-child(7) {
+  grid-column: 6 / span 2;
+}
+
+.tarjeta-deporte {
+  min-height: 190px;
+  padding: 20px;
+  color: var(--texto-principal);
+  text-align: center;
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  background-color: var(--fondo-tarjeta);
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.tarjeta-deporte:hover:not(:disabled) {
+  transform: translateY(-3px);
+  border-color: var(--dorado);
+}
+
+.tarjeta-deporte h3 {
+  margin-bottom: 22px;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.numero-pruebas {
+  margin: -14px 0 18px;
+  color: var(--texto-secundario);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.hueco {
+  display: grid;
+  min-height: 70px;
+  place-items: center;
+  padding: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+  color: var(--texto-secundario);
+  text-align: center;
+}
+
+.tarjeta-deporte.ocupada {
+  cursor: default;
+}
+
+.tarjeta-deporte.ocupada.rojo {
+  border-color: #ff7777;
+  background-color: var(--rojo);
+}
+
+.tarjeta-deporte.ocupada.amarillo {
+  color: #171717;
+  border-color: #ffe174;
+  background-color: var(--amarillo);
+}
+
+.tarjeta-deporte.ocupada.verde {
+  border-color: #75e5a5;
+  background-color: var(--verde);
+}
+
+.tarjeta-deporte.ocupada.azul {
+  border-color: #7cbcff;
+  background-color: var(--azul);
+}
+
+
+.pais-colocado {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.pais-colocado .marco-bandera {
+  width: 58px;
+  height: 40px;
+  border-width: 1px;
+}
+
+.pais-colocado strong {
+  font-size: 1rem;
+}
+
+.mensaje {
+  min-height: 24px;
+  margin-top: 22px;
+  color: var(--texto-secundario);
+  text-align: center;
+}
+
+/* -------------------------------- */
+/* PRESENTACIÓN DE DEPORTES         */
+/* -------------------------------- */
+
+.pantalla-deportes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.pantalla-deportes h1 {
+  max-width: 850px;
+  margin-bottom: 34px;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  line-height: 1.1;
+}
+
+.presentacion-deportes {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  width: 100%;
+  gap: 16px;
+  margin-bottom: 34px;
+}
+.tarjeta-presentacion-deporte {
+  grid-column: span 2;
+}
+
+.tarjeta-presentacion-deporte:nth-child(5) {
+  grid-column: 2 / span 2;
+}
+
+.tarjeta-presentacion-deporte:nth-child(6) {
+  grid-column: 4 / span 2;
+}
+
+.tarjeta-presentacion-deporte:nth-child(7) {
+  grid-column: 6 / span 2;
+}
+.tarjeta-presentacion-deporte {
+  display: grid;
+  min-height: 130px;
+  padding: 20px;
+  place-items: center;
+  gap: 8px;
+
+  color: var(--texto-principal);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  background-color: var(--fondo-tarjeta);
+
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+.tarjeta-presentacion-deporte strong {
+  font-size: 1.45rem;
+}
+
+.tarjeta-presentacion-deporte span {
+  color: var(--texto-secundario);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.tarjeta-presentacion-deporte.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* -------------------------------- */
+/* PANTALLA FINAL                   */
+/* -------------------------------- */
+
+.pantalla-final {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.pantalla-final h1 {
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+}
+
+.resumen-final {
+  display: grid;
+  width: min(650px, 100%);
+  gap: 8px;
+  margin: 28px 0;
+}
+
+.resumen-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 12px;
+
+  min-height: 58px;
+  padding: 14px 20px;
+
+  border: 2px solid transparent;
+  border-radius: 12px;
+
+  text-align: center;
+}
+
+.resumen-item strong,
+.resumen-item span {
+  font-size: 1.05rem;
+}
+
+.resumen-item.rojo {
+  color: #ffffff;
+  border-color: #ff7777;
+  background-color: var(--rojo);
+}
+
+.resumen-item.amarillo {
+  color: #171717;
+  border-color: #ffe174;
+  background-color: var(--amarillo);
+}
+
+.resumen-item.verde {
+  color: #ffffff;
+  border-color: #75e5a5;
+  background-color: var(--verde);
+}
+
+.resumen-item.azul {
+  color: #ffffff;
+  border-color: #7cbcff;
+  background-color: var(--azul);
+}
+/* -------------------------------- */
+/* RESULTADOS DE LOS JUEGOS         */
+/* -------------------------------- */
+
+.pantalla-resultados {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.pantalla-resultados h1 {
+  margin-bottom: 28px;
+  font-size: clamp(2.8rem, 7vw, 4.8rem);
+}
+
+.medallero-total {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: min(760px, 100%);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.medalla-total {
+  display: grid;
+  min-height: 135px;
+  padding: 16px;
+  place-items: center;
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  background-color: var(--fondo-tarjeta);
+}
+
+.medalla-total span {
+  font-size: 2rem;
+}
+
+.medalla-total strong {
+  font-size: 2.2rem;
+}
+
+.medalla-total small {
+  color: var(--texto-secundario);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.tabla-resultados {
+  width: min(850px, 100%);
+  margin-bottom: 28px;
+  overflow: hidden;
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  background-color: var(--fondo-secundario);
+}
+
+.cabecera-resultados,
+.fila-resultado {
+  display: grid;
+  grid-template-columns:
+    minmax(150px, 1.2fr)
+    minmax(150px, 1.2fr)
+    65px
+    65px
+    65px;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+}
+
+.cabecera-resultados {
+  color: var(--texto-secundario);
+  border-bottom: 1px solid var(--borde);
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.fila-resultado {
+  border-bottom: 1px solid var(--borde);
+}
+
+.fila-resultado:last-child {
+  border-bottom: none;
+}
+
+.fila-resultado strong,
+.fila-resultado span {
+  text-align: center;
+}
+
+.cantidad-medalla {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+/* -------------------------------- */
+/* TABLET                           */
+/* -------------------------------- */
+
+@media (max-width: 900px) {
+  .tablero-deportes {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tarjeta-deporte,
+.tarjeta-deporte:nth-child(5),
+.tarjeta-deporte:nth-child(6),
+.tarjeta-deporte:nth-child(7) {
+  grid-column: auto;
+}
+
+  .presentacion-deportes {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tarjeta-presentacion-deporte,
+.tarjeta-presentacion-deporte:nth-child(5),
+.tarjeta-presentacion-deporte:nth-child(6),
+.tarjeta-presentacion-deporte:nth-child(7) {
+  grid-column: auto;
+}
+}
+
+
+/* -------------------------------- */
+/* MÓVIL                            */
+/* -------------------------------- */
+
+@media (max-width: 600px) {
+  .pantalla {
+    padding: 24px 16px;
+  }
+
+  .cabecera-juego {
+    align-items: flex-start;
+  }
+
+  .cabecera-juego .boton {
+    padding: 11px 14px;
+    font-size: 0.85rem;
+  }
+  .presentacion-deportes {
+  grid-template-columns: 1fr;
+}
+
+  .tarjeta-presentacion-deporte {
+  min-height: 90px;
+  font-size: 1.25rem;
+}
+  .carta-pais {
+    gap: 14px;
+    padding: 18px;
+  }
+
+  .marco-bandera {
+    width: 76px;
+    height: 50px;
+  }
+
+  .encabezado-seccion {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .leyenda {
+    justify-content: flex-start;
+  }
+
+  .tablero-deportes {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjeta-deporte {
+    min-height: 160px;
+  }
+
+  .resumen-item {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .medallero-total {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.medalla-total {
+  min-height: 110px;
+}
+
+.cabecera-resultados,
+.fila-resultado {
+  grid-template-columns:
+    minmax(90px, 1fr)
+    minmax(90px, 1fr)
+    38px
+    38px
+    38px;
+
+  gap: 4px;
+  padding: 12px 8px;
+  font-size: 0.78rem;
+}
+}
+
+.carta-pais.sorteando {
+  animation: entrada-pais 0.12s ease-out;
+}
+
+@keyframes entrada-pais {
+  from {
+    opacity: 0.25;
+    transform: translateY(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

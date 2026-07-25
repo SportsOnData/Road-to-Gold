@@ -1,0 +1,8 @@
+ROAD TO GOLD v0.1
+
+1. Conserva tus carpetas assets y datos originales si contienen más archivos.
+2. Copia index.html, style.css y script.js en la raíz del proyecto.
+3. Los archivos de banderas deben estar en assets/banderas y llamarse exactamente como el país: España.png, Japón.png, Países Bajos.png, etc.
+4. Abre index.html con Live Server o desde tu servidor habitual.
+
+Esta versión incluye únicamente el draft completo, un reroll y el feedback por colores.
