@@ -54,10 +54,8 @@ function iniciarPartida() {
   deportesPartida = seleccionarDeportes();
 
   paisesPendientes = mezclar(
-    PAISES.filter((pais) => {
-      return pais.activo === true || pais.activo === "true";
-    })
-  );
+  PAISES.filter((pais) => estaActivo(pais))
+);
 
   paisActual = null;
   asignaciones = [];
@@ -115,6 +113,11 @@ function seleccionarDeportes() {
       estaActivo(deporte)
   );
 
+  const deporteFijoAlternativo =
+    seleccionarUnoAleatorio(
+      "fijo_alternativo"
+    );
+
   const deportesGrandes = seleccionarPonderados(
     "grande",
     2
@@ -132,12 +135,34 @@ function seleccionarDeportes() {
 
   return [
     ...deportesFijos,
+    ...deporteFijoAlternativo,
     ...deportesGrandes,
     ...deportesMedianos,
     ...deportesPequenos
   ];
 }
 
+function seleccionarUnoAleatorio(grupo) {
+  const candidatos = DEPORTES.filter(
+    (deporte) =>
+      deporte.grupo === grupo &&
+      estaActivo(deporte)
+  );
+
+  if (candidatos.length === 0) {
+    console.warn(
+      `No hay deportes activos en el grupo: ${grupo}`
+    );
+
+    return [];
+  }
+
+  const indiceAleatorio = Math.floor(
+    Math.random() * candidatos.length
+  );
+
+  return [candidatos[indiceAleatorio]];
+}
 
 function seleccionarPonderados(grupo, cantidad) {
   const candidatos = DEPORTES
@@ -317,7 +342,10 @@ function colocarPais(deporte, tarjeta) {
     deporte.codigo
   );
 
-  const color = obtenerColor(nota);
+  const color = obtenerColor(
+  nota,
+  deporte.codigo
+);
 
   const paisColocado = paisActual;
 
@@ -423,19 +451,33 @@ function comenzarJuegos() {
         deporte.codigo
       );
 
-      const medallas = simularDeporteLaboratorio(
-        nota,
-        Number(deporte.tamanoSimulacion),
-        Number(deporte.variabilidad)
-      );
+      const numeroPruebas =
+  Number(deporte.tamanoSimulacion);
 
-      return {
-        deporte: deporte,
-        pais: pais,
-        oros: medallas.oros,
-        platas: medallas.platas,
-        bronces: medallas.bronces
-      };
+  const variabilidad =
+   Number(deporte.variabilidad);
+
+  const medallas = simularDeporteLaboratorio(
+    nota,
+    numeroPruebas,
+    variabilidad
+  );
+
+  const fortuna = calcularFortunaResultado(
+    nota,
+    numeroPruebas,
+    variabilidad,
+    medallas
+  );
+
+  return {
+    deporte: deporte,
+    pais: pais,
+    oros: medallas.oros,
+    platas: medallas.platas,
+    bronces: medallas.bronces,
+    fortuna: fortuna
+  };
     }
   );
 
@@ -454,21 +496,54 @@ function mostrarResultadosJuegos() {
       platasAcumuladas += resultado.platas;
       broncesAcumulados += resultado.bronces;
 
-      return `
-        <div class="fila-resultado">
-          <strong>${resultado.deporte.nombre}</strong>
-          <span>${resultado.pais.nombre}</span>
-          <span class="cantidad-medalla">
-            ${resultado.oros}
-          </span>
-          <span class="cantidad-medalla">
-            ${resultado.platas}
-          </span>
-          <span class="cantidad-medalla">
-            ${resultado.bronces}
-          </span>
-        </div>
-      `;
+      const indiceFortuna =
+  resultado.fortuna.indice >= 0
+    ? `+${resultado.fortuna.indice.toFixed(2)}`
+    : resultado.fortuna.indice.toFixed(2);
+
+return `
+  <div class="fila-resultado">
+
+    <strong>${resultado.deporte.nombre}</strong>
+
+    <span>${resultado.pais.nombre}</span>
+
+    <span class="cantidad-medalla">
+      ${resultado.oros}
+    </span>
+
+    <span class="cantidad-medalla">
+      ${resultado.platas}
+    </span>
+
+    <span class="cantidad-medalla">
+      ${resultado.bronces}
+    </span>
+
+    <span
+      class="indicador-fortuna
+      ${resultado.fortuna.clase}"
+      title="
+        Esperado:
+        ${resultado.fortuna.puntuacionEsperada.toFixed(1)}
+        puntos.
+        Obtenido:
+        ${resultado.fortuna.puntuacionReal}
+        puntos.
+      "
+    >
+      <strong>
+        ${resultado.fortuna.simbolo}
+        ${indiceFortuna}
+      </strong>
+
+      <small>
+        ${resultado.fortuna.texto}
+      </small>
+    </span>
+
+  </div>
+`;
     })
     .join("");
 
@@ -526,7 +601,23 @@ function obtenerNotaPais(pais, codigoDeporte) {
 }
 
 
-function obtenerColor(nota) {
+function obtenerColor(nota, codigoDeporte) {
+  if (codigoDeporte === "atletismo") {
+    if (nota >= 7) {
+      return "azul";
+    }
+
+    if (nota >= 5) {
+      return "verde";
+    }
+
+    if (nota >= 3) {
+      return "amarillo";
+    }
+
+    return "rojo";
+  }
+
   if (nota >= 9) {
     return "azul";
   }
@@ -600,10 +691,7 @@ function mezclar(lista) {
 }
 
 function estaActivo(elemento) {
-  return (
-    elemento.activo === true ||
-    elemento.activo === "true"
-  );
+  return elemento.activo === true;
 }
 
 /* ===================================================== */
@@ -875,6 +963,127 @@ function calcularProbabilidadesPrueba(
   };
 }
 
+function calcularFortunaResultado(
+  nota,
+  numeroPruebas,
+  variabilidad,
+  resultado
+) {
+  const probabilidades = calcularProbabilidadesPrueba(
+    nota,
+    variabilidad
+  );
+
+  /*
+    Valor interno de cada resultado:
+
+    oro = 3
+    plata = 2
+    bronce = 1
+    sin medalla = 0
+  */
+  const puntuacionReal =
+    resultado.oros * 3 +
+    resultado.platas * 2 +
+    resultado.bronces;
+
+  /*
+    Puntuación esperada en una sola prueba.
+  */
+  const mediaPorPrueba =
+    probabilidades.oro * 3 +
+    probabilidades.plata * 2 +
+    probabilidades.bronce;
+
+  /*
+    E(X²) de una sola prueba.
+
+    Oro: 3² = 9
+    Plata: 2² = 4
+    Bronce: 1² = 1
+  */
+  const mediaCuadradosPorPrueba =
+    probabilidades.oro * 9 +
+    probabilidades.plata * 4 +
+    probabilidades.bronce;
+
+  const varianzaPorPrueba =
+    mediaCuadradosPorPrueba -
+    Math.pow(mediaPorPrueba, 2);
+
+  const puntuacionEsperada =
+    mediaPorPrueba * numeroPruebas;
+
+  const desviacionTipica =
+    Math.sqrt(
+      Math.max(
+        0,
+        varianzaPorPrueba * numeroPruebas
+      )
+    );
+
+  /*
+    El índice de fortuna indica cuántas desviaciones
+    típicas se encuentra el resultado por encima
+    o por debajo de lo esperado.
+  */
+  const indice =
+    desviacionTipica > 0
+      ? (
+          puntuacionReal -
+          puntuacionEsperada
+        ) / desviacionTipica
+      : 0;
+
+  return {
+    indice: indice,
+    puntuacionReal: puntuacionReal,
+    puntuacionEsperada: puntuacionEsperada,
+    desviacionTipica: desviacionTipica,
+    ...clasificarFortuna(indice)
+  };
+}
+
+
+function clasificarFortuna(indice) {
+  if (indice >= 2) {
+    return {
+      simbolo: "↑↑",
+      texto: "Actuación extraordinaria",
+      clase: "fortuna-muy-positiva"
+    };
+  }
+
+  if (indice >= 0.75) {
+    return {
+      simbolo: "↑",
+      texto: "Por encima de lo esperado",
+      clase: "fortuna-positiva"
+    };
+  }
+
+  if (indice <= -2) {
+    return {
+      simbolo: "↓↓",
+      texto: "Gran decepción",
+      clase: "fortuna-muy-negativa"
+    };
+  }
+
+  if (indice <= -0.75) {
+    return {
+      simbolo: "↓",
+      texto: "Por debajo de lo esperado",
+      clase: "fortuna-negativa"
+    };
+  }
+
+  return {
+    simbolo: "—",
+    texto: "Rendimiento esperado",
+    clase: "fortuna-neutral"
+  };
+}
 
 function normalizarReparto(reparto) {
   const total =
