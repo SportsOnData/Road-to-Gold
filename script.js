@@ -3,15 +3,26 @@ const pantallaDeportes = document.querySelector("#pantallaDeportes");
 const pantallaJuego = document.querySelector("#pantallaJuego");
 const pantallaFinal = document.querySelector("#pantallaFinal");
 const pantallaResultados = document.querySelector("#pantallaResultados");
-
+const pantallaCeremonia = document.querySelector(
+  "#pantallaCeremonia"
+);
 const botonEmpezar = document.querySelector("#botonEmpezar");
 const botonReroll = document.querySelector("#botonReroll");
+const botonDraftAleatorio = document.querySelector(
+  "#botonDraftAleatorio"
+);
 const botonNuevaPartida = document.querySelector("#botonNuevaPartida");
 const botonComenzarDraft = document.querySelector(
   "#botonComenzarDraft"
 );
 const botonComenzarJuegos = document.querySelector(
   "#botonComenzarJuegos"
+);
+const botonSiguienteDeporte = document.querySelector(
+  "#botonSiguienteDeporte"
+);
+const botonSaltarCeremonia = document.querySelector(
+  "#botonSaltarCeremonia"
 );
 const progreso = document.querySelector("#progreso");
 
@@ -35,6 +46,69 @@ const totalOros = document.querySelector("#totalOros");
 const totalPlatas = document.querySelector("#totalPlatas");
 const totalBronces = document.querySelector("#totalBronces");
 const totalMedallas = document.querySelector("#totalMedallas");
+const marcoCeremonia = document.querySelector(
+  "#marcoCeremonia"
+);
+
+const progresoCeremonia = document.querySelector(
+  "#progresoCeremonia"
+);
+
+const banderaCeremonia = document.querySelector(
+  "#banderaCeremonia"
+);
+
+const banderaCeremoniaAlternativa = document.querySelector(
+  "#banderaCeremoniaAlternativa"
+);
+
+const nombreDeporteCeremonia = document.querySelector(
+  "#nombreDeporteCeremonia"
+);
+
+const nombrePaisCeremonia = document.querySelector(
+  "#nombrePaisCeremonia"
+);
+
+const pruebasCeremonia = document.querySelector(
+  "#pruebasCeremonia"
+);
+
+const resultadoCeremonia = document.querySelector(
+  "#resultadoCeremonia"
+);
+
+const orosCeremonia = document.querySelector(
+  "#orosCeremonia"
+);
+
+const platasCeremonia = document.querySelector(
+  "#platasCeremonia"
+);
+
+const broncesCeremonia = document.querySelector(
+  "#broncesCeremonia"
+);
+
+const textoActuacionCeremonia = document.querySelector(
+  "#textoActuacionCeremonia"
+);
+
+const orosAcumuladosCeremonia = document.querySelector(
+  "#orosAcumuladosCeremonia"
+);
+
+const platasAcumuladasCeremonia = document.querySelector(
+  "#platasAcumuladasCeremonia"
+);
+
+const broncesAcumuladosCeremonia = document.querySelector(
+  "#broncesAcumuladosCeremonia"
+);
+
+const totalAcumuladoCeremonia = document.querySelector(
+  "#totalAcumuladoCeremonia"
+);
 
 let deportesPartida = [];
 let paisesPendientes = [];
@@ -43,12 +117,38 @@ let asignaciones = [];
 let rerollDisponible = true;
 let sorteoEnCurso = false;
 let resultadosJuegos = [];
+let resultadosCeremonia = [];
+let indiceCeremonia = 0;
+
+let medalleroAcumuladoCeremonia = {
+  oros: 0,
+  platas: 0,
+  bronces: 0
+};
+
+let temporizadorRevelarCeremonia = null;
+let temporizadorAvanzarCeremonia = null;
+
+const TIEMPO_PRESENTACION_CEREMONIA = 1500;
+const TIEMPO_LECTURA_CEREMONIA = 6500;
 
 botonEmpezar.addEventListener("click", iniciarPartida);
 botonNuevaPartida.addEventListener("click", iniciarPartida);
 botonComenzarDraft.addEventListener("click", comenzarDraft);
 botonComenzarJuegos.addEventListener("click", comenzarJuegos);
 botonReroll.addEventListener("click", usarReroll);
+botonSiguienteDeporte.addEventListener(
+  "click",
+  avanzarCeremonia
+);
+botonDraftAleatorio.addEventListener(
+  "click",
+  hacerDraftAleatorio
+);
+botonSaltarCeremonia.addEventListener(
+  "click",
+  saltarCeremonia
+);
 
 function iniciarPartida() {
   deportesPartida = seleccionarDeportes();
@@ -65,6 +165,7 @@ function iniciarPartida() {
 
   botonReroll.disabled = false;
   botonReroll.textContent = "↻ Usar reroll";
+  botonDraftAleatorio.disabled = false;
 
   botonComenzarDraft.disabled = true;
 
@@ -230,6 +331,8 @@ function sacarSiguientePais(
   textoPaisActual.textContent = "";
 
   botonReroll.disabled = true;
+  botonDraftAleatorio.disabled = true;
+
   mensajeJuego.textContent = "Sorteando país...";
 
   const candidatosVisuales = [
@@ -238,8 +341,8 @@ function sacarSiguientePais(
   ];
 
   let cambiosRealizados = 0;
-  const totalCambios = 12;
-  const velocidadSorteo = 75;
+  const totalCambios = 10;
+  const velocidadSorteo = 70;
 
   const intervaloSorteo = setInterval(() => {
     const indiceAleatorio = Math.floor(
@@ -266,6 +369,10 @@ function sacarSiguientePais(
       sorteoEnCurso = false;
 
       botonReroll.disabled = !rerollDisponible;
+
+      botonDraftAleatorio.disabled =
+        asignaciones.length > 0;
+
       mensajeJuego.textContent = mensajeFinal;
     }
   }, velocidadSorteo);
@@ -426,7 +533,67 @@ function usarReroll() {
     `${paisDescartado.nombre} ha sido descartado.`
   );
 }
+function hacerDraftAleatorio() {
+  if (
+    sorteoEnCurso ||
+    asignaciones.length > 0 ||
+    !paisActual
+  ) {
+    return;
+  }
 
+  botonDraftAleatorio.disabled = true;
+  botonReroll.disabled = true;
+
+  /*
+    El país que acaba de salir es el primero
+    del draft automático.
+  */
+  const paisesDraftAleatorio = [
+    paisActual
+  ];
+
+  /*
+    Tomamos los seis siguientes países
+    del orden que ya fue sorteado al comenzar.
+  */
+  while (
+    paisesDraftAleatorio.length <
+      deportesPartida.length &&
+    paisesPendientes.length > 0
+  ) {
+    paisesDraftAleatorio.push(
+      paisesPendientes.shift()
+    );
+  }
+
+  asignaciones = deportesPartida.map(
+    (deporte, indice) => {
+      const pais =
+        paisesDraftAleatorio[indice];
+
+      const nota = obtenerNotaPais(
+        pais,
+        deporte.codigo
+      );
+
+      const color = obtenerColor(
+        nota,
+        deporte.codigo
+      );
+
+      return {
+        deporte: deporte,
+        pais: pais,
+        color: color
+      };
+    }
+  );
+
+  paisActual = null;
+
+  terminarPartida();
+}
 
 function terminarPartida() {
   resumenFinal.innerHTML = asignaciones
@@ -445,7 +612,7 @@ function terminarPartida() {
 
 function comenzarJuegos() {
   resultadosJuegos = asignaciones.map(
-    ({ deporte, pais }) => {
+  ({ deporte, pais, color }) => {
       const nota = obtenerNotaPais(
         pais,
         deporte.codigo
@@ -471,19 +638,335 @@ function comenzarJuegos() {
   );
 
   return {
-    deporte: deporte,
-    pais: pais,
-    oros: medallas.oros,
-    platas: medallas.platas,
-    bronces: medallas.bronces,
-    fortuna: fortuna
-  };
+  deporte: deporte,
+  pais: pais,
+  color: color,
+  oros: medallas.oros,
+  platas: medallas.platas,
+  bronces: medallas.bronces,
+  fortuna: fortuna
+};
     }
   );
 
+  iniciarCeremoniaJuegos();
+}
+
+function iniciarCeremoniaJuegos() {
+  resultadosCeremonia =
+    ordenarResultadosCeremonia(resultadosJuegos);
+
+  indiceCeremonia = 0;
+
+  medalleroAcumuladoCeremonia = {
+    oros: 0,
+    platas: 0,
+    bronces: 0
+  };
+
+  actualizarMedalleroAcumuladoCeremonia();
+  mostrarDeporteCeremonia();
+}
+
+
+function ordenarResultadosCeremonia(resultados) {
+  const resultadosGrandes = resultados.filter(
+    (resultado) => {
+      const codigo = resultado.deporte.codigo;
+      const grupo = resultado.deporte.grupo;
+
+      return (
+        codigo === "atletismo" ||
+        codigo === "natacion" ||
+        grupo === "fijo_alternativo"
+      );
+    }
+  );
+
+  const resultadosRestantes = resultados.filter(
+    (resultado) =>
+      !resultadosGrandes.includes(resultado)
+  );
+
+  const grandesMezclados = mezclar(
+    resultadosGrandes
+  );
+
+  const restantesMezclados = mezclar(
+    resultadosRestantes
+  );
+
+  /*
+    Caso normal:
+    - un deporte grande abre;
+    - otro deporte grande cierra;
+    - el tercero aparece entre las posiciones 3 y 5.
+  */
+  if (grandesMezclados.length >= 3) {
+    const deporteInicial =
+      grandesMezclados[0];
+
+    const deporteCentral =
+      grandesMezclados[1];
+
+    const deporteFinal =
+      grandesMezclados[2];
+
+    const orden = [
+      deporteInicial,
+      ...restantesMezclados,
+      deporteFinal
+    ];
+
+    const posicionCentral =
+      2 + Math.floor(Math.random() * 3);
+
+    orden.splice(
+      posicionCentral,
+      0,
+      deporteCentral
+    );
+
+    return orden;
+  }
+
+  /*
+    Protección por si en el futuro cambia
+    la estructura de deportes.
+  */
+  return mezclar(resultados);
+}
+
+
+function mostrarDeporteCeremonia() {
+  limpiarTemporizadoresCeremonia();
+
+  const resultado =
+    resultadosCeremonia[indiceCeremonia];
+
+  if (!resultado) {
+    mostrarResultadosJuegos();
+    return;
+  }
+
+  mostrarPantalla(pantallaCeremonia);
+
+  progresoCeremonia.textContent =
+    `DEPORTE ${indiceCeremonia + 1} DE ` +
+    `${resultadosCeremonia.length}`;
+
+  nombreDeporteCeremonia.textContent =
+    resultado.deporte.nombre.toUpperCase();
+
+  nombrePaisCeremonia.textContent =
+    resultado.pais.nombre;
+
+  pruebasCeremonia.textContent =
+    `${resultado.deporte.tamanoSimulacion} pruebas`;
+
+  cargarBandera(
+    banderaCeremonia,
+    banderaCeremoniaAlternativa,
+    resultado.pais
+  );
+
+  marcoCeremonia.className =
+    `marco-ceremonia eleccion-${resultado.color}`;
+
+  resultadoCeremonia.classList.add("oculto");
+
+  textoActuacionCeremonia.className =
+    "texto-actuacion-ceremonia oculto";
+
+  textoActuacionCeremonia.textContent = "";
+
+  orosCeremonia.textContent = "0";
+  platasCeremonia.textContent = "0";
+  broncesCeremonia.textContent = "0";
+
+  botonSiguienteDeporte.disabled = true;
+
+  botonSiguienteDeporte.textContent =
+    indiceCeremonia ===
+    resultadosCeremonia.length - 1
+      ? "Ver medallero final"
+      : "Siguiente deporte";
+
+  temporizadorRevelarCeremonia = setTimeout(
+    revelarResultadoCeremonia,
+    TIEMPO_PRESENTACION_CEREMONIA
+  );
+}
+
+
+function revelarResultadoCeremonia() {
+  const resultado =
+    resultadosCeremonia[indiceCeremonia];
+
+  if (!resultado) {
+    return;
+  }
+
+  orosCeremonia.textContent =
+    resultado.oros;
+
+  platasCeremonia.textContent =
+    resultado.platas;
+
+  broncesCeremonia.textContent =
+    resultado.bronces;
+
+  resultadoCeremonia.classList.remove("oculto");
+
+  mostrarValoracionCeremonia(
+    resultado.fortuna
+  );
+
+  medalleroAcumuladoCeremonia.oros +=
+    resultado.oros;
+
+  medalleroAcumuladoCeremonia.platas +=
+    resultado.platas;
+
+  medalleroAcumuladoCeremonia.bronces +=
+    resultado.bronces;
+
+  actualizarMedalleroAcumuladoCeremonia();
+
+  botonSiguienteDeporte.disabled = false;
+
+  temporizadorAvanzarCeremonia = setTimeout(
+    avanzarCeremonia,
+    TIEMPO_LECTURA_CEREMONIA
+  );
+}
+
+
+function mostrarValoracionCeremonia(fortuna) {
+  const texto =
+    obtenerFraseActuacion(fortuna.clase);
+
+  if (!texto) {
+    textoActuacionCeremonia.classList.add(
+      "oculto"
+    );
+
+    return;
+  }
+
+  textoActuacionCeremonia.textContent =
+    texto;
+
+  textoActuacionCeremonia.className =
+    `texto-actuacion-ceremonia ${fortuna.clase}`;
+}
+function saltarCeremonia() {
+  limpiarTemporizadoresCeremonia();
   mostrarResultadosJuegos();
 }
 
+function obtenerFraseActuacion(clase) {
+  const frases = {
+    "fortuna-positiva": [
+      "Gran actuación",
+      "Por encima de las expectativas",
+      "Excelente rendimiento",
+      "Mejorando las predicciones"
+    ],
+
+    "fortuna-muy-positiva": [
+      "Actuación extraordinaria",
+      "Juegos inolvidables",
+      "Una hazaña histórica",
+      "Resultado excepcional"
+    ],
+
+    "fortuna-negativa": [
+      "Actuación decepcionante",
+      "Por debajo de las expectativas",
+      "Resultado insuficiente",
+      "No estuvo a la altura"
+    ],
+
+    "fortuna-muy-negativa": [
+      "Fracaso absoluto",
+      "Debacle deportiva",
+      "Unos Juegos para olvidar",
+      "Hundimiento inesperado"
+    ]
+  };
+
+  const opciones = frases[clase];
+
+  /*
+    Si la actuación ha sido normal,
+    no mostramos ningún mensaje.
+  */
+  if (!opciones) {
+    return "";
+  }
+
+  const indiceAleatorio = Math.floor(
+    Math.random() * opciones.length
+  );
+
+  return opciones[indiceAleatorio];
+}
+
+
+function actualizarMedalleroAcumuladoCeremonia() {
+  const {
+    oros,
+    platas,
+    bronces
+  } = medalleroAcumuladoCeremonia;
+
+  orosAcumuladosCeremonia.textContent =
+    oros;
+
+  platasAcumuladasCeremonia.textContent =
+    platas;
+
+  broncesAcumuladosCeremonia.textContent =
+    bronces;
+
+  totalAcumuladoCeremonia.textContent =
+    oros + platas + bronces;
+}
+
+
+function avanzarCeremonia() {
+  limpiarTemporizadoresCeremonia();
+
+  botonSiguienteDeporte.disabled = true;
+
+  const esUltimoDeporte =
+    indiceCeremonia >=
+    resultadosCeremonia.length - 1;
+
+  if (esUltimoDeporte) {
+    mostrarResultadosJuegos();
+    return;
+  }
+
+  indiceCeremonia += 1;
+
+  mostrarDeporteCeremonia();
+}
+
+
+function limpiarTemporizadoresCeremonia() {
+  clearTimeout(
+    temporizadorRevelarCeremonia
+  );
+
+  clearTimeout(
+    temporizadorAvanzarCeremonia
+  );
+
+  temporizadorRevelarCeremonia = null;
+  temporizadorAvanzarCeremonia = null;
+}
 
 function mostrarResultadosJuegos() {
   let orosAcumulados = 0;
@@ -502,7 +985,7 @@ function mostrarResultadosJuegos() {
     : resultado.fortuna.indice.toFixed(2);
 
 return `
-  <div class="fila-resultado">
+  <div class="fila-resultado eleccion-${resultado.color}">
 
     <strong>${resultado.deporte.nombre}</strong>
 
@@ -602,6 +1085,7 @@ function obtenerNotaPais(pais, codigoDeporte) {
 
 
 function obtenerColor(nota, codigoDeporte) {
+  // Escala especial de Atletismo
   if (codigoDeporte === "atletismo") {
     if (nota >= 7) {
       return "azul";
@@ -618,6 +1102,24 @@ function obtenerColor(nota, codigoDeporte) {
     return "rojo";
   }
 
+  // Escala especial de Natación
+  if (codigoDeporte === "natacion") {
+    if (nota >= 8) {
+      return "azul";
+    }
+
+    if (nota >= 6) {
+      return "verde";
+    }
+
+    if (nota >= 3) {
+      return "amarillo";
+    }
+
+    return "rojo";
+  }
+
+  // Escala general para el resto de deportes
   if (nota >= 9) {
     return "azul";
   }
@@ -660,6 +1162,7 @@ function mostrarPantalla(pantallaVisible) {
   pantallaDeportes.classList.add("oculto");
   pantallaJuego.classList.add("oculto");
   pantallaFinal.classList.add("oculto");
+  pantallaCeremonia.classList.add("oculto");
   pantallaResultados.classList.add("oculto");
 
   pantallaVisible.classList.remove("oculto");

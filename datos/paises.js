@@ -11,7 +11,7 @@ const PAISES = [
     "activo": true,
     "notas": {
       "atletismo": 5,
-      "natacion": 4,
+      "natacion": 3,
       "gimnasia": 5,
       "remo": 5,
       "boxeo": 6,
@@ -38,7 +38,7 @@ const PAISES = [
     "activo": true,
     "notas": {
       "atletismo": 9,
-      "natacion": 10,
+      "natacion": 9,
       "gimnasia": 8,
       "remo": 7,
       "boxeo": 8,
@@ -65,7 +65,7 @@ const PAISES = [
     "activo": true,
     "notas": {
       "atletismo": 6,
-      "natacion": 8,
+      "natacion": 7,
       "gimnasia": 8,
       "remo": 7,
       "boxeo": 5,
@@ -92,7 +92,7 @@ const PAISES = [
     "activo": true,
     "notas": {
       "atletismo": 6,
-      "natacion": 8,
+      "natacion": 7,
       "gimnasia": 5,
       "remo": 6,
       "boxeo": 7,
@@ -119,7 +119,7 @@ const PAISES = [
     "activo": true,
     "notas": {
       "atletismo": 5,
-      "natacion": 9,
+      "natacion": 8,
       "gimnasia": 9,
       "remo": 7,
       "boxeo": 8,
@@ -227,7 +227,7 @@ const PAISES = [
     "activo": true,
     "notas": {
       "atletismo": 5,
-      "natacion": 6,
+      "natacion": 5,
       "gimnasia": 6,
       "remo": 8,
       "boxeo": 6,
@@ -254,7 +254,7 @@ const PAISES = [
     "activo": true,
     "notas": {
       "atletismo": 2,
-      "natacion": 7,
+      "natacion": 6,
       "gimnasia": 8,
       "remo": 2,
       "boxeo": 5,
@@ -281,7 +281,7 @@ const PAISES = [
     "activo": true,
     "notas": {
       "atletismo": 7,
-      "natacion": 8,
+      "natacion": 7,
       "gimnasia": 8,
       "remo": 9,
       "boxeo": 8,
@@ -416,7 +416,7 @@ const PAISES = [
     "activo": true,
     "notas": {
       "atletismo": 2,
-      "natacion": 7,
+      "natacion": 6,
       "gimnasia": 2,
       "remo": 1,
       "boxeo": 2,
@@ -443,7 +443,7 @@ const PAISES = [
     "activo": true,
     "notas": {
       "atletismo": 6,
-      "natacion": 6,
+      "natacion": 5,
       "gimnasia": 4,
       "remo": 9,
       "boxeo": 4,
@@ -524,7 +524,7 @@ const PAISES = [
     "activo": true,
     "notas": {
       "atletismo": 3,
-      "natacion": 5,
+      "natacion": 4,
       "gimnasia": 7,
       "remo": 1,
       "boxeo": 6,
@@ -541,6 +541,60 @@ const PAISES = [
       "escalada": 0,
       "tenismesa": 3,
       "badminton": 1
+    }
+  },
+  {
+    "id": 21,
+    "codigo": "ARG",
+    "nombre": "Argentina",
+    "continente": "América",
+    "activo": true,
+    "notas": {
+      "atletismo": 1,
+      "natacion": 2,
+      "gimnasia": 1,
+      "remo": 2,
+      "boxeo": 4,
+      "piraguismo": 3,
+      "ciclismo": 3,
+      "judo": 5,
+      "tiro": 3,
+      "futbol": 7,
+      "baloncesto": 5,
+      "waterpolo": 1,
+      "balonmano": 3,
+      "voleibol": 6,
+      "tenis": 6,
+      "escalada": 1,
+      "tenismesa": 1,
+      "badminton": 0
+    }
+  },
+  {
+    "id": 22,
+    "codigo": "TPE",
+    "nombre": "Taipei",
+    "continente": "Asia",
+    "activo": true,
+    "notas": {
+      "atletismo": 1,
+      "natacion": 1,
+      "gimnasia": 4,
+      "remo": 1,
+      "boxeo": 6,
+      "piraguismo": 1,
+      "ciclismo": 1,
+      "judo": 4,
+      "tiro": 4,
+      "futbol": 0,
+      "baloncesto": 0,
+      "waterpolo": 0,
+      "balonmano": 0,
+      "voleibol": 0,
+      "tenis": 3,
+      "escalada": 1,
+      "tenismesa": 6,
+      "badminton": 8
     }
   }
 ];

@@ -700,6 +700,15 @@ button {
     align-items: flex-start;
     flex-direction: column;
   }
+    .acciones-draft {
+    align-items: stretch;
+    flex-direction: column;
+    width: 155px;
+  }
+
+  .acciones-draft .boton {
+    width: 100%;
+  }
 
   .leyenda {
     justify-content: flex-start;
@@ -789,4 +798,453 @@ button {
 
 .fortuna-neutral {
   color: #666666;
+}
+
+/* Marca lateral con la calidad de la elección del draft */
+
+.fila-resultado {
+  position: relative;
+  border-left: 5px solid transparent;
+}
+
+.fila-resultado.eleccion-azul {
+  border-left-color: #2474ff;
+}
+
+.fila-resultado.eleccion-verde {
+  border-left-color: #16a34a;
+}
+
+.fila-resultado.eleccion-amarillo {
+  border-left-color: #f5c518;
+}
+
+.fila-resultado.eleccion-rojo {
+  border-left-color: #dc2626;
+}
+
+/* -------------------------------- */
+/* CEREMONIA DE LOS JUEGOS          */
+/* -------------------------------- */
+
+.pantalla-ceremonia {
+  display: grid;
+  place-items: center;
+}
+
+.marco-ceremonia {
+  width: min(900px, 100%);
+  min-height: min(760px, calc(100vh - 80px));
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 26px;
+
+  border: 4px solid var(--borde);
+  border-radius: 24px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(38, 116, 200, 0.12),
+      transparent 55%
+    ),
+    var(--fondo-secundario);
+
+  transition:
+    border-color 0.35s ease,
+    opacity 0.35s ease;
+}
+
+
+/*
+  El color recuerda la calidad de la elección,
+  pero no pinta toda la pantalla.
+*/
+
+.marco-ceremonia.eleccion-azul {
+  border-color: var(--azul);
+}
+
+.marco-ceremonia.eleccion-verde {
+  border-color: var(--verde);
+}
+
+.marco-ceremonia.eleccion-amarillo {
+  border-color: var(--amarillo);
+}
+
+.marco-ceremonia.eleccion-rojo {
+  border-color: var(--rojo);
+}
+
+
+.cabecera-ceremonia {
+  display: grid;
+  grid-template-columns: 100px 1fr 100px;
+  align-items: start;
+  gap: 18px;
+}
+
+.pictograma-ceremonia {
+  width: 80px;
+  height: 60px;
+}
+
+.progreso-ceremonia {
+  padding-top: 8px;
+
+  color: var(--texto-secundario);
+
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+.bandera-ceremonia {
+  justify-self: end;
+
+  width: 92px;
+  height: 60px;
+}
+
+
+.contenido-ceremonia {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  text-align: center;
+}
+
+
+.presentacion-ceremonia {
+  margin: auto 0 28px;
+}
+
+.presentacion-ceremonia .marca {
+  margin-bottom: 18px;
+}
+
+.presentacion-ceremonia h1 {
+  max-width: 820px;
+  margin: 0 auto 18px;
+
+  font-size: clamp(2.6rem, 7vw, 5.2rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.presentacion-ceremonia h2 {
+  margin-bottom: 18px;
+
+  color: var(--texto-principal);
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(1.9rem, 5vw, 3.2rem);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+
+.pruebas-ceremonia {
+  display: inline-block;
+
+  padding: 9px 16px;
+
+  color: var(--texto-secundario);
+
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+
+  background-color: var(--fondo-tarjeta);
+
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+
+.resultado-ceremonia {
+  width: min(620px, 100%);
+  margin-bottom: 28px;
+
+  animation: aparecer-resultado-ceremonia 0.55s ease;
+}
+
+
+.medallas-ceremonia {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+
+.medalla-ceremonia {
+  display: grid;
+  min-height: 140px;
+  padding: 18px;
+  place-items: center;
+
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+
+  background-color: var(--fondo-tarjeta);
+}
+
+
+.medalla-ceremonia span {
+  font-size: 2.5rem;
+}
+
+
+.medalla-ceremonia strong {
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  line-height: 1;
+}
+
+
+.medalla-ceremonia small {
+  color: var(--texto-secundario);
+
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+
+.texto-actuacion-ceremonia {
+  margin-top: 22px;
+
+  font-size: clamp(1.25rem, 4vw, 1.8rem);
+  font-weight: 900;
+
+  animation: aparecer-texto-actuacion 0.45s ease;
+}
+
+
+.texto-actuacion-ceremonia.fortuna-positiva,
+.texto-actuacion-ceremonia.fortuna-muy-positiva {
+  color: #59d98e;
+}
+
+
+.texto-actuacion-ceremonia.fortuna-negativa,
+.texto-actuacion-ceremonia.fortuna-muy-negativa {
+  color: #ff7373;
+}
+
+
+.acumulado-ceremonia {
+  width: min(650px, 100%);
+  margin-top: auto;
+  padding: 18px 20px;
+
+  border-top: 1px solid var(--borde);
+}
+
+
+.etiqueta-acumulado {
+  display: block;
+  margin-bottom: 13px;
+
+  color: var(--texto-secundario);
+
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+
+.medallas-acumuladas {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+
+.medallas-acumuladas span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  font-size: 1.05rem;
+}
+
+
+.medallas-acumuladas strong {
+  font-size: 1.35rem;
+}
+
+
+.boton-siguiente-deporte {
+  min-width: 210px;
+  margin-top: 20px;
+}
+
+
+@keyframes aparecer-resultado-ceremonia {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+@keyframes aparecer-texto-actuacion {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@media (max-width: 600px) {
+  .marco-ceremonia {
+    min-height: calc(100vh - 48px);
+    padding: 18px;
+
+    border-width: 3px;
+    border-radius: 18px;
+  }
+
+  .cabecera-ceremonia {
+    grid-template-columns: 70px 1fr 70px;
+    gap: 8px;
+  }
+  .boton-saltar-ceremonia {
+   font-size: 0.65rem;
+  }
+  .pictograma-ceremonia {
+    width: 60px;
+    height: 44px;
+  }
+
+  .bandera-ceremonia {
+    width: 68px;
+    height: 44px;
+  }
+
+  .progreso-ceremonia {
+    font-size: 0.67rem;
+    letter-spacing: 1px;
+  }
+
+  .presentacion-ceremonia {
+    margin-bottom: 22px;
+  }
+
+  .presentacion-ceremonia h1 {
+  font-size: clamp(2.1rem, 10vw, 3.3rem);
+}
+
+  .presentacion-ceremonia h2 {
+    font-size: clamp(1.7rem, 8vw, 2.7rem);
+  }
+
+  .medallas-ceremonia {
+    gap: 8px;
+  }
+
+  .medalla-ceremonia {
+    min-height: 110px;
+    padding: 12px 6px;
+  }
+
+  .medalla-ceremonia span {
+    font-size: 1.8rem;
+  }
+
+  .medalla-ceremonia strong {
+    font-size: 2.3rem;
+  }
+
+  .medalla-ceremonia small {
+    font-size: 0.72rem;
+  }
+
+  .acumulado-ceremonia {
+    padding: 14px 4px;
+  }
+
+  .medallas-acumuladas {
+    gap: 5px;
+  }
+
+  .medallas-acumuladas span {
+    gap: 3px;
+    font-size: 0.82rem;
+  }
+
+  .medallas-acumuladas strong {
+    font-size: 1.05rem;
+  }
+
+  .boton-siguiente-deporte {
+    width: 100%;
+  }
+}
+.logo-sports-data {
+  display: block;
+  width: min(260px, 70vw);
+  height: auto;
+  margin-bottom: 28px;
+  object-fit: contain;
+}
+.acciones-draft {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.zona-superior-izquierda-ceremonia {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.boton-saltar-ceremonia {
+  padding: 5px 0;
+
+  color: var(--texto-secundario);
+  border: none;
+  background: transparent;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  cursor: pointer;
+  opacity: 0.75;
+
+  transition:
+    color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.boton-saltar-ceremonia:hover {
+  color: var(--texto-principal);
+  opacity: 1;
 }

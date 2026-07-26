@@ -16,7 +16,11 @@
     <!-- PANTALLA INICIAL -->
     <section id="pantallaInicio" class="pantalla pantalla-inicio">
 
-      <p class="marca">SPORTS DATA</p>
+      <img
+        class="logo-sports-data"
+        src="assets/logo sports data.jpg"
+        alt="Sports Data"
+>
 
       <h1>Road to Gold</h1>
 
@@ -68,13 +72,25 @@
           <strong id="progreso">DRAFT DE PAÍSES</strong>
         </div>
 
-        <button
-          id="botonReroll"
-          class="boton boton-secundario"
-          type="button"
-        >
-          ↻ Usar reroll
-        </button>
+        <div class="acciones-draft">
+
+          <button
+             id="botonDraftAleatorio"
+            class="boton boton-secundario"
+            type="button"
+  >
+             ⚡ Draft aleatorio
+          </button>
+
+             <button
+              id="botonReroll"
+             class="boton boton-secundario"
+             type="button"
+  >
+              ↻ Usar reroll
+            </button>
+
+        </div>
 
       </header>
 
@@ -164,6 +180,165 @@
       </button>
 
     </section>
+    <!-- CEREMONIA DE LOS JUEGOS -->
+<section
+  id="pantallaCeremonia"
+  class="pantalla pantalla-ceremonia oculto"
+>
+  <div
+    id="marcoCeremonia"
+    class="marco-ceremonia"
+  >
+    <header class="cabecera-ceremonia">
+
+      <!-- Espacio reservado para un futuro pictograma -->
+      <div class="zona-superior-izquierda-ceremonia">
+
+    <div
+      class="pictograma-ceremonia"
+      aria-hidden="true"
+    ></div>
+
+    <button
+     id="botonSaltarCeremonia"
+     class="boton-saltar-ceremonia"
+     type="button"
+   >
+      Saltar ceremonia
+    </button>
+
+</div>
+
+      <p
+        id="progresoCeremonia"
+        class="progreso-ceremonia"
+      >
+        DEPORTE 1 DE 7
+      </p>
+
+      <div class="bandera-ceremonia marco-bandera">
+        <img
+          id="banderaCeremonia"
+          src=""
+          alt=""
+        >
+
+        <span
+          id="banderaCeremoniaAlternativa"
+          class="bandera-alternativa"
+        >
+          ?
+        </span>
+      </div>
+
+    </header>
+
+
+    <div class="contenido-ceremonia">
+
+      <div class="presentacion-ceremonia">
+
+        <p class="marca">ROAD TO GOLD</p>
+
+        <h1 id="nombreDeporteCeremonia">
+          Atletismo
+        </h1>
+
+        <h2 id="nombrePaisCeremonia">
+          España
+        </h2>
+
+        <p
+          id="pruebasCeremonia"
+          class="pruebas-ceremonia"
+        >
+          40 pruebas
+        </p>
+
+      </div>
+
+
+      <div
+        id="resultadoCeremonia"
+        class="resultado-ceremonia oculto"
+        aria-live="polite"
+      >
+
+        <div class="medallas-ceremonia">
+
+          <div class="medalla-ceremonia">
+            <span>🥇</span>
+            <strong id="orosCeremonia">0</strong>
+            <small>Oros</small>
+          </div>
+
+          <div class="medalla-ceremonia">
+            <span>🥈</span>
+            <strong id="platasCeremonia">0</strong>
+            <small>Platas</small>
+          </div>
+
+          <div class="medalla-ceremonia">
+            <span>🥉</span>
+            <strong id="broncesCeremonia">0</strong>
+            <small>Bronces</small>
+          </div>
+
+        </div>
+
+        <p
+          id="textoActuacionCeremonia"
+          class="texto-actuacion-ceremonia oculto"
+        ></p>
+
+      </div>
+
+
+      <div class="acumulado-ceremonia">
+
+        <span class="etiqueta-acumulado">
+          Medallero de la delegación
+        </span>
+
+        <div class="medallas-acumuladas">
+
+          <span>
+            🥇
+            <strong id="orosAcumuladosCeremonia">0</strong>
+          </span>
+
+          <span>
+            🥈
+            <strong id="platasAcumuladasCeremonia">0</strong>
+          </span>
+
+          <span>
+            🥉
+            <strong id="broncesAcumuladosCeremonia">0</strong>
+          </span>
+
+          <span>
+            🏅
+            <strong id="totalAcumuladoCeremonia">0</strong>
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="botonSiguienteDeporte"
+        class="boton boton-principal boton-siguiente-deporte"
+        type="button"
+        disabled
+      >
+        Siguiente deporte
+      </button>
+
+    </div>
+  </div>
+</section>
    <!-- RESULTADOS DE LOS JUEGOS -->
 <section
   id="pantallaResultados"

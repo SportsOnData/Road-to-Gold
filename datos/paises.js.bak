@@ -1,4 +1,5 @@
-// Países disponibles en Road to Gold.
+// Archivo generado automáticamente desde paises.xlsx.
+// No edites este archivo a mano: ejecuta actualizar_paises.py.
 // Las notas se consultan con pais.notas[deporte.codigo].
 
 const PAISES = [
@@ -7,10 +8,10 @@ const PAISES = [
     "codigo": "ESP",
     "nombre": "España",
     "continente": "Europa",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 7,
-      "natacion": 4,
+      "atletismo": 5,
+      "natacion": 3,
       "gimnasia": 5,
       "remo": 5,
       "boxeo": 6,
@@ -26,7 +27,7 @@ const PAISES = [
       "tenis": 9,
       "escalada": 6,
       "tenismesa": 2,
-      "badminton": 3
+      "badminton": 4
     }
   },
   {
@@ -34,10 +35,10 @@ const PAISES = [
     "codigo": "USA",
     "nombre": "Estados Unidos",
     "continente": "América",
-    "activo": "true",
+    "activo": true,
     "notas": {
       "atletismo": 9,
-      "natacion": 10,
+      "natacion": 9,
       "gimnasia": 8,
       "remo": 7,
       "boxeo": 8,
@@ -61,10 +62,10 @@ const PAISES = [
     "codigo": "ITA",
     "nombre": "Italia",
     "continente": "Europa",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 8,
-      "natacion": 8,
+      "atletismo": 6,
+      "natacion": 7,
       "gimnasia": 8,
       "remo": 7,
       "boxeo": 5,
@@ -88,10 +89,10 @@ const PAISES = [
     "codigo": "FRA",
     "nombre": "Francia",
     "continente": "Europa",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 7,
-      "natacion": 8,
+      "atletismo": 6,
+      "natacion": 7,
       "gimnasia": 5,
       "remo": 6,
       "boxeo": 7,
@@ -115,10 +116,10 @@ const PAISES = [
     "codigo": "CHN",
     "nombre": "China",
     "continente": "Asia",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 7,
-      "natacion": 9,
+      "atletismo": 5,
+      "natacion": 8,
       "gimnasia": 9,
       "remo": 7,
       "boxeo": 8,
@@ -142,9 +143,9 @@ const PAISES = [
     "codigo": "JAM",
     "nombre": "Jamaica",
     "continente": "América",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 9,
+      "atletismo": 7,
       "natacion": 1,
       "gimnasia": 0,
       "remo": 0,
@@ -169,9 +170,9 @@ const PAISES = [
     "codigo": "KEN",
     "nombre": "Kenia",
     "continente": "África",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 9,
+      "atletismo": 7,
       "natacion": 0,
       "gimnasia": 0,
       "remo": 0,
@@ -196,9 +197,9 @@ const PAISES = [
     "codigo": "CUB",
     "nombre": "Cuba",
     "continente": "América",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 6,
+      "atletismo": 4,
       "natacion": 1,
       "gimnasia": 2,
       "remo": 3,
@@ -223,10 +224,10 @@ const PAISES = [
     "codigo": "GER",
     "nombre": "Alemania",
     "continente": "Europa",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 7,
-      "natacion": 6,
+      "atletismo": 5,
+      "natacion": 5,
       "gimnasia": 6,
       "remo": 8,
       "boxeo": 6,
@@ -250,10 +251,10 @@ const PAISES = [
     "codigo": "JPN",
     "nombre": "Japón",
     "continente": "Asia",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 3,
-      "natacion": 7,
+      "atletismo": 2,
+      "natacion": 6,
       "gimnasia": 8,
       "remo": 2,
       "boxeo": 5,
@@ -277,10 +278,10 @@ const PAISES = [
     "codigo": "GBR",
     "nombre": "Reino Unido",
     "continente": "Europa",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 8,
-      "natacion": 8,
+      "atletismo": 7,
+      "natacion": 7,
       "gimnasia": 8,
       "remo": 9,
       "boxeo": 8,
@@ -304,7 +305,7 @@ const PAISES = [
     "codigo": "KOR",
     "nombre": "Corea del Sur",
     "continente": "Asia",
-    "activo": "true",
+    "activo": true,
     "notas": {
       "atletismo": 1,
       "natacion": 4,
@@ -331,9 +332,9 @@ const PAISES = [
     "codigo": "ETH",
     "nombre": "Etiopía",
     "continente": "África",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 7,
+      "atletismo": 6,
       "natacion": 1,
       "gimnasia": 0,
       "remo": 0,
@@ -358,9 +359,9 @@ const PAISES = [
     "codigo": "AUS",
     "nombre": "Australia",
     "continente": "Oceanía",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 7,
+      "atletismo": 5,
       "natacion": 9,
       "gimnasia": 3,
       "remo": 7,
@@ -385,7 +386,7 @@ const PAISES = [
     "codigo": "IND",
     "nombre": "India",
     "continente": "Asia",
-    "activo": "true",
+    "activo": true,
     "notas": {
       "atletismo": 2,
       "natacion": 1,
@@ -412,10 +413,10 @@ const PAISES = [
     "codigo": "HUN",
     "nombre": "Hungría",
     "continente": "Europa",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 3,
-      "natacion": 7,
+      "atletismo": 2,
+      "natacion": 6,
       "gimnasia": 2,
       "remo": 1,
       "boxeo": 2,
@@ -439,10 +440,10 @@ const PAISES = [
     "codigo": "NED",
     "nombre": "Países Bajos",
     "continente": "Europa",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 8,
-      "natacion": 6,
+      "atletismo": 6,
+      "natacion": 5,
       "gimnasia": 4,
       "remo": 9,
       "boxeo": 4,
@@ -466,7 +467,7 @@ const PAISES = [
     "codigo": "SMR",
     "nombre": "San Marino",
     "continente": "Europa",
-    "activo": "true",
+    "activo": true,
     "notas": {
       "atletismo": 0,
       "natacion": 0,
@@ -493,9 +494,9 @@ const PAISES = [
     "codigo": "MEX",
     "nombre": "México",
     "continente": "América",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 3,
+      "atletismo": 2,
       "natacion": 1,
       "gimnasia": 2,
       "remo": 2,
@@ -520,10 +521,10 @@ const PAISES = [
     "codigo": "BRA",
     "nombre": "Brasil",
     "continente": "América",
-    "activo": "true",
+    "activo": true,
     "notas": {
-      "atletismo": 4,
-      "natacion": 5,
+      "atletismo": 3,
+      "natacion": 4,
       "gimnasia": 7,
       "remo": 1,
       "boxeo": 6,
@@ -543,4 +544,3 @@ const PAISES = [
     }
   }
 ];
-
