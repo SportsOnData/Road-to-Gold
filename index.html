@@ -35,6 +35,13 @@
       >
         Comenzar partida
       </button>
+      <button
+      id="botonLimpiarRecords"
+      class="boton boton-secundario boton-limpiar-records"
+      type="button"
+>
+       Limpiar récords
+      </button>
 
     </section>
     
@@ -348,7 +355,23 @@
 
   <h1>Tu medallero</h1>
 
-  <div class="medallero-total">
+<div
+  id="mensajeNuevoRecord"
+  class="mensaje-nuevo-record oculto"
+  aria-live="polite"
+>
+  <span class="trofeo-nuevo-record">🏆</span>
+
+  <div>
+    <strong id="tituloNuevoRecord">
+      ¡NUEVO RÉCORD!
+    </strong>
+
+    <span id="detalleNuevoRecord"></span>
+  </div>
+</div>
+
+<div class="medallero-total">
     <div class="medalla-total oro">
       <span>🥇</span>
       <strong id="totalOros">0</strong>
@@ -386,6 +409,69 @@
     <div id="resultadosPorDeporte"></div>
   </div>
 
+    <!-- RÉCORDS PERSONALES -->
+  <section class="zona-records">
+
+    <h2>Récords personales</h2>
+
+    <div class="lista-records">
+
+      <button
+        id="recordOros"
+        class="tarjeta-record"
+        type="button"
+        disabled
+      >
+        <span class="icono-record">🥇</span>
+
+        <span class="contenido-record">
+          <strong>Récord de oros</strong>
+
+          <span id="valorRecordOros">
+            Todavía no hay récord
+          </span>
+
+          <small id="fechaRecordOros">
+            Completa una partida
+          </small>
+        </span>
+
+        <span class="accion-record">
+          Ver equipo
+        </span>
+      </button>
+
+
+      <button
+        id="recordMedallas"
+        class="tarjeta-record"
+        type="button"
+        disabled
+      >
+        <span class="icono-record">🏅</span>
+
+        <span class="contenido-record">
+          <strong>Récord de medallas</strong>
+
+          <span id="valorRecordMedallas">
+            Todavía no hay récord
+          </span>
+
+          <small id="fechaRecordMedallas">
+            Completa una partida
+          </small>
+        </span>
+
+        <span class="accion-record">
+          Ver equipo
+        </span>
+      </button>
+
+    </div>
+
+  </section>
+
+
   <button
     id="botonNuevaPartida"
     class="boton boton-principal"
@@ -393,7 +479,79 @@
   >
     Nueva partida
   </button>
-</section> 
+</section>
+
+
+<!-- DETALLE DE UN RÉCORD HISTÓRICO -->
+<section
+  id="pantallaRecord"
+  class="pantalla pantalla-resultados oculto"
+>
+  <p class="marca">RÉCORD PERSONAL</p>
+
+  <h1 id="tituloPantallaRecord">
+    Delegación histórica
+  </h1>
+
+  <p
+    id="fechaPantallaRecord"
+    class="fecha-record-historico"
+  ></p>
+
+
+  <div class="medallero-total">
+
+    <div class="medalla-total oro">
+      <span>🥇</span>
+      <strong id="recordDetalleOros">0</strong>
+      <small>Oros</small>
+    </div>
+
+    <div class="medalla-total plata">
+      <span>🥈</span>
+      <strong id="recordDetallePlatas">0</strong>
+      <small>Platas</small>
+    </div>
+
+    <div class="medalla-total bronce">
+      <span>🥉</span>
+      <strong id="recordDetalleBronces">0</strong>
+      <small>Bronces</small>
+    </div>
+
+    <div class="medalla-total total">
+      <span>🏅</span>
+      <strong id="recordDetalleTotal">0</strong>
+      <small>Total</small>
+    </div>
+
+  </div>
+
+
+  <div class="tabla-resultados">
+
+    <div class="cabecera-resultados">
+      <span>Deporte</span>
+      <span>País</span>
+      <span>🥇</span>
+      <span>🥈</span>
+      <span>🥉</span>
+    </div>
+
+    <div id="resultadosRecordPorDeporte"></div>
+
+  </div>
+
+
+  <button
+    id="botonVolverResultados"
+    class="boton boton-principal"
+    type="button"
+  >
+    Volver al medallero
+  </button>
+
+</section>
 
   </main>
 

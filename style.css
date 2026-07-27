@@ -1248,3 +1248,253 @@ button {
   color: var(--texto-principal);
   opacity: 1;
 }
+/* -------------------------------- */
+/* RÉCORDS PERSONALES               */
+/* -------------------------------- */
+
+.zona-records {
+  width: min(760px, 100%);
+  margin: 4px 0 30px;
+}
+
+.zona-records h2 {
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+}
+
+.lista-records {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.tarjeta-record {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+
+  width: 100%;
+  min-height: 110px;
+  padding: 18px;
+
+  color: var(--texto-principal);
+  text-align: left;
+
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  background-color: var(--fondo-tarjeta);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.tarjeta-record:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: var(--dorado);
+}
+
+.tarjeta-record:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.icono-record {
+  font-size: 2rem;
+}
+
+.contenido-record {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contenido-record strong {
+  font-size: 1rem;
+}
+
+.contenido-record > span {
+  color: var(--dorado);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.contenido-record small {
+  color: var(--texto-secundario);
+  font-size: 0.78rem;
+}
+
+.accion-record {
+  color: var(--texto-secundario);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.tarjeta-record:disabled .accion-record {
+  display: none;
+}
+
+.fecha-record-historico {
+  margin: -12px 0 26px;
+  color: var(--texto-secundario);
+  font-size: 0.95rem;
+}
+
+
+/* -------------------------------- */
+/* MÓVIL: RÉCORDS                   */
+/* -------------------------------- */
+
+@media (max-width: 600px) {
+  .lista-records {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjeta-record {
+    grid-template-columns: auto 1fr;
+  }
+
+  .accion-record {
+    grid-column: 2;
+  }
+}
+/* -------------------------------- */
+/* CELEBRACIÓN DE NUEVO RÉCORD      */
+/* -------------------------------- */
+
+.mensaje-nuevo-record {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  width: min(650px, 100%);
+  margin: 0 0 26px;
+  padding: 18px 24px;
+
+  color: #171717;
+
+  border: 2px solid #ffe784;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f4c542,
+      #ffe990,
+      #d9a91c
+    );
+
+  animation:
+    aparecer-nuevo-record 0.55s ease,
+    pulso-mensaje-record 1.2s ease 0.55s;
+}
+
+.trofeo-nuevo-record {
+  font-size: 2.6rem;
+}
+
+.mensaje-nuevo-record div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.mensaje-nuevo-record strong {
+  font-size: clamp(1.25rem, 4vw, 1.8rem);
+  line-height: 1;
+}
+
+.mensaje-nuevo-record div span {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+
+/* Tarjeta del récord conseguido */
+
+.tarjeta-record.nuevo-record {
+  border-color: var(--dorado);
+
+  box-shadow:
+    0 0 0 2px rgba(244, 197, 66, 0.25),
+    0 0 28px rgba(244, 197, 66, 0.75);
+
+  animation: iluminar-tarjeta-record 1.15s ease 2;
+}
+
+
+/* Animaciones */
+
+@keyframes aparecer-nuevo-record {
+  from {
+    opacity: 0;
+    transform: translateY(-18px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulso-mensaje-record {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.025);
+  }
+}
+
+@keyframes iluminar-tarjeta-record {
+  0%,
+  100% {
+    transform: scale(1);
+
+    box-shadow:
+      0 0 0 2px rgba(244, 197, 66, 0.25),
+      0 0 22px rgba(244, 197, 66, 0.55);
+  }
+
+  50% {
+    transform: scale(1.025);
+
+    box-shadow:
+      0 0 0 3px rgba(244, 197, 66, 0.45),
+      0 0 42px rgba(244, 197, 66, 0.95);
+  }
+}
+
+
+@media (max-width: 600px) {
+  .mensaje-nuevo-record {
+    align-items: center;
+    padding: 16px;
+  }
+
+  .trofeo-nuevo-record {
+    font-size: 2.1rem;
+  }
+
+  .mensaje-nuevo-record div {
+    align-items: flex-start;
+  }
+}
+.boton-limpiar-records {
+  margin-top: 12px;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.boton-limpiar-records:hover {
+  opacity: 1;
+}

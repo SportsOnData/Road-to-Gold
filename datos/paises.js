@@ -669,5 +669,63 @@ const PAISES = [
       "rugby": 0,
       "tiroarco": 1
     }
+  },
+  {
+    "id": 24,
+    "codigo": "FIJ",
+    "nombre": "Fiji",
+    "continente": "Oceanía",
+    "activo": true,
+    "notas": {
+      "atletismo": 1,
+      "natacion": 0,
+      "gimnasia": 0,
+      "remo": 0,
+      "boxeo": 0,
+      "piraguismo": 0,
+      "ciclismo": 0,
+      "judo": 0,
+      "tiro": 0,
+      "futbol": 0,
+      "baloncesto": 0,
+      "waterpolo": 0,
+      "balonmano": 0,
+      "voleibol": 0,
+      "tenis": 0,
+      "escalada": 0,
+      "tenismesa": 0,
+      "badminton": 0,
+      "rugby": 10,
+      "tiroarco": 0
+    }
+  },
+  {
+    "id": 25,
+    "codigo": "NZL",
+    "nombre": "Nueva Zelanda",
+    "continente": "Oceanía",
+    "activo": true,
+    "notas": {
+      "atletismo": 4,
+      "natacion": 4,
+      "gimnasia": 2,
+      "remo": 9,
+      "boxeo": 3,
+      "piraguismo": 8,
+      "ciclismo": 6,
+      "judo": 1,
+      "tiro": 3,
+      "futbol": 4,
+      "baloncesto": 1,
+      "waterpolo": 1,
+      "balonmano": 0,
+      "voleibol": 0,
+      "tenis": 1,
+      "escalada": 0,
+      "tenismesa": 0,
+      "badminton": 0,
+      "rugby": 10,
+      "tiroarco": 0
+    }
   }
 ];
