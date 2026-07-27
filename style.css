@@ -4191,3 +4191,338 @@ button {
     min-width: 88vw;
   }
 }
+
+
+/* ================================= */
+/* DETALLE ESTADÍSTICO POR PAÍS      */
+/* ================================= */
+
+.tabla-paises-estadisticas {
+  min-width: 1060px;
+}
+
+.fila-pais-estadisticas {
+  cursor: pointer;
+  transition:
+    background-color 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+.fila-pais-estadisticas:hover,
+.fila-pais-estadisticas:focus-visible {
+  background:
+    rgba(255, 214, 74, 0.06);
+  outline: none;
+}
+
+.fila-pais-estadisticas.seleccionada {
+  background:
+    rgba(255, 214, 74, 0.13);
+  box-shadow:
+    inset 4px 0 0 var(--dorado);
+}
+
+.leyenda-colores-pais {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.color-pais {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 7px;
+  white-space: nowrap;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--fondo-tarjeta);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.color-pais i {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+}
+
+.color-pais.azul i {
+  background: #2f78ff;
+}
+
+.color-pais.verde i {
+  background: #25a75b;
+}
+
+.color-pais.amarillo i {
+  background: #e0ad16;
+}
+
+.color-pais.rojo i {
+  background: #d84747;
+}
+
+.dato-no-disponible {
+  color: var(--texto-secundario);
+  font-size: 0.75rem;
+}
+
+.ayuda-click-pais {
+  margin: 12px 4px 22px;
+  color: var(--texto-secundario);
+  font-size: 0.8rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.detalle-pais-estadisticas {
+  scroll-margin-top: 18px;
+  margin-top: 16px;
+  padding: 24px;
+  border: 1px solid var(--dorado);
+  border-radius: 20px;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(255, 214, 74, 0.1),
+      transparent 40%
+    ),
+    var(--fondo-secundario);
+}
+
+.cabecera-detalle-pais {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: 20px;
+}
+
+.cabecera-detalle-pais h2 {
+  margin: 5px 0;
+}
+
+.cabecera-detalle-pais p:last-child {
+  color: var(--texto-secundario);
+}
+
+.medallero-detalle-pais {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.medallero-detalle-pais span {
+  padding: 9px 11px;
+  border: 1px solid var(--borde);
+  border-radius: 11px;
+  background: var(--fondo-tarjeta);
+  font-weight: 900;
+}
+
+.resumen-detalle-pais {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 0.85fr)
+    minmax(0, 1.15fr);
+  gap: 13px;
+  margin-bottom: 18px;
+}
+
+.resumen-detalle-pais article {
+  min-height: 110px;
+  padding: 17px;
+  border: 1px solid var(--borde);
+  border-radius: 15px;
+  background: var(--fondo-tarjeta);
+}
+
+.resumen-detalle-pais article > span {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--texto-secundario);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.resumen-detalle-pais article > strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.12rem;
+}
+
+.resumen-detalle-pais small {
+  color: var(--texto-secundario);
+}
+
+.lista-deportes-detalle-pais {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.tarjeta-deporte-detalle-pais {
+  padding: 15px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: var(--fondo-tarjeta);
+}
+
+.tarjeta-deporte-detalle-pais.sin-apariciones {
+  opacity: 0.56;
+}
+
+.tarjeta-deporte-detalle-pais > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.tarjeta-deporte-detalle-pais header span {
+  display: block;
+  margin-top: 3px;
+  color: var(--texto-secundario);
+  font-size: 0.76rem;
+}
+
+.total-deporte-pais {
+  display: grid;
+  min-width: 34px;
+  height: 34px;
+  place-items: center;
+  color: #171717;
+  border-radius: 10px;
+  background: var(--dorado);
+}
+
+.medallas-deporte-pais {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 11px;
+  font-size: 0.79rem;
+  font-weight: 800;
+}
+
+.aviso-detalle-pais {
+  padding: 20px;
+  color: var(--texto-secundario);
+  text-align: center;
+  border: 1px dashed var(--borde);
+  border-radius: 15px;
+}
+
+.aviso-detalle-pais strong {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--texto-principal);
+}
+
+@media (max-width: 760px) {
+
+  .tabla-paises-estadisticas {
+    min-width: 0;
+  }
+
+  .tabla-paises-estadisticas td:nth-child(7)::before {
+    content: "Media por JJOO";
+  }
+
+  .tabla-paises-estadisticas td:nth-child(8)::before {
+    content: "Deporte más usado";
+  }
+
+  .tabla-paises-estadisticas td:nth-child(9) {
+    display: block;
+    text-align: left !important;
+  }
+
+  .tabla-paises-estadisticas td:nth-child(9)::before {
+    display: block;
+    margin-bottom: 7px;
+    content: "Colores";
+  }
+
+  .fila-pais-estadisticas.seleccionada {
+    box-shadow:
+      inset 4px 0 0 var(--dorado);
+  }
+
+  .leyenda-colores-pais {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .color-pais {
+    justify-content: center;
+    padding: 6px 5px;
+  }
+
+  .ayuda-click-pais {
+    margin-bottom: 16px;
+  }
+
+  .detalle-pais-estadisticas {
+    padding: 18px 14px;
+  }
+
+  .cabecera-detalle-pais {
+    flex-direction: column;
+    gap: 13px;
+  }
+
+  .medallero-detalle-pais {
+    display: grid;
+    grid-template-columns:
+      repeat(3, 1fr);
+    width: 100%;
+  }
+
+  .medallero-detalle-pais span {
+    text-align: center;
+  }
+
+  .resumen-detalle-pais,
+  .lista-deportes-detalle-pais {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjeta-deporte-detalle-pais {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 390px) {
+  .leyenda-colores-pais {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Leyenda compacta: solo punto de color y cantidad */
+.color-pais {
+  min-width: 42px;
+  justify-content: center;
+}
+
+@media (max-width: 760px) {
+  .leyenda-colores-pais {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .color-pais {
+    flex: 0 0 auto;
+    min-width: 42px;
+  }
+}

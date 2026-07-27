@@ -284,6 +284,39 @@ function completarEstadoCarrera(carrera) {
   estadoCompleto.progresoPaises =
     carrera.progresoPaises || {};
 
+  Object.values(
+    estadoCompleto.progresoPaises
+  ).forEach((progresoPais) => {
+    progresoPais.deportesConMedalla =
+      Array.isArray(
+        progresoPais.deportesConMedalla
+      )
+        ? progresoPais.deportesConMedalla
+        : [];
+
+    progresoPais.deportesConOro =
+      Array.isArray(
+        progresoPais.deportesConOro
+      )
+        ? progresoPais.deportesConOro
+        : [];
+
+    progresoPais.porDeporte = {
+      ...(progresoPais.porDeporte || {})
+    };
+
+    progresoPais.colores = {
+      azul:
+        progresoPais.colores?.azul || 0,
+      verde:
+        progresoPais.colores?.verde || 0,
+      amarillo:
+        progresoPais.colores?.amarillo || 0,
+      rojo:
+        progresoPais.colores?.rojo || 0
+    };
+  });
+
   estadoCompleto.progresoDeportes =
     carrera.progresoDeportes || {};
 
@@ -922,9 +955,15 @@ function elegirDeporteColectivoCarrera(
 let seccionEstadisticasActual =
   "resumen";
 
+let codigoPaisEstadisticasSeleccionado =
+  "";
+
 function abrirPantallaEstadisticas() {
   seccionEstadisticasActual =
     "resumen";
+
+  codigoPaisEstadisticasSeleccionado =
+    "";
 
   filtrosEstadisticas
     .querySelectorAll(
@@ -1109,6 +1148,305 @@ function renderizarResumenEstadisticas() {
   `;
 }
 
+function obtenerResumenDeportesPais(
+  progresoPais
+) {
+  const entradas = Object.entries(
+    progresoPais.porDeporte || {}
+  );
+
+  if (entradas.length === 0) {
+    return {
+      deporteMasUsado: null,
+      filas: []
+    };
+  }
+
+  const filas = entradas
+    .map(([codigo, progreso]) => {
+      const deporte =
+        DEPORTES.find(
+          (item) =>
+            item.codigo === codigo
+        );
+
+      return {
+        codigo: codigo,
+        nombre:
+          deporte?.nombre || codigo,
+        participaciones:
+          progreso.participaciones || 0,
+        oros: progreso.oros || 0,
+        platas: progreso.platas || 0,
+        bronces: progreso.bronces || 0,
+        colores: {
+          azul:
+            progreso.colores?.azul || 0,
+          verde:
+            progreso.colores?.verde || 0,
+          amarillo:
+            progreso.colores?.amarillo || 0,
+          rojo:
+            progreso.colores?.rojo || 0
+        }
+      };
+    })
+    .sort(
+      (a, b) =>
+        b.participaciones -
+          a.participaciones ||
+        (
+          b.oros +
+          b.platas +
+          b.bronces
+        ) -
+        (
+          a.oros +
+          a.platas +
+          a.bronces
+        )
+    );
+
+  return {
+    deporteMasUsado:
+      filas[0] || null,
+    filas: filas
+  };
+}
+
+function crearLeyendaColoresPais(
+  colores
+) {
+  return `
+    <div
+      class="leyenda-colores-pais"
+      aria-label="Veces según el color de la asignación"
+    >
+      <span
+        class="color-pais azul"
+        title="Azul"
+        aria-label="Azul: ${colores.azul || 0}"
+      >
+        <i></i>
+        ${colores.azul || 0}
+      </span>
+
+      <span
+        class="color-pais verde"
+        title="Verde"
+        aria-label="Verde: ${colores.verde || 0}"
+      >
+        <i></i>
+        ${colores.verde || 0}
+      </span>
+
+      <span
+        class="color-pais amarillo"
+        title="Amarillo"
+        aria-label="Amarillo: ${colores.amarillo || 0}"
+      >
+        <i></i>
+        ${colores.amarillo || 0}
+      </span>
+
+      <span
+        class="color-pais rojo"
+        title="Rojo"
+        aria-label="Rojo: ${colores.rojo || 0}"
+      >
+        <i></i>
+        ${colores.rojo || 0}
+      </span>
+    </div>
+  `;
+}
+
+function renderizarDetallePaisEstadisticas(
+  fila
+) {
+  if (!fila) {
+    return "";
+  }
+
+  const resumenDeportes =
+    obtenerResumenDeportesPais(fila);
+
+  const deportesDesbloqueados =
+    estadoCarrera.deportesDesbloqueados
+      .map((codigo) =>
+        DEPORTES.find(
+          (deporte) =>
+            deporte.codigo === codigo
+        )
+      )
+      .filter(Boolean)
+      .sort(
+        (a, b) =>
+          a.nombre.localeCompare(
+            b.nombre,
+            "es"
+          )
+      );
+
+  const datosDisponibles =
+    resumenDeportes.filas.length > 0;
+
+  return `
+    <section class="detalle-pais-estadisticas">
+      <header class="cabecera-detalle-pais">
+        <div>
+          <p class="marca">
+            ESTADÍSTICAS DETALLADAS
+          </p>
+
+          <h2>${fila.nombre}</h2>
+
+          <p>
+            ${fila.participaciones}
+            participaciones ·
+            ${fila.total} medallas ·
+            media de
+            ${formatearNumeroEstadistica(
+              fila.total /
+              fila.participaciones,
+              2
+            )}
+          </p>
+        </div>
+
+        <div class="medallero-detalle-pais">
+          <span>🥇 ${fila.oros}</span>
+          <span>🥈 ${fila.platas}</span>
+          <span>🥉 ${fila.bronces}</span>
+        </div>
+      </header>
+
+      <div class="resumen-detalle-pais">
+        <article>
+          <span>Deporte más utilizado</span>
+          <strong>
+            ${
+              resumenDeportes.deporteMasUsado
+                ? resumenDeportes
+                    .deporteMasUsado.nombre
+                : "Sin datos detallados"
+            }
+          </strong>
+
+          <small>
+            ${
+              resumenDeportes.deporteMasUsado
+                ? `${resumenDeportes
+                    .deporteMasUsado
+                    .participaciones} apariciones`
+                : "El desglose se registra desde esta versión"
+            }
+          </small>
+        </article>
+
+        <article>
+          <span>Colores históricos</span>
+
+          ${crearLeyendaColoresPais(
+            fila.colores || {}
+          )}
+        </article>
+      </div>
+
+      ${
+        datosDisponibles
+          ? `
+            <div class="lista-deportes-detalle-pais">
+              ${deportesDesbloqueados.map(
+                (deporte) => {
+                  const progreso =
+                    fila.porDeporte?.[
+                      deporte.codigo
+                    ] || {
+                      participaciones: 0,
+                      oros: 0,
+                      platas: 0,
+                      bronces: 0,
+                      colores: {}
+                    };
+
+                  const total =
+                    progreso.oros +
+                    progreso.platas +
+                    progreso.bronces;
+
+                  const promedio =
+                    progreso.participaciones > 0
+                      ? total /
+                        progreso.participaciones
+                      : 0;
+
+                  return `
+                    <article
+                      class="tarjeta-deporte-detalle-pais ${
+                        progreso.participaciones > 0
+                          ? ""
+                          : "sin-apariciones"
+                      }"
+                    >
+                      <header>
+                        <div>
+                          <strong>
+                            ${deporte.nombre}
+                          </strong>
+
+                          <span>
+                            ${progreso.participaciones}
+                            apariciones
+                          </span>
+                        </div>
+
+                        <strong class="total-deporte-pais">
+                          ${total}
+                        </strong>
+                      </header>
+
+                      <div class="medallas-deporte-pais">
+                        <span>🥇 ${progreso.oros}</span>
+                        <span>🥈 ${progreso.platas}</span>
+                        <span>🥉 ${progreso.bronces}</span>
+                        <span>
+                          Media
+                          ${formatearNumeroEstadistica(
+                            promedio,
+                            2
+                          )}
+                        </span>
+                      </div>
+
+                      ${crearLeyendaColoresPais(
+                        progreso.colores || {}
+                      )}
+                    </article>
+                  `;
+                }
+              ).join("")}
+            </div>
+          `
+          : `
+            <div class="aviso-detalle-pais">
+              <strong>
+                El historial general se conserva
+              </strong>
+
+              <p>
+                Las medallas y participaciones anteriores
+                siguen apareciendo, pero las estadísticas
+                por deporte y por color comienzan a
+                guardarse a partir de esta versión.
+              </p>
+            </div>
+          `
+      }
+    </section>
+  `;
+}
+
 function renderizarPaisesEstadisticas() {
   const filas =
     Object.entries(
@@ -1121,15 +1459,32 @@ function renderizarPaisesEstadisticas() {
               item.codigo === codigo
           );
 
+        const resumenDeportes =
+          obtenerResumenDeportesPais(
+            progreso
+          );
+
         return {
           codigo: codigo,
           nombre:
             pais?.nombre || codigo,
           ...progreso,
+          colores: {
+            azul:
+              progreso.colores?.azul || 0,
+            verde:
+              progreso.colores?.verde || 0,
+            amarillo:
+              progreso.colores?.amarillo || 0,
+            rojo:
+              progreso.colores?.rojo || 0
+          },
           total:
             obtenerTotalMedallasProgreso(
               progreso
-            )
+            ),
+          deporteMasUsado:
+            resumenDeportes.deporteMasUsado
         };
       })
       .filter(
@@ -1151,9 +1506,18 @@ function renderizarPaisesEstadisticas() {
     return;
   }
 
+  const filaSeleccionada =
+    filas.find(
+      (fila) =>
+        fila.codigo ===
+        codigoPaisEstadisticasSeleccionado
+    );
+
   contenidoEstadisticas.innerHTML = `
     <div class="tabla-estadisticas-contenedor">
-      <table class="tabla-estadisticas">
+      <table
+        class="tabla-estadisticas tabla-paises-estadisticas"
+      >
         <thead>
           <tr>
             <th>País</th>
@@ -1162,22 +1526,45 @@ function renderizarPaisesEstadisticas() {
             <th>🥈</th>
             <th>🥉</th>
             <th>Total</th>
-            <th>Promedio</th>
+            <th>Media por JJOO</th>
+            <th>Deporte más usado</th>
+            <th>Colores</th>
           </tr>
         </thead>
 
         <tbody>
           ${filas.map((fila) => `
-            <tr>
+            <tr
+              class="fila-pais-estadisticas ${
+                fila.codigo ===
+                codigoPaisEstadisticasSeleccionado
+                  ? "seleccionada"
+                  : ""
+              }"
+              data-codigo-pais-estadisticas="${
+                fila.codigo
+              }"
+              tabindex="0"
+              role="button"
+              aria-pressed="${
+                fila.codigo ===
+                codigoPaisEstadisticasSeleccionado
+              }"
+              aria-label="Ver estadísticas detalladas de ${
+                fila.nombre
+              }"
+            >
               <td>
                 <strong>${fila.nombre}</strong>
                 <small>${fila.codigo}</small>
               </td>
+
               <td>${fila.participaciones}</td>
               <td>${fila.oros}</td>
               <td>${fila.platas}</td>
               <td>${fila.bronces}</td>
               <td><strong>${fila.total}</strong></td>
+
               <td>
                 ${formatearNumeroEstadistica(
                   fila.total /
@@ -1185,12 +1572,74 @@ function renderizarPaisesEstadisticas() {
                   2
                 )}
               </td>
+
+              <td>
+                ${
+                  fila.deporteMasUsado
+                    ? `
+                      <strong>
+                        ${fila.deporteMasUsado.nombre}
+                      </strong>
+
+                      <small>
+                        ${fila.deporteMasUsado
+                          .participaciones}
+                        veces
+                      </small>
+                    `
+                    : `
+                      <span class="dato-no-disponible">
+                        Desde esta versión
+                      </span>
+                    `
+                }
+              </td>
+
+              <td>
+                ${crearLeyendaColoresPais(
+                  fila.colores
+                )}
+              </td>
             </tr>
           `).join("")}
         </tbody>
       </table>
     </div>
+
+    <p class="ayuda-click-pais">
+      *Haz click en el país para ver sus
+      estadísticas detalladas
+    </p>
+
+    ${renderizarDetallePaisEstadisticas(
+      filaSeleccionada
+    )}
   `;
+}
+
+function seleccionarPaisEstadisticas(
+  codigoPais
+) {
+  codigoPaisEstadisticasSeleccionado =
+    codigoPaisEstadisticasSeleccionado ===
+    codigoPais
+      ? ""
+      : codigoPais;
+
+  renderizarPaisesEstadisticas();
+
+  if (
+    codigoPaisEstadisticasSeleccionado
+  ) {
+    contenidoEstadisticas
+      .querySelector(
+        ".detalle-pais-estadisticas"
+      )
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+  }
 }
 
 function renderizarDeportesEstadisticas() {
@@ -1512,12 +1961,62 @@ function renderizarEstadisticas() {
   renderizarResumenEstadisticas();
 }
 
+contenidoEstadisticas.addEventListener(
+  "click",
+  (evento) => {
+    const fila = evento.target.closest(
+      "[data-codigo-pais-estadisticas]"
+    );
+
+    if (!fila) {
+      return;
+    }
+
+    seleccionarPaisEstadisticas(
+      fila.dataset
+        .codigoPaisEstadisticas
+    );
+  }
+);
+
+contenidoEstadisticas.addEventListener(
+  "keydown",
+  (evento) => {
+    if (
+      evento.key !== "Enter" &&
+      evento.key !== " "
+    ) {
+      return;
+    }
+
+    const fila = evento.target.closest(
+      "[data-codigo-pais-estadisticas]"
+    );
+
+    if (!fila) {
+      return;
+    }
+
+    evento.preventDefault();
+
+    seleccionarPaisEstadisticas(
+      fila.dataset
+        .codigoPaisEstadisticas
+    );
+  }
+);
+
 function cambiarSeccionEstadisticas(
   seccion,
   botonPulsado
 ) {
   seccionEstadisticasActual =
     seccion;
+
+  if (seccion !== "paises") {
+    codigoPaisEstadisticasSeleccionado =
+      "";
+  }
 
   filtrosEstadisticas
     .querySelectorAll(
@@ -2938,6 +3437,80 @@ function registrarResultadosCarrera() {
     progresoPais.platas += resultado.platas;
     progresoPais.bronces += resultado.bronces;
 
+    if (!progresoPais.porDeporte) {
+      progresoPais.porDeporte = {};
+    }
+
+    if (!progresoPais.colores) {
+      progresoPais.colores = {
+        azul: 0,
+        verde: 0,
+        amarillo: 0,
+        rojo: 0
+      };
+    }
+
+    if (
+      !progresoPais.porDeporte[
+        codigoDeporte
+      ]
+    ) {
+      progresoPais.porDeporte[
+        codigoDeporte
+      ] = {
+        participaciones: 0,
+        oros: 0,
+        platas: 0,
+        bronces: 0,
+        colores: {
+          azul: 0,
+          verde: 0,
+          amarillo: 0,
+          rojo: 0
+        }
+      };
+    }
+
+    const progresoPaisDeporte =
+      progresoPais.porDeporte[
+        codigoDeporte
+      ];
+
+    progresoPaisDeporte.participaciones +=
+      1;
+
+    progresoPaisDeporte.oros +=
+      resultado.oros;
+
+    progresoPaisDeporte.platas +=
+      resultado.platas;
+
+    progresoPaisDeporte.bronces +=
+      resultado.bronces;
+
+    const colorResultado =
+      resultado.color || "rojo";
+
+    if (
+      progresoPais.colores[
+        colorResultado
+      ] !== undefined
+    ) {
+      progresoPais.colores[
+        colorResultado
+      ] += 1;
+    }
+
+    if (
+      progresoPaisDeporte.colores[
+        colorResultado
+      ] !== undefined
+    ) {
+      progresoPaisDeporte.colores[
+        colorResultado
+      ] += 1;
+    }
+
 
     progresoDeporte.apariciones += 1;
 
@@ -3236,7 +3809,16 @@ function crearProgresoPaisCarrera() {
     bronces: 0,
 
     deportesConMedalla: [],
-    deportesConOro: []
+    deportesConOro: [],
+
+    porDeporte: {},
+
+    colores: {
+      azul: 0,
+      verde: 0,
+      amarillo: 0,
+      rojo: 0
+    }
   };
 }
 
