@@ -223,7 +223,7 @@ const DEPORTES = [
     "permiteEventos": true,
     "activo": true,
     "icono": null,
-    "medallasPorPrueba": 3,
+    "medallasPorPrueba": 4,
     "categoria": "aventura"
   },
   {
@@ -253,5 +253,33 @@ const DEPORTES = [
     "icono": null,
     "medallasPorPrueba": 3,
     "categoria": "raqueta"
+  },
+  {
+    "id": 19,
+    "codigo": "rugby",
+    "nombre": "Rugby 7",
+    "grupo": "pequeno",
+    "tamanoSimulacion": 2,
+    "variabilidad": 4,
+    "pesoAparicion": 100,
+    "permiteEventos": true,
+    "activo": true,
+    "icono": null,
+    "medallasPorPrueba": 4,
+    "categoria": "equipo"
+  },
+  {
+    "id": 20,
+    "codigo": "tiroarco",
+    "nombre": "Tiro con arco",
+    "grupo": "mediano",
+    "tamanoSimulacion": 5,
+    "variabilidad": 2,
+    "pesoAparicion": 100,
+    "permiteEventos": true,
+    "activo": true,
+    "icono": null,
+    "medallasPorPrueba": 3,
+    "categoria": "precision"
   }
 ];

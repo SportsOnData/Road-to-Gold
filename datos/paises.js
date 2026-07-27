@@ -27,7 +27,9 @@ const PAISES = [
       "tenis": 9,
       "escalada": 6,
       "tenismesa": 2,
-      "badminton": 4
+      "badminton": 4,
+      "rugby": 5,
+      "tiroarco": 5
     }
   },
   {
@@ -54,7 +56,9 @@ const PAISES = [
       "tenis": 8,
       "escalada": 7,
       "tenismesa": 1,
-      "badminton": 1
+      "badminton": 1,
+      "rugby": 7,
+      "tiroarco": 7
     }
   },
   {
@@ -81,7 +85,9 @@ const PAISES = [
       "tenis": 7,
       "escalada": 5,
       "tenismesa": 1,
-      "badminton": 0
+      "badminton": 0,
+      "rugby": 1,
+      "tiroarco": 6
     }
   },
   {
@@ -106,9 +112,11 @@ const PAISES = [
       "balonmano": 9,
       "voleibol": 8,
       "tenis": 7,
-      "escalada": 6,
+      "escalada": 7,
       "tenismesa": 4,
-      "badminton": 1
+      "badminton": 1,
+      "rugby": 8,
+      "tiroarco": 7
     }
   },
   {
@@ -135,7 +143,9 @@ const PAISES = [
       "tenis": 6,
       "escalada": 7,
       "tenismesa": 10,
-      "badminton": 9
+      "badminton": 9,
+      "rugby": 4,
+      "tiroarco": 7
     }
   },
   {
@@ -162,7 +172,9 @@ const PAISES = [
       "tenis": 1,
       "escalada": 0,
       "tenismesa": 0,
-      "badminton": 0
+      "badminton": 0,
+      "rugby": 0,
+      "tiroarco": 0
     }
   },
   {
@@ -189,7 +201,9 @@ const PAISES = [
       "tenis": 0,
       "escalada": 0,
       "tenismesa": 0,
-      "badminton": 0
+      "badminton": 0,
+      "rugby": 5,
+      "tiroarco": 0
     }
   },
   {
@@ -216,7 +230,9 @@ const PAISES = [
       "tenis": 0,
       "escalada": 0,
       "tenismesa": 1,
-      "badminton": 0
+      "badminton": 0,
+      "rugby": 1,
+      "tiroarco": 2
     }
   },
   {
@@ -241,9 +257,11 @@ const PAISES = [
       "balonmano": 8,
       "voleibol": 4,
       "tenis": 6,
-      "escalada": 3,
+      "escalada": 4,
       "tenismesa": 4,
-      "badminton": 2
+      "badminton": 2,
+      "rugby": 1,
+      "tiroarco": 6
     }
   },
   {
@@ -268,9 +286,11 @@ const PAISES = [
       "balonmano": 2,
       "voleibol": 6,
       "tenis": 5,
-      "escalada": 8,
+      "escalada": 9,
       "tenismesa": 8,
-      "badminton": 7
+      "badminton": 7,
+      "rugby": 3,
+      "tiroarco": 6
     }
   },
   {
@@ -297,7 +317,9 @@ const PAISES = [
       "tenis": 5,
       "escalada": 7,
       "tenismesa": 2,
-      "badminton": 4
+      "badminton": 4,
+      "rugby": 8,
+      "tiroarco": 5
     }
   },
   {
@@ -324,7 +346,9 @@ const PAISES = [
       "tenis": 1,
       "escalada": 6,
       "tenismesa": 6,
-      "badminton": 8
+      "badminton": 8,
+      "rugby": 1,
+      "tiroarco": 10
     }
   },
   {
@@ -351,7 +375,9 @@ const PAISES = [
       "tenis": 0,
       "escalada": 0,
       "tenismesa": 0,
-      "badminton": 0
+      "badminton": 0,
+      "rugby": 1,
+      "tiroarco": 0
     }
   },
   {
@@ -378,7 +404,9 @@ const PAISES = [
       "tenis": 6,
       "escalada": 2,
       "tenismesa": 1,
-      "badminton": 1
+      "badminton": 1,
+      "rugby": 9,
+      "tiroarco": 3
     }
   },
   {
@@ -405,7 +433,9 @@ const PAISES = [
       "tenis": 4,
       "escalada": 0,
       "tenismesa": 4,
-      "badminton": 6
+      "badminton": 6,
+      "rugby": 0,
+      "tiroarco": 6
     }
   },
   {
@@ -432,7 +462,9 @@ const PAISES = [
       "tenis": 2,
       "escalada": 1,
       "tenismesa": 2,
-      "badminton": 1
+      "badminton": 1,
+      "rugby": 0,
+      "tiroarco": 1
     }
   },
   {
@@ -453,13 +485,15 @@ const PAISES = [
       "tiro": 0,
       "futbol": 5,
       "baloncesto": 1,
-      "waterpolo": 6,
+      "waterpolo": 7,
       "balonmano": 6,
       "voleibol": 4,
       "tenis": 3,
       "escalada": 1,
       "tenismesa": 1,
-      "badminton": 1
+      "badminton": 1,
+      "rugby": 2,
+      "tiroarco": 6
     }
   },
   {
@@ -486,7 +520,9 @@ const PAISES = [
       "tenis": 0,
       "escalada": 0,
       "tenismesa": 0,
-      "badminton": 0
+      "badminton": 0,
+      "rugby": 0,
+      "tiroarco": 0
     }
   },
   {
@@ -511,9 +547,11 @@ const PAISES = [
       "balonmano": 0,
       "voleibol": 2,
       "tenis": 2,
-      "escalada": 0,
+      "escalada": 1,
       "tenismesa": 1,
-      "badminton": 1
+      "badminton": 1,
+      "rugby": 1,
+      "tiroarco": 7
     }
   },
   {
@@ -540,7 +578,9 @@ const PAISES = [
       "tenis": 5,
       "escalada": 0,
       "tenismesa": 3,
-      "badminton": 1
+      "badminton": 1,
+      "rugby": 2,
+      "tiroarco": 4
     }
   },
   {
@@ -567,7 +607,9 @@ const PAISES = [
       "tenis": 6,
       "escalada": 1,
       "tenismesa": 1,
-      "badminton": 0
+      "badminton": 0,
+      "rugby": 7,
+      "tiroarco": 2
     }
   },
   {
@@ -594,7 +636,38 @@ const PAISES = [
       "tenis": 3,
       "escalada": 1,
       "tenismesa": 6,
-      "badminton": 8
+      "badminton": 8,
+      "rugby": 0,
+      "tiroarco": 7
+    }
+  },
+  {
+    "id": 23,
+    "codigo": "AUT",
+    "nombre": "Austria",
+    "continente": "Europa",
+    "activo": true,
+    "notas": {
+      "atletismo": 2,
+      "natacion": 3,
+      "gimnasia": 2,
+      "remo": 3,
+      "boxeo": 1,
+      "piraguismo": 4,
+      "ciclismo": 4,
+      "judo": 6,
+      "tiro": 3,
+      "futbol": 3,
+      "baloncesto": 0,
+      "waterpolo": 0,
+      "balonmano": 3,
+      "voleibol": 1,
+      "tenis": 3,
+      "escalada": 9,
+      "tenismesa": 3,
+      "badminton": 2,
+      "rugby": 0,
+      "tiroarco": 1
     }
   }
 ];
