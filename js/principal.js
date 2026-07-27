@@ -152,6 +152,21 @@ botonJugarCarrera.addEventListener(
 
 
 
+botonTutorialVerPaises.addEventListener(
+  "click",
+  mostrarPaisesTutorialInicial
+);
+
+botonTutorialVerDeportes.addEventListener(
+  "click",
+  mostrarDeportesTutorialInicial
+);
+
+botonTutorialComenzar.addEventListener(
+  "click",
+  completarTutorialInicialCarrera
+);
+
 botonAbrirEstadisticas.addEventListener(
   "click",
   abrirPantallaEstadisticas

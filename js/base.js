@@ -55,6 +55,7 @@ const ESTADO_INICIAL_CARRERA = {
   nivel7Completado: false,
   ochoParticipantesDesbloqueados: false,
   faseBetaSuperada: false,
+  tutorialInicialVisto: false,
   recompensasPendientes: [],
   nivel: 1,
   experiencia: 0,
@@ -163,6 +164,11 @@ const pantallaEstadisticas =
   document.querySelector(
     "#pantallaEstadisticas"
   );
+
+const pantallaTutorialInicial =
+  document.querySelector(
+    "#pantallaTutorialInicial"
+  );
 const botonEmpezar = document.querySelector("#botonEmpezar");
 const botonModoCarrera = document.querySelector("#botonModoCarrera");
 const botonVolverInicioCarrera = document.querySelector(
@@ -180,6 +186,23 @@ const botonAbrirLogros = document.querySelector(
   "#botonAbrirLogros"
 );
 
+
+const pasoTutorialBienvenida =
+  document.querySelector("#pasoTutorialBienvenida");
+const pasoTutorialPaises =
+  document.querySelector("#pasoTutorialPaises");
+const pasoTutorialDeportes =
+  document.querySelector("#pasoTutorialDeportes");
+const listaPaisesTutorial =
+  document.querySelector("#listaPaisesTutorial");
+const listaDeportesTutorial =
+  document.querySelector("#listaDeportesTutorial");
+const botonTutorialVerPaises =
+  document.querySelector("#botonTutorialVerPaises");
+const botonTutorialVerDeportes =
+  document.querySelector("#botonTutorialVerDeportes");
+const botonTutorialComenzar =
+  document.querySelector("#botonTutorialComenzar");
 
 const botonAbrirEstadisticas =
   document.querySelector(

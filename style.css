@@ -4526,3 +4526,68 @@ button {
     min-width: 42px;
   }
 }
+
+/* TUTORIAL INICIAL */
+.pantalla-tutorial-inicial{display:grid;min-height:100vh;place-items:center}
+.contenido-tutorial-inicial{width:min(980px,100%);padding:34px;text-align:center;border:1px solid var(--dorado);border-radius:24px;background:radial-gradient(circle at top,rgba(255,214,74,.13),transparent 45%),var(--fondo-secundario)}
+.paso-tutorial-inicial h1,.paso-tutorial-inicial h2{margin:8px 0 14px}
+.texto-tutorial-principal{max-width:650px;margin:0 auto 24px;color:var(--texto-secundario);line-height:1.55}
+.claves-tutorial-inicial{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;max-width:760px;margin:0 auto 25px}
+.claves-tutorial-inicial article{display:flex;min-height:96px;align-items:center;gap:12px;padding:16px;text-align:left;border:1px solid var(--borde);border-radius:15px;background:var(--fondo-tarjeta)}
+.claves-tutorial-inicial article span{display:grid;width:35px;height:35px;flex:0 0 35px;place-items:center;color:#171717;border-radius:10px;background:var(--dorado);font-weight:1000}
+.rejilla-cartas-tutorial{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:24px 0 18px}
+.rejilla-deportes-tutorial{grid-template-columns:repeat(4,minmax(0,1fr))}
+.carta-tutorial{height:155px;perspective:850px}
+.interior-carta-tutorial{position:relative;width:100%;height:100%;transition:transform .48s ease;transform-style:preserve-3d}
+.carta-tutorial.flip-pendiente .interior-carta-tutorial{transform:rotateY(180deg)}
+.carta-tutorial.flip-completado .interior-carta-tutorial{transform:rotateY(0)}
+.cara-carta-tutorial{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:14px;border:1px solid var(--borde);border-radius:16px;background:var(--fondo-tarjeta);backface-visibility:hidden}
+.cara-carta-tutorial.reverso{color:var(--dorado);transform:rotateY(180deg);font-size:2rem;font-weight:1000}
+.cara-carta-tutorial.frente img{width:84px;max-height:55px;object-fit:contain;border-radius:4px}
+.cara-carta-tutorial.frente strong{font-size:.95rem}
+.icono-deporte-tutorial{font-size:2rem;line-height:1}
+.pregunta-tutorial{margin:0 0 20px;color:var(--texto-secundario);font-size:1rem;font-style:italic}
+.paso-tutorial-inicial>.boton{width:min(340px,100%)}
+@media(max-width:760px){
+  .pantalla-tutorial-inicial{place-items:start center;padding:12px}
+  .contenido-tutorial-inicial{padding:22px 14px;border-radius:18px}
+  .claves-tutorial-inicial{grid-template-columns:1fr;gap:9px}
+  .claves-tutorial-inicial article{min-height:72px}
+  .rejilla-cartas-tutorial,.rejilla-deportes-tutorial{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:18px}
+  .carta-tutorial{height:128px}
+  .cara-carta-tutorial{padding:10px;border-radius:13px}
+  .cara-carta-tutorial.frente img{width:66px;max-height:43px}
+  .cara-carta-tutorial.frente strong{font-size:.84rem}
+  .icono-deporte-tutorial{font-size:1.65rem}
+}
+@media(max-width:390px){
+  .contenido-tutorial-inicial{padding-inline:10px}
+  .carta-tutorial{height:118px}
+  .cara-carta-tutorial.frente strong{font-size:.78rem}
+}
+
+
+/* Tutorial: banderas y emojis visibles */
+.cara-carta-tutorial.frente img {
+  display: block;
+  width: min(92px, 78%);
+  height: 58px;
+  object-fit: contain;
+}
+
+.icono-deporte-tutorial {
+  display: block;
+  font-size: 2.65rem;
+  line-height: 1;
+}
+
+@media (max-width: 760px) {
+  .cara-carta-tutorial.frente img {
+    width: min(74px, 76%);
+    height: 46px;
+  }
+
+  .icono-deporte-tutorial {
+    font-size: 2.2rem;
+  }
+}

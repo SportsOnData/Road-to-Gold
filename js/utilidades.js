@@ -31,6 +31,7 @@ function mostrarPantalla(pantallaVisible) {
   pantallaLogros.classList.add("oculto");
   pantallaBetaSuperada.classList.add("oculto");
   pantallaEstadisticas.classList.add("oculto");
+  pantallaTutorialInicial.classList.add("oculto");
   pantallaDeportes.classList.add("oculto");
   pantallaJuego.classList.add("oculto");
   pantallaFinal.classList.add("oculto");

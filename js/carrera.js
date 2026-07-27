@@ -9,6 +9,14 @@ function iniciarModoCarrera() {
 
   actualizarHubCarrera();
 
+  if (
+    estadoCarrera.juegosDisputados === 0 &&
+    !estadoCarrera.tutorialInicialVisto
+  ) {
+    abrirTutorialInicialCarrera();
+    return;
+  }
+
   mostrarPantalla(pantallaCarrera);
 
   setTimeout(
@@ -100,6 +108,9 @@ function completarEstadoCarrera(carrera) {
 
   estadoCompleto.faseBetaSuperada =
     Boolean(carrera.faseBetaSuperada);
+
+  estadoCompleto.tutorialInicialVisto =
+    Boolean(carrera.tutorialInicialVisto);
 
   estadoCompleto.recompensasPendientes =
     Array.isArray(carrera.recompensasPendientes)
@@ -951,6 +962,141 @@ function elegirDeporteColectivoCarrera(
 
 
 
+
+
+let temporizadoresTutorialInicial = [];
+
+function limpiarTemporizadoresTutorialInicial() {
+  temporizadoresTutorialInicial.forEach(clearTimeout);
+  temporizadoresTutorialInicial = [];
+}
+
+function mostrarPasoTutorialInicial(pasoVisible) {
+  [
+    pasoTutorialBienvenida,
+    pasoTutorialPaises,
+    pasoTutorialDeportes
+  ].forEach((paso) => {
+    paso.classList.toggle("oculto", paso !== pasoVisible);
+  });
+}
+
+function crearCartaPaisTutorial(pais) {
+  const carta = document.createElement("article");
+  carta.className = "carta-tutorial flip-pendiente";
+  carta.innerHTML = `
+    <div class="interior-carta-tutorial">
+      <div class="cara-carta-tutorial reverso"><span>?</span></div>
+      <div class="cara-carta-tutorial frente">
+        <img src="assets/banderas/${pais.nombre}.png" alt="Bandera de ${pais.nombre}"
+             onerror="this.style.display='none'">
+        <strong>${pais.nombre}</strong>
+      </div>
+    </div>`;
+  return carta;
+}
+
+function obtenerEmojiDeporteTutorial(
+  codigoDeporte
+) {
+  const emojis = {
+    atletismo: "🏃",
+    natacion: "🏊",
+    gimnasia: "🤸",
+    remo: "🚣",
+    boxeo: "🥊",
+    piraguismo: "🛶",
+    ciclismo: "🚴",
+    judo: "🥋",
+    tiro: "🎯",
+    futbol: "⚽",
+    baloncesto: "🏀",
+    waterpolo: "🤽",
+    balonmano: "🤾",
+    voleibol: "🏐",
+    tenis: "🎾",
+    escalada: "🧗",
+    tenismesa: "🏓",
+    badminton: "🏸",
+    rugby: "🏉",
+    tiroarco: "🏹"
+  };
+
+  return emojis[codigoDeporte] || "🏅";
+}
+
+function crearCartaDeporteTutorial(deporte) {
+  const carta = document.createElement("article");
+  carta.className = "carta-tutorial carta-deporte-tutorial flip-pendiente";
+  carta.innerHTML = `
+    <div class="interior-carta-tutorial">
+      <div class="cara-carta-tutorial reverso"><span>?</span></div>
+      <div class="cara-carta-tutorial frente">
+        <span class="icono-deporte-tutorial">${obtenerEmojiDeporteTutorial(deporte.codigo)}</span>
+        <strong>${deporte.nombre}</strong>
+      </div>
+    </div>`;
+  return carta;
+}
+
+function voltearCartasTutorial(contenedor) {
+  limpiarTemporizadoresTutorialInicial();
+  [...contenedor.querySelectorAll(".carta-tutorial")].forEach((carta, indice) => {
+    temporizadoresTutorialInicial.push(setTimeout(() => {
+      carta.classList.remove("flip-pendiente");
+      carta.classList.add("flip-completado");
+    }, indice * 170));
+  });
+}
+
+function mostrarPaisesTutorialInicial() {
+  mostrarPasoTutorialInicial(pasoTutorialPaises);
+  listaPaisesTutorial.innerHTML = "";
+
+  estadoCarrera.paisesDesbloqueados
+    .map((codigo) => PAISES.find((pais) => pais.codigo === codigo))
+    .filter(Boolean)
+    .forEach((pais) => {
+      listaPaisesTutorial.appendChild(
+        crearCartaPaisTutorial(pais)
+      );
+    });
+
+  requestAnimationFrame(() => {
+    voltearCartasTutorial(listaPaisesTutorial);
+  });
+}
+
+function mostrarDeportesTutorialInicial() {
+  mostrarPasoTutorialInicial(pasoTutorialDeportes);
+  listaDeportesTutorial.innerHTML = "";
+
+  estadoCarrera.deportesDesbloqueados
+    .map((codigo) => DEPORTES.find((deporte) => deporte.codigo === codigo))
+    .filter(Boolean)
+    .forEach((deporte) => {
+      listaDeportesTutorial.appendChild(
+        crearCartaDeporteTutorial(deporte)
+      );
+    });
+
+  requestAnimationFrame(() => {
+    voltearCartasTutorial(listaDeportesTutorial);
+  });
+}
+
+function abrirTutorialInicialCarrera() {
+  limpiarTemporizadoresTutorialInicial();
+  mostrarPasoTutorialInicial(pasoTutorialBienvenida);
+  mostrarPantalla(pantallaTutorialInicial);
+}
+
+function completarTutorialInicialCarrera() {
+  limpiarTemporizadoresTutorialInicial();
+  estadoCarrera.tutorialInicialVisto = true;
+  guardarCarrera(estadoCarrera);
+  iniciarPartidaCarrera();
+}
 
 let seccionEstadisticasActual =
   "resumen";
