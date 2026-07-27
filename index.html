@@ -25,26 +25,517 @@
       <h1>Road to Gold</h1>
 
       <p class="subtitulo">
-        Construye tu delegación olímpica tomando siete decisiones.
+        Construye tu delegación olímpica tomando las mejores decisiones.
       </p>
 
+      <div class="acciones-inicio">
+        <button
+          id="botonEmpezar"
+          class="boton boton-principal"
+          type="button"
+        >
+          Partida rápida
+        </button>
+
+        <button
+          id="botonModoCarrera"
+          class="boton boton-secundario"
+          type="button"
+        >
+          Modo Carrera
+        </button>
+      </div>
+
       <button
-        id="botonEmpezar"
-        class="boton boton-principal"
+        id="botonLimpiarRecords"
+        class="boton boton-secundario boton-limpiar-records"
         type="button"
       >
-        Comenzar partida
-      </button>
-      <button
-      id="botonLimpiarRecords"
-      class="boton boton-secundario boton-limpiar-records"
-      type="button"
->
-       Limpiar récords
+        Limpiar récords
       </button>
 
     </section>
     
+
+
+    <!-- HUB PROVISIONAL DEL MODO CARRERA -->
+    <section
+      id="pantallaCarrera"
+      class="pantalla pantalla-carrera oculto"
+    >
+      <header class="cabecera-carrera">
+        <div>
+          <p class="marca">ROAD TO GOLD · CARRERA</p>
+          <h1>Tu delegación olímpica</h1>
+          <p class="texto-carrera">
+            Construye tu historia olímpica edición tras edición.
+          </p>
+        </div>
+
+        <button
+          id="botonVolverInicioCarrera"
+          class="boton boton-secundario"
+          type="button"
+        >
+          Volver al inicio
+        </button>
+      </header>
+
+      <section class="resumen-carrera">
+  <article class="tarjeta-carrera tarjeta-carrera-principal">
+  <span class="etiqueta-carrera">
+    Delegación
+  </span>
+
+  <strong id="nombreDelegacionCarrera">
+    Delegación sin nombre
+  </strong>
+
+  <small id="textoNombreDelegacionCarrera">
+    El nombre se desbloqueará en el nivel 2.
+  </small>
+
+  <button
+    id="botonEditarNombreDelegacion"
+    class="boton-editar-delegacion oculto"
+    type="button"
+  >
+    Editar nombre
+  </button>
+</article>
+
+  <article class="tarjeta-carrera">
+    <span class="etiqueta-carrera">Nivel</span>
+
+    <strong id="nivelCarrera">
+      1
+    </strong>
+
+    <small id="experienciaCarrera">
+      0 / 500 EXP
+    </small>
+  </article>
+
+  <article class="tarjeta-carrera">
+    <span class="etiqueta-carrera">
+      JJOO disputados
+    </span>
+
+    <strong id="juegosDisputadosCarrera">
+      0
+    </strong>
+
+    <small>
+      Tu historia empieza aquí.
+    </small>
+  </article>
+
+  <article class="tarjeta-carrera">
+    <span class="etiqueta-carrera">
+      Países
+    </span>
+
+    <strong id="cantidadPaisesCarrera">
+      0
+    </strong>
+
+    <small>
+      Desbloqueados
+    </small>
+  </article>
+
+  <article class="tarjeta-carrera">
+    <span class="etiqueta-carrera">
+      Deportes
+    </span>
+
+    <strong id="cantidadDeportesCarrera">
+      0
+    </strong>
+
+    <small>
+      Desbloqueados
+    </small>
+  </article>
+</section>
+
+<div
+  class="barra-exp-carrera"
+  aria-label="Progreso de experiencia"
+>
+  <span id="progresoExperienciaCarrera"></span>
+</div>
+
+      <button
+        id="botonJugarCarrera"
+        class="boton boton-principal boton-jugar-carrera"
+        type="button"
+      >
+        Jugar siguientes JJOO
+      </button>
+
+      <p class="aviso-prototipo">
+  El progreso de la Carrera se guarda automáticamente
+  en este dispositivo.
+</p>
+
+<button
+  id="botonBorrarCarrera"
+  class="boton boton-secundario boton-borrar-carrera"
+  type="button"
+>
+  Borrar Carrera
+</button>
+
+      <nav class="menu-carrera" aria-label="Secciones de Carrera">
+        <button class="tarjeta-menu-carrera" type="button" disabled>
+          <strong>Países</strong>
+          <span id="cantidadPaisesMenuCarrera">
+            0 desbloqueados
+          </span>
+        </button>
+
+        <button class="tarjeta-menu-carrera" type="button" disabled>
+          <strong>Deportes</strong>
+          <span id="cantidadDeportesMenuCarrera">
+            0 desbloqueados
+          </span>
+        </button>
+
+        <button
+          id="botonAbrirLogros"
+          class="tarjeta-menu-carrera"
+          type="button"
+          disabled
+        >
+          <strong>Logros</strong>
+          <span id="estadoMenuLogros">
+            Se desbloquean en el nivel 5
+          </span>
+        </button>
+
+        <button
+          id="botonAbrirEstadisticas"
+          class="tarjeta-menu-carrera"
+          type="button"
+        >
+          <strong>Estadísticas</strong>
+          <span id="estadoMenuEstadisticas">
+            Resumen de tu Carrera
+          </span>
+        </button>
+      </nav>
+
+
+      <section
+        id="ultimosLogrosCarrera"
+        class="ultimos-logros-carrera oculto"
+      >
+        <div class="cabecera-ultimos-logros">
+          <div>
+            <p class="marca">ÚLTIMOS LOGROS</p>
+            <h2>Hazañas de la delegación</h2>
+          </div>
+
+          <button
+            id="botonVerTodosLogros"
+            class="boton-enlace-logros"
+            type="button"
+          >
+            Ver todos
+          </button>
+        </div>
+
+        <div
+          id="listaUltimosLogrosCarrera"
+          class="lista-ultimos-logros-carrera"
+        ></div>
+      </section>
+    </section>
+
+
+
+
+
+<!-- PANTALLA DE ESTADÍSTICAS -->
+<section
+  id="pantallaEstadisticas"
+  class="pantalla pantalla-estadisticas oculto"
+>
+  <header class="cabecera-estadisticas">
+    <div>
+      <p class="marca">
+        ROAD TO GOLD · CARRERA
+      </p>
+
+      <h1>Estadísticas</h1>
+
+      <p>
+        La historia completa de tu delegación:
+        rendimiento, países, deportes y récords.
+      </p>
+    </div>
+
+    <button
+      id="botonVolverEstadisticas"
+      class="boton boton-secundario"
+      type="button"
+    >
+      Volver al menú
+    </button>
+  </header>
+
+  <nav
+    id="filtrosEstadisticas"
+    class="filtros-estadisticas"
+    aria-label="Secciones de estadísticas"
+  >
+    <button
+      class="filtro-estadisticas activo"
+      data-seccion-estadisticas="resumen"
+      type="button"
+    >
+      Resumen
+    </button>
+
+    <button
+      class="filtro-estadisticas"
+      data-seccion-estadisticas="paises"
+      type="button"
+    >
+      Países
+    </button>
+
+    <button
+      class="filtro-estadisticas"
+      data-seccion-estadisticas="deportes"
+      type="button"
+    >
+      Deportes
+    </button>
+
+    <button
+      class="filtro-estadisticas"
+      data-seccion-estadisticas="records"
+      type="button"
+    >
+      Récords
+    </button>
+
+    <button
+      class="filtro-estadisticas"
+      data-seccion-estadisticas="historial"
+      type="button"
+    >
+      Historial
+    </button>
+  </nav>
+
+  <div
+    id="contenidoEstadisticas"
+    class="contenido-estadisticas"
+  ></div>
+</section>
+
+<!-- PANTALLA FINAL DE LA FASE BETA -->
+<section
+  id="pantallaBetaSuperada"
+  class="pantalla pantalla-beta-superada oculto"
+>
+  <div class="contenido-beta-superada">
+
+    <img
+      class="logo-beta-sports-data"
+      src="assets/logo sports data.jpg"
+      alt="Sports Data"
+    >
+
+    <p class="marca">
+      ROAD TO GOLD · CARRERA
+    </p>
+
+    <h1>FASE BETA SUPERADA</h1>
+
+    <p class="texto-beta-superada">
+      Tu delegación ya tiene una historia propia.
+      Has completado el recorrido previsto para
+      esta primera versión de Road to Gold.
+    </p>
+
+    <div class="nombre-delegacion-beta">
+      <span>Delegación</span>
+      <strong id="betaNombreDelegacion">
+        Tu delegación
+      </strong>
+    </div>
+
+    <section class="estadisticas-beta">
+
+      <article>
+        <span>JJOO disputados</span>
+        <strong id="betaJuegosDisputados">0</strong>
+      </article>
+
+      <article>
+        <span>Logros conseguidos</span>
+        <strong id="betaLogrosConseguidos">0</strong>
+      </article>
+
+      <article>
+        <span>Medallas acumuladas</span>
+        <strong id="betaMedallasTotales">0</strong>
+      </article>
+
+      <article>
+        <span>Oros acumulados</span>
+        <strong id="betaOrosTotales">0</strong>
+      </article>
+
+    </section>
+
+    <div class="mensaje-version-ampliada">
+      <span>¿Quieres una versión ampliada?</span>
+
+      <strong>
+        Esto es solo el principio de tu delegación.
+      </strong>
+
+      <p>
+        Nuevos países, deportes, estadísticas,
+        logros, objetivos y decisiones podrán
+        ampliar la Carrera en futuras versiones.
+      </p>
+    </div>
+
+    <button
+      id="botonContinuarTrasBeta"
+      class="boton boton-principal"
+      type="button"
+    >
+      Continuar jugando
+    </button>
+
+  </div>
+</section>
+
+<!-- PANTALLA DE LOGROS -->
+<section
+  id="pantallaLogros"
+  class="pantalla pantalla-logros oculto"
+>
+  <header class="cabecera-logros">
+    <div>
+      <p class="marca">
+        ROAD TO GOLD · CARRERA
+      </p>
+
+      <h1>Logros</h1>
+
+      <p>
+        Hazañas únicas de tu delegación.
+        Los logros empiezan a contar desde
+        que desbloqueas este sistema.
+      </p>
+    </div>
+
+    <button
+      id="botonVolverLogros"
+      class="boton boton-secundario"
+      type="button"
+    >
+      Volver al menú
+    </button>
+  </header>
+
+  <section class="resumen-logros">
+    <article>
+      <span>Conseguidos</span>
+      <strong id="cantidadLogrosConseguidos">
+        0
+      </strong>
+    </article>
+
+    <article>
+      <span>Disponibles</span>
+      <strong id="cantidadLogrosDisponibles">
+        0
+      </strong>
+    </article>
+
+    <article>
+      <span>Completado</span>
+      <strong id="porcentajeLogros">
+        0 %
+      </strong>
+    </article>
+
+    <article>
+      <span>EXP obtenida</span>
+      <strong id="experienciaTotalLogros">
+        0 EXP
+      </strong>
+    </article>
+  </section>
+
+  <nav
+    id="filtrosLogros"
+    class="filtros-logros"
+    aria-label="Tipos de logro"
+  >
+    <button
+      class="filtro-logros activo"
+      data-categoria-logro="todos"
+      type="button"
+    >
+      Todos
+    </button>
+
+    <button
+      class="filtro-logros"
+      data-categoria-logro="edicion"
+      type="button"
+    >
+      Edición
+    </button>
+
+    <button
+      class="filtro-logros"
+      data-categoria-logro="hazana"
+      type="button"
+    >
+      Hazañas
+    </button>
+
+    <button
+      class="filtro-logros"
+      data-categoria-logro="draft"
+      type="button"
+    >
+      Draft
+    </button>
+
+    <button
+      class="filtro-logros"
+      data-categoria-logro="reroll"
+      type="button"
+    >
+      Reroll
+    </button>
+
+    <button
+      class="filtro-logros"
+      data-categoria-logro="records"
+      type="button"
+    >
+      Récords
+    </button>
+  </nav>
+
+  <div
+    id="listaLogros"
+    class="lista-logros"
+  ></div>
+</section>
 
 <!-- PRESENTACIÓN DE DEPORTES -->
 <section
@@ -52,8 +543,15 @@
   class="pantalla pantalla-deportes oculto"
 >
   <p class="marca">ROAD TO GOLD</p>
-
-  <h1>Los 7 deportes de estos JJOO son...</h1>
+<p
+  id="indicadorModoDeportes"
+  class="indicador-modo oculto"
+>
+  MODO CARRERA
+</p>
+  <h1 id="tituloPresentacionDeportes">
+    Los deportes de estos JJOO son...
+  </h1>
 
   <div
     id="presentacionDeportes"
@@ -78,6 +576,12 @@
           <p class="marca">ROAD TO GOLD</p>
           <strong id="progreso">DRAFT DE PAÍSES</strong>
         </div>
+        <p
+      id="indicadorModoDraft"
+      class="indicador-modo oculto"
+>
+      MODO CARRERA
+</p>
 
         <div class="acciones-draft">
 
@@ -154,6 +658,22 @@
 
       </section>
 
+
+      <aside
+        id="informacionDelegacionDraft"
+        class="informacion-delegacion-draft oculto"
+      >
+        <p class="etiqueta">Delegación</p>
+
+        <strong id="nombreDelegacionDraft">
+          Tu delegación
+        </strong>
+
+        <span id="datosDelegacionDraft">
+          Nivel 1
+        </span>
+      </aside>
+
       <p
         id="mensajeJuego"
         class="mensaje"
@@ -220,7 +740,7 @@
         id="progresoCeremonia"
         class="progreso-ceremonia"
       >
-        DEPORTE 1 DE 7
+        DEPORTE
       </p>
 
       <div class="bandera-ceremonia marco-bandera">
@@ -246,7 +766,12 @@
       <div class="presentacion-ceremonia">
 
         <p class="marca">ROAD TO GOLD</p>
-
+        <p
+      id="indicadorModoCeremonia"
+      class="indicador-modo oculto"
+>
+      MODO CARRERA
+</p>
         <h1 id="nombreDeporteCeremonia">
           Atletismo
         </h1>
@@ -352,8 +877,57 @@
   class="pantalla pantalla-resultados oculto"
 >
   <p class="marca">JUEGOS FINALIZADOS</p>
+  <p
+  id="indicadorModoResultados"
+  class="indicador-modo oculto"
+>
+  MODO CARRERA
+</p>
+  <h1 id="tituloResultadosJuegos">
+    Tu medallero
+  </h1>
 
-  <h1>Tu medallero</h1>
+  <p
+    id="nombreDelegacionResultados"
+    class="nombre-delegacion-resultados oculto"
+  ></p>
+<section
+  id="resumenProgresoCarrera"
+  class="resumen-progreso-carrera oculto"
+>
+  <p class="marca">
+    PROGRESO DE CARRERA
+  </p>
+
+  <div class="cabecera-progreso-carrera">
+    <div>
+      <span>Nivel</span>
+
+      <strong id="nivelResultadoCarrera">
+        1
+      </strong>
+    </div>
+
+    <div>
+      <span>Experiencia conseguida</span>
+
+      <strong id="experienciaGanadaCarrera">
+        +0 EXP
+      </strong>
+    </div>
+  </div>
+
+  <div
+    id="desgloseExperienciaCarrera"
+    class="desglose-experiencia-carrera"
+  ></div>
+
+  <p
+    id="mensajeSubidaNivelCarrera"
+    class="mensaje-subida-nivel oculto"
+  ></p>
+</section>
+
 
 <div
   id="mensajeNuevoRecord"
@@ -396,6 +970,37 @@
       <small>Total</small>
     </div>
   </div>
+
+
+  <details
+    id="resumenLogrosConseguidos"
+    class="resumen-logros-resultado oculto"
+  >
+    <summary id="botonDesplegarLogrosConseguidos">
+      Ver logros conseguidos
+    </summary>
+
+    <div
+      id="listaLogrosConseguidos"
+      class="lista-logros-conseguidos"
+      aria-live="polite"
+    ></div>
+  </details>
+
+  <details
+    id="resumenRecordsCarrera"
+    class="resumen-records-carrera oculto"
+  >
+    <summary id="botonDesplegarRecordsCarrera">
+      Ver récords batidos
+    </summary>
+
+    <div
+      id="listaRecordsCarrera"
+      class="lista-records-carrera"
+      aria-live="polite"
+    ></div>
+  </details>
 
   <div class="tabla-resultados">
     <div class="cabecera-resultados">
@@ -552,6 +1157,598 @@
   </button>
 
 </section>
+<!-- MODAL PARA NOMBRAR LA DELEGACIÓN -->
+<div
+  id="modalNombreDelegacion"
+  class="modal-carrera oculto"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="tituloModalDelegacion"
+>
+  <div class="contenido-modal-carrera">
+
+    <p class="marca">
+      RECOMPENSA DE NIVEL 2
+    </p>
+
+    <h2 id="tituloModalDelegacion">
+      Pon nombre a tu delegación
+    </h2>
+
+    <p class="texto-modal-carrera">
+      Este nombre representará a tu equipo durante
+      toda la Carrera. Podrás modificarlo más adelante.
+    </p>
+
+    <label
+      class="etiqueta-input-carrera"
+      for="inputNombreDelegacion"
+    >
+      Nombre de la delegación
+    </label>
+
+    <input
+      id="inputNombreDelegacion"
+      class="input-carrera"
+      type="text"
+      maxlength="30"
+      autocomplete="off"
+      placeholder="Ejemplo: Sports Data Team"
+    >
+
+    <p
+      id="mensajeNombreDelegacion"
+      class="mensaje-input-carrera"
+      aria-live="polite"
+    ></p>
+
+    <div class="acciones-modal-carrera">
+
+      <button
+        id="botonGuardarNombreDelegacion"
+        class="boton boton-principal"
+        type="button"
+      >
+        Guardar nombre
+      </button>
+
+      <button
+        id="botonPosponerNombreDelegacion"
+        class="boton boton-secundario"
+        type="button"
+      >
+        Decidir más tarde
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL PARA ELEGIR UNA POTENCIA -->
+<div
+  id="modalElegirPotencia"
+  class="modal-carrera oculto"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="tituloModalPotencia"
+>
+  <div class="contenido-modal-carrera contenido-modal-potencia">
+
+    <p class="marca">
+      RECOMPENSA DE NIVEL 3
+    </p>
+
+    <h2 id="tituloModalPotencia">
+      Elige una nueva potencia
+    </h2>
+
+    <div class="opciones-potencia">
+
+      <button
+        id="botonElegirEstadosUnidos"
+        class="opcion-potencia"
+        type="button"
+      >
+        <div class="marco-bandera bandera-potencia">
+          <img
+            id="banderaEstadosUnidosPotencia"
+            src=""
+            alt="Bandera de Estados Unidos"
+          >
+
+          <span
+            id="banderaAlternativaEstadosUnidos"
+            class="bandera-alternativa"
+          >
+            USA
+          </span>
+        </div>
+
+        <strong>Estados Unidos</strong>
+        <span class="texto-elegir-potencia">Elegir</span>
+      </button>
+
+      <button
+        id="botonElegirChina"
+        class="opcion-potencia"
+        type="button"
+      >
+        <div class="marco-bandera bandera-potencia">
+          <img
+            id="banderaChinaPotencia"
+            src=""
+            alt="Bandera de China"
+          >
+
+          <span
+            id="banderaAlternativaChina"
+            class="bandera-alternativa"
+          >
+            CHN
+          </span>
+        </div>
+
+        <strong>China</strong>
+        <span class="texto-elegir-potencia">Elegir</span>
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- MODAL DE RECOMPENSA DEL NIVEL 4 -->
+<div
+  id="modalRecompensaNivel4"
+  class="modal-carrera oculto"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="tituloModalNivel4"
+>
+  <div class="contenido-modal-carrera contenido-modal-nivel4">
+
+    <p class="marca">
+      RECOMPENSA DE NIVEL 4
+    </p>
+
+    <h2 id="tituloModalNivel4">
+      Tu delegación sigue creciendo
+    </h2>
+
+    <div class="recompensas-nivel4">
+
+      <article class="tarjeta-recompensa-nivel4">
+        <span class="icono-recompensa-nivel4">
+          🎯
+        </span>
+
+        <div>
+          <small>Nuevo deporte</small>
+          <strong>Tiro</strong>
+        </div>
+      </article>
+
+      <article class="tarjeta-recompensa-nivel4">
+        <span class="icono-recompensa-nivel4">
+          ↻
+        </span>
+
+        <div>
+          <small>Nueva ventaja</small>
+          <strong>Un reroll por edición</strong>
+        </div>
+      </article>
+
+      <article class="tarjeta-recompensa-nivel4">
+        <span class="icono-recompensa-nivel4">
+          🏆
+        </span>
+
+        <div>
+          <small>Nueva fuente de EXP</small>
+          <strong>Los récords conceden experiencia</strong>
+        </div>
+      </article>
+
+    </div>
+
+    <button
+      id="botonContinuarNivel4"
+      class="boton boton-principal boton-continuar-nivel4"
+      type="button"
+    >
+      Continuar
+    </button>
+
+  </div>
+</div>
+
+
+
+
+
+
+<!-- MODAL DE RECOMPENSA DEL NIVEL 7 -->
+<div
+  id="modalRecompensaNivel7"
+  class="modal-carrera oculto"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="tituloModalNivel7"
+>
+  <div class="contenido-modal-carrera contenido-modal-nivel7">
+
+    <p class="marca">
+      RECOMPENSA DE NIVEL 7
+    </p>
+
+    <h2 id="tituloModalNivel7">
+      La delegación da un salto adelante
+    </h2>
+
+    <p class="texto-modal-nivel7">
+      Un país inesperado se unirá a tu colección.
+      Además, desbloquearás Tenis y las futuras
+      ediciones pasarán a tener 8 países y 8 deportes.
+    </p>
+
+    <p
+      id="mensajeDatosNivel7"
+      class="mensaje-datos-nivel6 oculto"
+      aria-live="polite"
+    ></p>
+
+    <section
+      id="faseSorteoNivel7"
+      class="fase-nivel6"
+    >
+      <p class="etiqueta-fase-nivel6">
+        PAÍS TRAMPA · SORTEO
+      </p>
+
+      <div class="ruleta-pais-nivel6 ruleta-pais-nivel7">
+        <div class="marco-bandera-nivel6">
+          <img
+            id="banderaSorteoNivel7"
+            alt=""
+          >
+
+          <span
+            id="banderaAlternativaSorteoNivel7"
+            class="bandera-alternativa-nivel6"
+          >
+            ?
+          </span>
+        </div>
+
+        <strong id="nombrePaisSorteoNivel7">
+          Fiji · San Marino · Kenia
+        </strong>
+
+        <span id="textoEstadoSorteoNivel7">
+          Pulsa para descubrir qué país se une a tu delegación
+        </span>
+      </div>
+
+      <button
+        id="botonIniciarSorteoNivel7"
+        class="boton boton-principal"
+        type="button"
+      >
+        Iniciar sorteo
+      </button>
+    </section>
+
+    <section
+      id="faseResumenNivel7"
+      class="fase-nivel6 oculto"
+    >
+      <p class="etiqueta-fase-nivel6">
+        NUEVA ETAPA DESBLOQUEADA
+      </p>
+
+      <div class="resumen-recompensa-nivel7">
+
+        <article>
+          <span>🎲</span>
+          <div>
+            <small>País desbloqueado</small>
+            <strong id="nombrePaisResumenNivel7">—</strong>
+          </div>
+        </article>
+
+        <article>
+          <span>🎾</span>
+          <div>
+            <small>Nuevo deporte</small>
+            <strong>Tenis</strong>
+          </div>
+        </article>
+
+        <article>
+          <span>8</span>
+          <div>
+            <small>Nueva estructura</small>
+            <strong>8 países · 8 deportes</strong>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="explicacion-ocho-deportes">
+        Cada edición incorporará un segundo deporte
+        del grupo de 5 pruebas.
+      </p>
+
+      <button
+        id="botonCompletarNivel7"
+        class="boton boton-principal"
+        type="button"
+      >
+        Incorporar recompensas
+      </button>
+    </section>
+
+  </div>
+</div>
+
+<!-- MODAL DE RECOMPENSA DEL NIVEL 6 -->
+<div
+  id="modalRecompensaNivel6"
+  class="modal-carrera oculto"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="tituloModalNivel6"
+>
+  <div class="contenido-modal-carrera contenido-modal-nivel6">
+
+    <p class="marca">
+      RECOMPENSA DE NIVEL 6
+    </p>
+
+    <h2 id="tituloModalNivel6">
+      Nuevos talentos para la delegación
+    </h2>
+
+    <p class="texto-modal-nivel6">
+      Recibirás dos países nuevos y desbloquearás
+      Ciclismo de forma permanente.
+    </p>
+
+    <p
+      id="mensajeDatosNivel6"
+      class="mensaje-datos-nivel6 oculto"
+      aria-live="polite"
+    ></p>
+
+    <!-- FASE 1: SORTEO -->
+    <section
+      id="faseSorteoNivel6"
+      class="fase-nivel6"
+    >
+      <p class="etiqueta-fase-nivel6">
+        PRIMER PAÍS · SORTEO
+      </p>
+
+      <div class="ruleta-pais-nivel6">
+        <div class="marco-bandera-nivel6">
+          <img
+            id="banderaSorteoNivel6"
+            alt=""
+          >
+
+          <span
+            id="banderaAlternativaSorteoNivel6"
+            class="bandera-alternativa-nivel6"
+          >
+            ?
+          </span>
+        </div>
+
+        <strong id="nombrePaisSorteoNivel6">
+          Japón · Reino Unido · Canadá
+        </strong>
+
+        <span id="textoEstadoSorteoNivel6">
+          Pulsa para iniciar el sorteo
+        </span>
+      </div>
+
+      <button
+        id="botonIniciarSorteoNivel6"
+        class="boton boton-principal"
+        type="button"
+      >
+        Iniciar sorteo
+      </button>
+    </section>
+
+    <!-- FASE 2: ELECCIÓN -->
+    <section
+      id="faseEleccionNivel6"
+      class="fase-nivel6 oculto"
+    >
+      <p class="etiqueta-fase-nivel6">
+        SEGUNDO PAÍS · TU ELECCIÓN
+      </p>
+
+      <h3>
+        Elige el segundo país que se unirá
+        a tu colección
+      </h3>
+
+      <div class="opciones-pais-nivel6">
+
+        <button
+          class="opcion-pais-nivel6"
+          data-pais-nivel6="RSA"
+          type="button"
+        >
+          <div class="marco-bandera-eleccion-nivel6">
+            <img
+              id="banderaSudafricaNivel6"
+              alt=""
+            >
+
+            <span
+              id="banderaAlternativaSudafricaNivel6"
+              class="bandera-alternativa-nivel6"
+            >
+              RSA
+            </span>
+          </div>
+
+          <strong>Sudáfrica</strong>
+          <span>Elegir</span>
+        </button>
+
+        <button
+          class="opcion-pais-nivel6"
+          data-pais-nivel6="ROU"
+          type="button"
+        >
+          <div class="marco-bandera-eleccion-nivel6">
+            <img
+              id="banderaRumaniaNivel6"
+              alt=""
+            >
+
+            <span
+              id="banderaAlternativaRumaniaNivel6"
+              class="bandera-alternativa-nivel6"
+            >
+              ROU
+            </span>
+          </div>
+
+          <strong>Rumanía</strong>
+          <span>Elegir</span>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- FASE 3: RESUMEN -->
+    <section
+      id="faseResumenNivel6"
+      class="fase-nivel6 oculto"
+    >
+      <p class="etiqueta-fase-nivel6">
+        RECOMPENSA COMPLETADA
+      </p>
+
+      <div class="resumen-recompensa-nivel6">
+
+        <article>
+          <span>🎲</span>
+
+          <div>
+            <small>País sorteado</small>
+            <strong
+              id="nombrePaisAleatorioResumenNivel6"
+            >
+              —
+            </strong>
+          </div>
+        </article>
+
+        <article>
+          <span>🗳️</span>
+
+          <div>
+            <small>País elegido</small>
+            <strong
+              id="nombrePaisElegidoResumenNivel6"
+            >
+              —
+            </strong>
+          </div>
+        </article>
+
+        <article>
+          <span>🚴</span>
+
+          <div>
+            <small>Nuevo deporte</small>
+            <strong>Ciclismo</strong>
+          </div>
+        </article>
+
+      </div>
+
+      <button
+        id="botonCompletarNivel6"
+        class="boton boton-principal"
+        type="button"
+      >
+        Incorporar recompensas
+      </button>
+    </section>
+
+  </div>
+</div>
+
+<!-- MODAL PARA ELEGIR DEPORTE COLECTIVO -->
+<div
+  id="modalElegirDeporteColectivo"
+  class="modal-carrera oculto"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="tituloModalDeporteColectivo"
+>
+  <div class="contenido-modal-carrera contenido-modal-colectivo">
+
+    <p class="marca">
+      RECOMPENSA DE NIVEL 5
+    </p>
+
+    <h2 id="tituloModalDeporteColectivo">
+      Elige un nuevo deporte colectivo
+    </h2>
+
+    <p class="texto-modal-colectivo">
+      El deporte elegido se incorporará permanentemente
+      a tu colección.
+    </p>
+
+    <div class="opciones-deporte-colectivo">
+
+      <button
+        class="opcion-deporte-colectivo"
+        data-deporte-colectivo="futbol"
+        type="button"
+      >
+        <span class="icono-deporte-colectivo">⚽</span>
+        <strong>Fútbol</strong>
+        <span>Elegir</span>
+      </button>
+
+      <button
+        class="opcion-deporte-colectivo"
+        data-deporte-colectivo="voleibol"
+        type="button"
+      >
+        <span class="icono-deporte-colectivo">🏐</span>
+        <strong>Voleibol</strong>
+        <span>Elegir</span>
+      </button>
+
+      <button
+        class="opcion-deporte-colectivo"
+        data-deporte-colectivo="waterpolo"
+        type="button"
+      >
+        <span class="icono-deporte-colectivo">🤽</span>
+        <strong>Waterpolo</strong>
+        <span>Elegir</span>
+      </button>
+
+    </div>
+
+  </div>
+</div>
 
   </main>
 
@@ -560,8 +1757,18 @@
   <script src="datos/deportes.js"></script>
   <script src="datos/paises.js"></script>
 
-  <!-- Después se carga el juego -->
-  <script src="script.js"></script>
+  <!-- Después se cargan los sistemas del juego -->
+  <script src="js/base.js"></script>
+  <script src="js/utilidades.js"></script>
+  <script src="js/motor.js"></script>
+  <script src="js/records.js"></script>
+  <script src="js/logros.js"></script>
+  <script src="js/carrera.js"></script>
+  <script src="js/draft.js"></script>
+  <script src="js/simulacion.js"></script>
+
+  <!-- Principal se carga el último porque conecta los botones -->
+  <script src="js/principal.js"></script>
 
 </body>
 </html>

@@ -223,7 +223,7 @@ const DEPORTES = [
     "permiteEventos": true,
     "activo": true,
     "icono": null,
-    "medallasPorPrueba": 3,
+    "medallasPorPrueba": 4,
     "categoria": "aventura"
   },
   {
