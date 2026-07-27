@@ -3593,3 +3593,601 @@ button {
     flex-wrap: wrap;
   }
 }
+
+
+/* ========================================================= */
+/* OPTIMIZACIÓN MÓVIL COMPLETA                               */
+/* ========================================================= */
+
+@media (max-width: 760px) {
+
+  html,
+  body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    min-width: 0;
+  }
+
+  .pantalla {
+    width: 100%;
+    min-height: 100dvh;
+    padding: 20px 14px 28px;
+  }
+
+  .pantalla > * {
+    max-width: 100%;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 8vw, 2.6rem);
+    line-height: 1.02;
+  }
+
+  h2 {
+    font-size: clamp(1.35rem, 6vw, 1.8rem);
+  }
+
+  .marca {
+    font-size: 0.72rem;
+    letter-spacing: 1.1px;
+  }
+
+  .boton,
+  .boton-principal,
+  .boton-secundario {
+    min-height: 48px;
+    padding: 13px 18px;
+  }
+
+  .boton-principal {
+    width: 100%;
+  }
+
+  /* ------------------------------ */
+  /* MENÚ DE CARRERA                */
+  /* ------------------------------ */
+
+  .cabecera-carrera,
+  .cabecera-logros,
+  .cabecera-estadisticas {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .cabecera-carrera .boton,
+  .cabecera-logros .boton,
+  .cabecera-estadisticas .boton {
+    width: 100%;
+  }
+
+  .resumen-carrera,
+  .tarjetas-resumen-carrera {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  .tarjeta-delegacion-carrera,
+  .tarjeta-nivel-carrera,
+  .tarjeta-juegos-carrera,
+  .tarjeta-resumen-carrera {
+    min-height: auto;
+  }
+
+  .barra-nivel-carrera {
+    margin-top: 16px;
+  }
+
+  .acciones-carrera {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .menu-secundario-carrera {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  .tarjeta-menu-carrera {
+    min-height: 84px;
+    padding: 16px;
+    text-align: left;
+  }
+
+  .tarjeta-menu-carrera strong {
+    font-size: 1rem;
+  }
+
+  .tarjeta-menu-carrera span {
+    font-size: 0.82rem;
+  }
+
+  .ultimos-logros-carrera {
+    padding: 16px;
+  }
+
+  .cabecera-ultimos-logros {
+    align-items: stretch;
+  }
+
+  .boton-enlace-logros {
+    width: 100%;
+  }
+
+  .lista-ultimos-logros-carrera {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scroll-snap-type: x proximity;
+  }
+
+  .ultimo-logro-carrera,
+  .sin-logros-carrera {
+    min-width: min(82vw, 300px);
+    scroll-snap-align: start;
+  }
+
+  /* ------------------------------ */
+  /* DRAFT                          */
+  /* ------------------------------ */
+
+  .contenedor-juego,
+  .zona-draft,
+  .panel-draft {
+    width: 100%;
+  }
+
+  .lista-deportes,
+  .rejilla-deportes,
+  .contenedor-deportes {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  .tarjeta-deporte {
+    min-height: 78px;
+    padding: 13px 14px;
+  }
+
+  .pais-actual,
+  .tarjeta-pais-actual {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .pais-actual img,
+  .bandera-pais-actual {
+    max-width: 100px;
+    max-height: 68px;
+  }
+
+  .acciones-draft {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .informacion-delegacion-draft {
+    margin-top: 12px;
+    padding: 12px 8px 0;
+    gap: 5px;
+  }
+
+  /* ------------------------------ */
+  /* CEREMONIA                      */
+  /* ------------------------------ */
+
+  .contenido-ceremonia,
+  .panel-ceremonia {
+    width: 100%;
+    min-height: 68dvh;
+    padding: 24px 16px;
+  }
+
+  .cabecera-ceremonia {
+    gap: 10px;
+  }
+
+  .cabecera-ceremonia h1,
+  .nombre-deporte-ceremonia {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .nombre-pais-ceremonia {
+    font-size: clamp(1.3rem, 7vw, 2rem);
+  }
+
+  .bandera-ceremonia {
+    width: min(46vw, 150px);
+    height: auto;
+  }
+
+  .medallas-ceremonia,
+  .resultado-medallas-ceremonia {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .medalla-ceremonia {
+    min-width: 0;
+    padding: 12px 8px;
+  }
+
+  .boton-saltar-ceremonia {
+    width: 100%;
+    margin-top: 14px;
+  }
+
+  /* ------------------------------ */
+  /* RESULTADOS                     */
+  /* ------------------------------ */
+
+  .cabecera-resultados,
+  .resumen-resultados {
+    width: 100%;
+  }
+
+  .nombre-delegacion-resultados {
+    margin-bottom: 14px;
+  }
+
+  .medallero-final,
+  .resumen-medallero,
+  .tarjetas-medallero {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px;
+  }
+
+  .medallero-final article,
+  .resumen-medallero article,
+  .tarjeta-medallero {
+    min-width: 0;
+    padding: 10px 5px;
+  }
+
+  .medallero-final strong,
+  .resumen-medallero strong,
+  .tarjeta-medallero strong {
+    font-size: 1.2rem;
+  }
+
+  .tabla-resultados {
+    overflow: visible;
+    border: 0;
+    background: transparent;
+  }
+
+  .tabla-resultados table,
+  .tabla-resultados thead,
+  .tabla-resultados tbody,
+  .tabla-resultados tr,
+  .tabla-resultados th,
+  .tabla-resultados td {
+    display: block;
+    width: 100%;
+  }
+
+  .tabla-resultados thead {
+    display: none;
+  }
+
+  .tabla-resultados tbody {
+    display: grid;
+    gap: 12px;
+  }
+
+  .tabla-resultados tr {
+    overflow: hidden;
+    padding: 15px;
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+    background: var(--fondo-secundario);
+  }
+
+  .tabla-resultados td {
+    padding: 4px 0;
+    border: 0;
+    text-align: left !important;
+  }
+
+  .tabla-resultados td:nth-child(1) {
+    font-size: 1.05rem;
+    font-weight: 900;
+  }
+
+  .tabla-resultados td:nth-child(2) {
+    margin-bottom: 8px;
+    color: var(--texto-secundario);
+  }
+
+  .tabla-resultados td:nth-child(n+3) {
+    display: inline-flex;
+    width: auto;
+    margin-right: 12px;
+    font-size: 1rem;
+    font-weight: 900;
+  }
+
+  .resumen-logros-resultado,
+  .resumen-records-carrera {
+    margin: 14px 0;
+  }
+
+  .logro-conseguido-resultado {
+    grid-template-columns: auto 1fr;
+  }
+
+  .exp-logro-resultado {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  /* ------------------------------ */
+  /* LOGROS                         */
+  /* ------------------------------ */
+
+  .resumen-logros {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .resumen-logros article {
+    min-height: 88px;
+    padding: 14px;
+  }
+
+  .filtros-logros,
+  .filtros-estadisticas {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scroll-snap-type: x proximity;
+  }
+
+  .filtro-logros,
+  .filtro-estadisticas {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  .lista-logros {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjeta-logro {
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .cabecera-tarjeta-logro {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .exp-tarjeta-logro {
+    align-self: flex-start;
+  }
+
+  /* ------------------------------ */
+  /* ESTADÍSTICAS                   */
+  /* ------------------------------ */
+
+  .rejilla-datos-estadisticas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .tarjeta-dato-estadistica {
+    min-height: 104px;
+    padding: 15px;
+  }
+
+  .bloque-destacado-estadisticas {
+    padding: 18px;
+  }
+
+  .medallero-estadisticas {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .medallero-estadisticas span {
+    text-align: center;
+  }
+
+  .tabla-estadisticas-contenedor {
+    border: 0;
+    overflow: visible;
+    background: transparent;
+  }
+
+  .tabla-estadisticas,
+  .tabla-estadisticas thead,
+  .tabla-estadisticas tbody,
+  .tabla-estadisticas tr,
+  .tabla-estadisticas th,
+  .tabla-estadisticas td {
+    display: block;
+    width: 100%;
+  }
+
+  .tabla-estadisticas thead {
+    display: none;
+  }
+
+  .tabla-estadisticas tbody {
+    display: grid;
+    gap: 12px;
+  }
+
+  .tabla-estadisticas tr {
+    padding: 15px;
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+    background: var(--fondo-secundario);
+  }
+
+  .tabla-estadisticas td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 6px 0;
+    border: 0;
+    text-align: right !important;
+  }
+
+  .tabla-estadisticas td:first-child {
+    display: block;
+    margin-bottom: 8px;
+    text-align: left !important;
+    font-size: 1.05rem;
+  }
+
+  .tabla-estadisticas td:nth-child(2)::before {
+    content: "Participaciones";
+  }
+
+  .tabla-estadisticas td:nth-child(3)::before {
+    content: "Oros";
+  }
+
+  .tabla-estadisticas td:nth-child(4)::before {
+    content: "Platas";
+  }
+
+  .tabla-estadisticas td:nth-child(5)::before {
+    content: "Bronces";
+  }
+
+  .tabla-estadisticas td:nth-child(6)::before {
+    content: "Total";
+  }
+
+  .tabla-estadisticas td:nth-child(7)::before {
+    content: "Promedio / récord";
+  }
+
+  .tabla-estadisticas td:nth-child(8)::before {
+    content: "Récord de oros";
+  }
+
+  .tabla-estadisticas td::before {
+    color: var(--texto-secundario);
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .rejilla-records-estadisticas {
+    grid-template-columns: 1fr;
+  }
+
+  .edicion-historial summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .medallero-historial {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .resultados-historial article {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* ------------------------------ */
+  /* MODALES Y RECOMPENSAS          */
+  /* ------------------------------ */
+
+  .modal-carrera {
+    align-items: flex-start;
+    overflow-y: auto;
+    padding: 12px;
+  }
+
+  .contenido-modal-carrera {
+    width: 100%;
+    max-height: none;
+    margin: auto 0;
+    padding: 22px 16px;
+    border-radius: 18px;
+  }
+
+  .opciones-deporte-colectivo,
+  .opciones-pais-nivel6,
+  .resumen-recompensa-nivel6,
+  .resumen-recompensa-nivel7 {
+    grid-template-columns: 1fr;
+  }
+
+  .opcion-deporte-colectivo,
+  .opcion-pais-nivel6 {
+    min-height: 145px;
+  }
+
+  .ruleta-pais-nivel6 {
+    min-height: 225px;
+    padding: 18px;
+  }
+
+  /* ------------------------------ */
+  /* FASE BETA                      */
+  /* ------------------------------ */
+
+  .contenido-beta-superada {
+    padding: 24px 16px;
+    border-radius: 20px;
+  }
+
+  .estadisticas-beta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .estadisticas-beta article {
+    min-height: 92px;
+    padding: 13px;
+  }
+
+  .mensaje-version-ampliada {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 430px) {
+
+  .pantalla {
+    padding-inline: 10px;
+  }
+
+  .resumen-logros,
+  .rejilla-datos-estadisticas,
+  .estadisticas-beta {
+    grid-template-columns: 1fr;
+  }
+
+  .medallero-final,
+  .resumen-medallero,
+  .tarjetas-medallero {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .tabla-resultados tr,
+  .tabla-estadisticas tr {
+    padding: 13px;
+  }
+
+  .ultimo-logro-carrera,
+  .sin-logros-carrera {
+    min-width: 88vw;
+  }
+}

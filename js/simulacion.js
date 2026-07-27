@@ -478,17 +478,6 @@ resumenProgresoCarrera.classList.add(
   "oculto"
 );
 
-resumenLogrosConseguidos.classList.add(
-  "oculto"
-);
-
-resumenRecordsCarrera.classList.add(
-  "oculto"
-);
-
-listaLogrosConseguidos.innerHTML = "";
-listaRecordsCarrera.innerHTML = "";
-
 zonaRecords.classList.remove("oculto");
 
 botonNuevaPartida.textContent =

@@ -792,7 +792,7 @@ let medalleroAcumuladoCeremonia = {
 let temporizadorRevelarCeremonia = null;
 let temporizadorAvanzarCeremonia = null;
 
-const TIEMPO_PRESENTACION_CEREMONIA = 500;
+const TIEMPO_PRESENTACION_CEREMONIA = 1500;
 const TIEMPO_LECTURA_CEREMONIA = 5500;
 
 const CLAVE_RECORD_OROS =
