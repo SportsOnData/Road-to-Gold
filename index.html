@@ -188,14 +188,14 @@
 </button>
 
       <nav class="menu-carrera" aria-label="Secciones de Carrera">
-        <button class="tarjeta-menu-carrera" type="button" disabled>
+        <button id="botonAbrirPaisesCarrera" class="tarjeta-menu-carrera" type="button">
           <strong>Países</strong>
           <span id="cantidadPaisesMenuCarrera">
             0 desbloqueados
           </span>
         </button>
 
-        <button class="tarjeta-menu-carrera" type="button" disabled>
+        <button id="botonAbrirDeportesCarrera" class="tarjeta-menu-carrera" type="button">
           <strong>Deportes</strong>
           <span id="cantidadDeportesMenuCarrera">
             0 desbloqueados
@@ -210,7 +210,7 @@
         >
           <strong>Logros</strong>
           <span id="estadoMenuLogros">
-            Se desbloquean en el nivel 5
+            Se desbloquean en el nivel 4
           </span>
         </button>
 
@@ -300,6 +300,24 @@
   </div>
 </section>
 
+<!-- CATÁLOGO DE PAÍSES DE CARRERA -->
+<section id="pantallaCatalogoPaises" class="pantalla pantalla-estadisticas oculto">
+  <header class="cabecera-estadisticas">
+    <div><p class="marca">ROAD TO GOLD · CARRERA</p><h1>Países</h1><p>Tu colección de delegaciones desbloqueadas durante esta Carrera.</p></div>
+    <button id="botonVolverCatalogoPaises" class="boton boton-secundario" type="button">Volver al menú</button>
+  </header>
+  <div id="contenidoCatalogoPaises" class="contenido-estadisticas"></div>
+</section>
+
+<!-- CATÁLOGO DE DEPORTES DE CARRERA -->
+<section id="pantallaCatalogoDeportes" class="pantalla pantalla-estadisticas oculto">
+  <header class="cabecera-estadisticas">
+    <div><p class="marca">ROAD TO GOLD · CARRERA</p><h1>Deportes</h1><p>El programa deportivo que has ido construyendo durante esta Carrera.</p></div>
+    <button id="botonVolverCatalogoDeportes" class="boton boton-secundario" type="button">Volver al menú</button>
+  </header>
+  <div id="contenidoCatalogoDeportes" class="contenido-estadisticas"></div>
+</section>
+
 <!-- PANTALLA DE ESTADÍSTICAS -->
 <section
   id="pantallaEstadisticas"
@@ -367,6 +385,14 @@
 
     <button
       class="filtro-estadisticas"
+      data-seccion-estadisticas="sorpresas"
+      type="button"
+    >
+      Sorpresas
+    </button>
+
+    <button
+      class="filtro-estadisticas"
       data-seccion-estadisticas="historial"
       type="button"
     >
@@ -402,7 +428,10 @@
     <p class="texto-beta-superada">
       Tu delegación ya tiene una historia propia.
       Has completado el recorrido previsto para
-      esta primera versión de Road to Gold.
+      esta primera versión de Road to Gold. Ahora
+      puedes curiosear tus estadísticas, completar
+      todos los logros o iniciar otra Carrera con
+      un pack inicial diferente.
     </p>
 
     <div class="nombre-delegacion-beta">
@@ -448,15 +477,38 @@
         logros, objetivos y decisiones podrán
         ampliar la Carrera en futuras versiones.
       </p>
+
+      <p class="feedback-beta">
+        Cuéntame qué mejorarías en
+        <strong>@SportsOnData</strong> en X.
+      </p>
     </div>
 
-    <button
-      id="botonContinuarTrasBeta"
-      class="boton boton-principal"
-      type="button"
-    >
-      Continuar jugando
-    </button>
+    <div class="acciones-beta-superada">
+      <button
+        id="botonCompartirCarrera"
+        class="boton boton-principal"
+        type="button"
+      >
+        Compartir mi Carrera
+      </button>
+
+      <button
+        id="botonSeguirCarreraTrasBeta"
+        class="boton boton-secundario"
+        type="button"
+      >
+        Seguir esta Carrera
+      </button>
+
+      <button
+        id="botonNuevaCarreraTrasBeta"
+        class="boton boton-secundario boton-peligro-suave"
+        type="button"
+      >
+        Nueva Carrera
+      </button>
+    </div>
 
   </div>
 </section>
@@ -942,59 +994,8 @@
     id="nombreDelegacionResultados"
     class="nombre-delegacion-resultados oculto"
   ></p>
-<section
-  id="resumenProgresoCarrera"
-  class="resumen-progreso-carrera oculto"
->
-  <p class="marca">
-    PROGRESO DE CARRERA
-  </p>
-
-  <div class="cabecera-progreso-carrera">
-    <div>
-      <span>Nivel</span>
-
-      <strong id="nivelResultadoCarrera">
-        1
-      </strong>
-    </div>
-
-    <div>
-      <span>Experiencia conseguida</span>
-
-      <strong id="experienciaGanadaCarrera">
-        +0 EXP
-      </strong>
-    </div>
-  </div>
-
-  <div
-    id="desgloseExperienciaCarrera"
-    class="desglose-experiencia-carrera"
-  ></div>
-
-  <p
-    id="mensajeSubidaNivelCarrera"
-    class="mensaje-subida-nivel oculto"
-  ></p>
-</section>
 
 
-<div
-  id="mensajeNuevoRecord"
-  class="mensaje-nuevo-record oculto"
-  aria-live="polite"
->
-  <span class="trofeo-nuevo-record">🏆</span>
-
-  <div>
-    <strong id="tituloNuevoRecord">
-      ¡NUEVO RÉCORD!
-    </strong>
-
-    <span id="detalleNuevoRecord"></span>
-  </div>
-</div>
 
 <div class="medallero-total">
     <div class="medalla-total oro">
@@ -1021,6 +1022,68 @@
       <small>Total</small>
     </div>
   </div>
+
+<section
+  id="resumenProgresoCarrera"
+  class="resumen-progreso-carrera oculto"
+>
+  <p class="marca">
+    PROGRESO DE CARRERA
+  </p>
+
+  <div class="cabecera-progreso-carrera">
+    <div>
+      <span>Nivel</span>
+
+      <strong id="nivelResultadoCarrera">
+        1
+      </strong>
+    </div>
+
+    <div>
+      <span>Experiencia conseguida</span>
+
+      <strong id="experienciaGanadaCarrera">
+        +0 EXP
+      </strong>
+    </div>
+  </div>
+
+  <details
+    id="detalleExperienciaCarrera"
+    class="detalle-experiencia-carrera"
+  >
+    <summary>Ver desglose de experiencia</summary>
+
+    <div
+      id="desgloseExperienciaCarrera"
+      class="desglose-experiencia-carrera"
+    ></div>
+  </details>
+
+  <p
+    id="mensajeSubidaNivelCarrera"
+    class="mensaje-subida-nivel oculto"
+  ></p>
+</section>
+
+<div
+  id="mensajeNuevoRecord"
+  class="mensaje-nuevo-record oculto"
+  aria-live="polite"
+>
+  <span class="trofeo-nuevo-record">🏆</span>
+
+  <div>
+    <strong id="tituloNuevoRecord">
+      ¡NUEVO RÉCORD!
+    </strong>
+
+    <span id="detalleNuevoRecord"></span>
+  </div>
+</div>
+
+
 
 
   <details
@@ -1326,6 +1389,19 @@
       Elige una nueva potencia
     </h2>
 
+    <p class="texto-modal-potencia">
+      Además, desde este nivel los récords
+      batidos conceden experiencia.
+    </p>
+
+    <article class="aviso-recompensa-potencia">
+      <span>🏆</span>
+      <div>
+        <small>Nueva fuente de EXP</small>
+        <strong>Los récords conceden experiencia</strong>
+      </div>
+    </article>
+
     <div class="opciones-potencia">
 
       <button
@@ -1397,7 +1473,7 @@
     </p>
 
     <h2 id="tituloModalNivel4">
-      Tu delegación sigue creciendo
+      Nuevos retos para tu delegación
     </h2>
 
     <div class="recompensas-nivel4">
@@ -1415,23 +1491,28 @@
 
       <article class="tarjeta-recompensa-nivel4">
         <span class="icono-recompensa-nivel4">
-          ↻
+          🏅
         </span>
 
         <div>
-          <small>Nueva ventaja</small>
-          <strong>Un reroll por edición</strong>
+          <small>Nuevo sistema</small>
+          <strong>Logros desbloqueados</strong>
         </div>
       </article>
 
       <article class="tarjeta-recompensa-nivel4">
-        <span class="icono-recompensa-nivel4">
-          🏆
+        <span class="icono-recompensa-nivel4 icono-bandera-nivel4">
+          <img
+            id="banderaCanadaNivel4"
+            src="assets/banderas/Canadá.png"
+            alt="Bandera de Canadá"
+          >
+          <span id="banderaAlternativaCanadaNivel4">CAN</span>
         </span>
 
         <div>
-          <small>Nueva fuente de EXP</small>
-          <strong>Los récords conceden experiencia</strong>
+          <small>Nuevo país</small>
+          <strong>Canadá</strong>
         </div>
       </article>
 
@@ -1631,7 +1712,7 @@
         </div>
 
         <strong id="nombrePaisSorteoNivel6">
-          Japón · Reino Unido · Canadá
+          Japón · Reino Unido
         </strong>
 
         <span id="textoEstadoSorteoNivel6">
@@ -1829,6 +1910,18 @@
       </button>
 
     </div>
+
+    <article class="aviso-recompensa-colectivo">
+      <span>↻</span>
+      <div>
+        <small>Nueva ventaja</small>
+        <strong>Un reroll por edición</strong>
+        <p>
+          Podrás cambiar una vez por edición el país
+          ofrecido durante el draft.
+        </p>
+      </div>
+    </article>
 
   </div>
 </div>

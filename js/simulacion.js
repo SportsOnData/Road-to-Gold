@@ -5,6 +5,22 @@
 */
 
 function comenzarJuegos() {
+  resumenLogrosConseguidos.classList.add(
+    "oculto"
+  );
+
+  resumenLogrosConseguidos.open = false;
+
+  listaLogrosConseguidos.innerHTML = "";
+
+  resumenRecordsCarrera.classList.add(
+    "oculto"
+  );
+
+  resumenRecordsCarrera.open = false;
+
+  listaRecordsCarrera.innerHTML = "";
+
   resultadosJuegos = asignaciones.map(
   ({ deporte, pais, color }) => {
       const nota = obtenerNotaPais(
@@ -486,9 +502,30 @@ return `
 
   return;
 }
+/*
+  La pantalla de resultados se reutiliza en ambos modos.
+  Antes de mostrar una Partida rápida limpiamos por
+  completo cualquier información conservada de Carrera.
+*/
 resumenProgresoCarrera.classList.add(
   "oculto"
 );
+
+resumenLogrosConseguidos.classList.add(
+  "oculto"
+);
+
+resumenLogrosConseguidos.open = false;
+
+listaLogrosConseguidos.innerHTML = "";
+
+resumenRecordsCarrera.classList.add(
+  "oculto"
+);
+
+resumenRecordsCarrera.open = false;
+
+listaRecordsCarrera.innerHTML = "";
 
 zonaRecords.classList.remove("oculto");
 

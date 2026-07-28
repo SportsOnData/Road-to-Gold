@@ -37,8 +37,9 @@ const EXPERIENCIA_POR_NIVEL = {
   2: 750,
   3: 1000,
   4: 1250,
-  5: 1500,
-  6: 1750
+  5: 1900,
+  6: 2300,
+  7: 2700
 };
 const ESTADO_INICIAL_CARRERA = {
   version: 1,
@@ -165,6 +166,9 @@ const pantallaEstadisticas =
     "#pantallaEstadisticas"
   );
 
+const pantallaCatalogoPaises = document.querySelector("#pantallaCatalogoPaises");
+const pantallaCatalogoDeportes = document.querySelector("#pantallaCatalogoDeportes");
+
 const pantallaTutorialInicial =
   document.querySelector(
     "#pantallaTutorialInicial"
@@ -204,6 +208,16 @@ const botonTutorialVerDeportes =
 const botonTutorialComenzar =
   document.querySelector("#botonTutorialComenzar");
 
+const botonAbrirPaisesCarrera =
+  document.querySelector(
+    "#botonAbrirPaisesCarrera"
+  );
+
+const botonAbrirDeportesCarrera =
+  document.querySelector(
+    "#botonAbrirDeportesCarrera"
+  );
+
 const botonAbrirEstadisticas =
   document.querySelector(
     "#botonAbrirEstadisticas"
@@ -218,6 +232,11 @@ const botonVolverEstadisticas =
   document.querySelector(
     "#botonVolverEstadisticas"
   );
+
+const botonVolverCatalogoPaises = document.querySelector("#botonVolverCatalogoPaises");
+const botonVolverCatalogoDeportes = document.querySelector("#botonVolverCatalogoDeportes");
+const contenidoCatalogoPaises = document.querySelector("#contenidoCatalogoPaises");
+const contenidoCatalogoDeportes = document.querySelector("#contenidoCatalogoDeportes");
 
 const filtrosEstadisticas =
   document.querySelector(
@@ -514,9 +533,34 @@ const betaOrosTotales =
     "#betaOrosTotales"
   );
 
-const botonContinuarTrasBeta =
+const botonSeguirCarreraTrasBeta =
   document.querySelector(
-    "#botonContinuarTrasBeta"
+    "#botonSeguirCarreraTrasBeta"
+  );
+
+const botonNuevaCarreraTrasBeta =
+  document.querySelector(
+    "#botonNuevaCarreraTrasBeta"
+  );
+
+const botonCompartirCarrera =
+  document.querySelector(
+    "#botonCompartirCarrera"
+  );
+
+const banderaCanadaNivel4 =
+  document.querySelector(
+    "#banderaCanadaNivel4"
+  );
+
+const banderaAlternativaCanadaNivel4 =
+  document.querySelector(
+    "#banderaAlternativaCanadaNivel4"
+  );
+
+const detalleExperienciaCarrera =
+  document.querySelector(
+    "#detalleExperienciaCarrera"
   );
 
 const modalRecompensaNivel6 =

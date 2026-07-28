@@ -21,6 +21,18 @@ const CATEGORIAS_LOGROS = {
 
 const LOGROS = [
 
+  {
+    id: "ceremonia_inauguracion",
+    nombre: "Ceremonia de inauguración",
+    descripcion:
+      "Completa tus primeros Juegos Olímpicos.",
+    categoria: CATEGORIAS_LOGROS.EDICION,
+    tipo: "ceremonia_inauguracion",
+    objetivo: 1,
+    experiencia: 100,
+    activo: true
+  },
+
   /* ===================================================== */
   /* RESULTADOS DE UNA EDICIÓN                              */
   /* ===================================================== */
@@ -92,7 +104,7 @@ const LOGROS = [
       "Consigue al menos una medalla con todos los países de la edición.",
     categoria: CATEGORIAS_LOGROS.EDICION,
     tipo: "todos_paises_medalla",
-    experiencia: 300,
+    experiencia: 225,
     activo: true
   },
 
@@ -350,7 +362,7 @@ const LOGROS = [
       "No uses el reroll y consigue medalla con todos los países de la edición.",
     categoria: CATEGORIAS_LOGROS.REROLL,
     tipo: "sin_reroll_y_todos_medalla",
-    experiencia: 450,
+    experiencia: 350,
     activo: true
   },
 
@@ -402,7 +414,7 @@ const LOGROS = [
     categoria: CATEGORIAS_LOGROS.RECORDS,
     tipo: "records_minimos_edicion",
     objetivo: 3,
-    experiencia: 400,
+    experiencia: 300,
     activo: true
   },
 
@@ -611,14 +623,30 @@ function obtenerLogroPorId(idLogro) {
   ) || null;
 }
 
+function obtenerLogrosDisponiblesCarrera() {
+  return LOGROS_ACTIVOS.filter((logro) => {
+    if (
+      logro.categoria === CATEGORIAS_LOGROS.REROLL &&
+      !estadoCarrera?.rerollDesbloqueado
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
 function obtenerLogrosActivosPorCategoria(
   categoria = "todos"
 ) {
+  const disponibles =
+    obtenerLogrosDisponiblesCarrera();
+
   if (categoria === "todos") {
-    return LOGROS_ACTIVOS;
+    return disponibles;
   }
 
-  return LOGROS_ACTIVOS.filter(
+  return disponibles.filter(
     (logro) => logro.categoria === categoria
   );
 }
@@ -838,6 +866,9 @@ function comprobarLogroActivo(
     estadoCarrera.estadisticasLogros;
 
   switch (logro.tipo) {
+    case "ceremonia_inauguracion":
+      return false;
+
     case "oros_minimos_edicion":
       return oros >= logro.objetivo;
 
@@ -1157,7 +1188,7 @@ function comprobarLogrosEdicion(
 
   const logrosNuevos = [];
 
-  LOGROS_ACTIVOS.forEach((logro) => {
+  obtenerLogrosDisponiblesCarrera().forEach((logro) => {
     if (
       estadoCarrera.logrosConseguidos.includes(
         logro.id

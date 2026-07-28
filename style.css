@@ -1585,6 +1585,19 @@ button {
   background-color: var(--fondo-secundario);
 }
 
+
+.tarjeta-menu-carrera:not(:disabled) {
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.tarjeta-menu-carrera:not(:disabled):hover,
+.tarjeta-menu-carrera:not(:disabled):focus-visible {
+  background-color: var(--fondo-terciario, rgba(255, 255, 255, 0.06));
+  border-color: var(--dorado);
+  transform: translateY(-2px);
+}
+
 .tarjeta-menu-carrera strong {
   font-size: 1.1rem;
 }
@@ -3698,7 +3711,20 @@ button {
     text-align: left;
   }
 
-  .tarjeta-menu-carrera strong {
+  
+.tarjeta-menu-carrera:not(:disabled) {
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.tarjeta-menu-carrera:not(:disabled):hover,
+.tarjeta-menu-carrera:not(:disabled):focus-visible {
+  background-color: var(--fondo-terciario, rgba(255, 255, 255, 0.06));
+  border-color: var(--dorado);
+  transform: translateY(-2px);
+}
+
+.tarjeta-menu-carrera strong {
     font-size: 1rem;
   }
 
@@ -4660,3 +4686,322 @@ button {
     width: 100%;
   }
 }
+
+
+/* Recompensas reordenadas de niveles 3 y 5 */
+.texto-modal-potencia {
+  max-width: 620px;
+  margin: 0 auto 14px;
+  color: var(--texto-secundario);
+  text-align: center;
+}
+
+.aviso-recompensa-potencia,
+.aviso-recompensa-colectivo {
+  display: flex;
+  width: min(520px, 100%);
+  align-items: center;
+  gap: 14px;
+  margin: 0 auto 18px;
+  padding: 15px 17px;
+  text-align: left;
+  border: 1px solid var(--dorado);
+  border-radius: 14px;
+  background: rgba(255, 214, 74, 0.08);
+}
+
+.aviso-recompensa-potencia > span,
+.aviso-recompensa-colectivo > span {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border-radius: 11px;
+  background: var(--fondo-tarjeta);
+  font-size: 1.35rem;
+}
+
+.aviso-recompensa-potencia small,
+.aviso-recompensa-colectivo small {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--texto-secundario);
+}
+
+@media (max-width: 760px) {
+  .aviso-recompensa-potencia,
+  .aviso-recompensa-colectivo {
+    padding: 13px;
+  }
+}
+
+
+.recompensas-nivel4 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-content: center;
+  align-items: stretch;
+}
+
+.contenido-modal-nivel4 {
+  width: min(650px, calc(100% - 28px));
+}
+
+.detalle-experiencia-carrera {
+  margin-top: 10px;
+}
+
+.detalle-experiencia-carrera summary {
+  cursor: pointer;
+  color: var(--texto-secundario);
+  font-weight: 700;
+  text-align: center;
+}
+
+.acciones-beta-superada {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.tarjeta-record-estadistica summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.tarjeta-record-estadistica summary::-webkit-details-marker {
+  display: none;
+}
+
+.detalle-edicion-record {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--borde);
+}
+
+.medallero-edicion-record {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-bottom: 10px;
+}
+
+.delegacion-edicion-record {
+  display: grid;
+  gap: 7px;
+}
+
+.delegacion-edicion-record article {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.035);
+}
+
+.resultado-record-destacado {
+  outline: 1px solid var(--dorado);
+}
+
+.historias-fortuna-pais {
+  margin-top: 22px;
+}
+
+.historias-fortuna-pais > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.tarjeta-historia-fortuna {
+  padding: 14px;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  background: var(--fondo-tarjeta);
+}
+
+.tarjeta-historia-fortuna > span {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--dorado);
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.tarjeta-historia-fortuna p,
+.tarjeta-historia-fortuna small {
+  display: block;
+  margin: 6px 0 0;
+  color: var(--texto-secundario);
+}
+
+@media (max-width: 700px) {
+  .recompensas-nivel4 {
+    grid-template-columns: 1fr;
+  }
+
+  .historias-fortuna-pais > div {
+    grid-template-columns: 1fr;
+  }
+
+  .delegacion-edicion-record article {
+    display: grid;
+  }
+
+  .acciones-beta-superada {
+    display: grid;
+  }
+}
+
+
+/* AJUSTES DE CIERRE DE LA FASE BETA */
+.feedback-beta {
+  margin-top: 14px;
+}
+
+.feedback-beta strong {
+  color: #f4c63f;
+}
+
+.boton-peligro-suave {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.icono-bandera-nivel4 {
+  overflow: hidden;
+  padding: 0;
+}
+
+.icono-bandera-nivel4 img,
+.icono-bandera-nivel4 > span {
+  width: 100%;
+  height: 100%;
+}
+
+.icono-bandera-nivel4 img {
+  display: block;
+  object-fit: cover;
+}
+
+.icono-bandera-nivel4 > span {
+  display: none;
+  place-items: center;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.aviso-recompensa-colectivo p {
+  margin: 5px 0 0;
+  font-size: 0.9rem;
+  opacity: 0.82;
+}
+
+/* ORDENACIÓN Y MENÚ DE SORPRESAS */
+.cabecera-columna-ordenable {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.boton-orden-estadisticas {
+  display: inline-flex;
+  width: 25px;
+  height: 25px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--texto-secundario);
+  border: 1px solid var(--borde);
+  border-radius: 7px;
+  background: var(--fondo-tarjeta);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.boton-orden-estadisticas:hover,
+.boton-orden-estadisticas.activo {
+  color: #171717;
+  border-color: var(--dorado);
+  background: var(--dorado);
+}
+
+.introduccion-sorpresas-estadisticas {
+  margin-bottom: 22px;
+  padding: 20px;
+  border: 1px solid var(--borde);
+  border-radius: 17px;
+  background: var(--fondo-secundario);
+}
+
+.introduccion-sorpresas-estadisticas h2 {
+  margin: 5px 0 8px;
+}
+
+.introduccion-sorpresas-estadisticas p:last-child {
+  color: var(--texto-secundario);
+}
+
+.rejilla-rankings-sorpresas {
+  display: grid;
+  gap: 24px;
+}
+
+.bloque-ranking-sorpresas h3 {
+  margin-bottom: 10px;
+}
+
+.bloque-ranking-sorpresas.positiva h3 {
+  color: #75d69a;
+}
+
+.bloque-ranking-sorpresas.negativa h3 {
+  color: #ff8585;
+}
+
+.tabla-sorpresas td:last-child strong {
+  color: var(--dorado);
+}
+
+@media (max-width: 700px) {
+  .tabla-estadisticas td::before {
+    content: attr(data-etiqueta) !important;
+  }
+
+  .tabla-estadisticas td:first-child::before {
+    display: none;
+  }
+
+  .tabla-sorpresas td:first-child {
+    display: block;
+  }
+}
+
+/* CATÁLOGO DE PAÍSES Y DEPORTES */
+.cabecera-catalogo-estadisticas { margin-bottom: 18px; }
+.cabecera-catalogo-estadisticas h2 { margin: 4px 0 7px; }
+.cabecera-catalogo-estadisticas p:last-child { color: var(--texto-secundario); }
+.rejilla-catalogo-estadisticas { display:grid; grid-template-columns:repeat(auto-fill,minmax(145px,1fr)); gap:12px; margin-bottom:28px; }
+.tarjeta-catalogo-estadisticas { min-height:145px; padding:14px 10px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; border:1px solid var(--borde); border-radius:15px; background:var(--fondo-secundario); color:inherit; text-align:center; }
+.tarjeta-catalogo-estadisticas.desbloqueada { cursor:pointer; }
+.tarjeta-catalogo-estadisticas.desbloqueada { transition:background-color .18s ease,border-color .18s ease,transform .18s ease; }
+.tarjeta-catalogo-estadisticas.desbloqueada:hover, .tarjeta-catalogo-estadisticas.desbloqueada:focus-visible { background-color:var(--fondo-terciario, rgba(255,255,255,.06)); border-color:var(--dorado); transform:translateY(-2px); }
+.tarjeta-catalogo-estadisticas.bloqueada { opacity:.48; filter:grayscale(.85); cursor:default; }
+.tarjeta-catalogo-estadisticas.fuera-beta { opacity:.3; }
+.tarjeta-catalogo-estadisticas small { color:var(--texto-secundario); font-size:.76rem; line-height:1.25; }
+.bandera-catalogo { width:58px; height:40px; display:grid; place-items:center; overflow:hidden; border-radius:7px; background:rgba(255,255,255,.08); }
+.bandera-catalogo img { width:100%; height:100%; object-fit:cover; }
+.bandera-catalogo span { display:none; width:100%; height:100%; place-items:center; font-weight:900; }
+.icono-deporte-catalogo { font-size:2.1rem; }
+.bloque-tabla-rendimiento { margin-top:30px; }
+.bloque-tabla-rendimiento h3 { margin-bottom:10px; }
+.detalle-deporte-estadisticas { margin:4px 0 26px; }
+@media (max-width:520px){ .rejilla-catalogo-estadisticas{grid-template-columns:repeat(2,minmax(0,1fr));}.tarjeta-catalogo-estadisticas{min-height:132px;} }

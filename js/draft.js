@@ -321,10 +321,159 @@ function seleccionarPonderados(
   return elegidos;
 }
 
+
+function obtenerDeportesLibresDraft() {
+  const codigosOcupados = new Set(
+    asignaciones.map(
+      (asignacion) =>
+        asignacion.deporte.codigo
+    )
+  );
+
+  return deportesPartida.filter(
+    (deporte) =>
+      !codigosOcupados.has(
+        deporte.codigo
+      )
+  );
+}
+
+function calcularPesoPaisCondicionado(
+  pais,
+  deportesLibres
+) {
+  if (deportesLibres.length === 0) {
+    return 1;
+  }
+
+  const notasLibres =
+    deportesLibres
+      .map((deporte) =>
+        obtenerNotaPais(
+          pais,
+          deporte.codigo
+        )
+      )
+      .sort((a, b) => b - a);
+
+  const mejorNota =
+    notasLibres[0] || 0;
+
+  const segundaNota =
+    notasLibres[1] || 0;
+
+  let peso = 1;
+
+  /*
+    Buena coincidencia general.
+  */
+  if (mejorNota >= 9) {
+    peso *= 1.22;
+  } else if (mejorNota >= 7) {
+    peso *= 1.10;
+  }
+
+  /*
+    Especialista claro:
+    al menos un 7 y como máximo un 3
+    como segunda mejor opción.
+
+    Esto incluye, por ejemplo:
+    Jamaica o Kenia con Atletismo libre.
+  */
+  const esEspecialistaClaro =
+    mejorNota >= 7 &&
+    segundaNota <= 3;
+
+  /*
+    Especialista extremo:
+    al menos un 9 y como máximo un 2
+    como segunda mejor opción.
+
+    Por ejemplo:
+    Fiji con Rugby libre.
+  */
+  const esEspecialistaExtremo =
+    mejorNota >= 9 &&
+    segundaNota <= 2;
+
+  if (esEspecialistaClaro) {
+    peso *= 1.38;
+  }
+
+  if (esEspecialistaExtremo) {
+    peso *= 1.22;
+  }
+
+  /*
+    Si el país no tiene una opción mínimamente
+    útil entre los deportes libres, aparece
+    algo menos, pero nunca desaparece.
+  */
+  if (mejorNota <= 2) {
+    peso *= 0.58;
+  } else if (mejorNota <= 4) {
+    peso *= 0.82;
+  }
+
+  return Math.max(0.20, peso);
+}
+
+function extraerSiguientePaisCondicionado() {
+  if (paisesPendientes.length === 0) {
+    return null;
+  }
+
+  const deportesLibres =
+    obtenerDeportesLibresDraft();
+
+  const pesos =
+    paisesPendientes.map((pais) =>
+      calcularPesoPaisCondicionado(
+        pais,
+        deportesLibres
+      )
+    );
+
+  const pesoTotal =
+    pesos.reduce(
+      (total, peso) =>
+        total + peso,
+      0
+    );
+
+  let sorteo =
+    Math.random() * pesoTotal;
+
+  let indiceElegido = 0;
+
+  for (
+    let indice = 0;
+    indice < pesos.length;
+    indice += 1
+  ) {
+    sorteo -= pesos[indice];
+
+    if (sorteo <= 0) {
+      indiceElegido = indice;
+      break;
+    }
+  }
+
+  return paisesPendientes.splice(
+    indiceElegido,
+    1
+  )[0];
+}
+
+
 function sacarSiguientePais(
   mensajeFinal = "Elige el deporte donde quieres colocar este país."
 ) {
-  const paisSeleccionado = paisesPendientes.shift();
+  const paisSeleccionado =
+    modoJuegoActual === MODO_PARTIDA_RAPIDA
+      ? extraerSiguientePaisCondicionado()
+      : paisesPendientes.shift();
 
   if (!paisSeleccionado) {
     console.error("No quedan países disponibles.");

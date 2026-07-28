@@ -117,6 +117,15 @@ function completarEstadoCarrera(carrera) {
       ? [...carrera.recompensasPendientes]
       : [];
 
+  estadoCompleto.recompensasPendientes =
+    estadoCompleto.recompensasPendientes.map(
+      (recompensa) =>
+        recompensa ===
+        "nivel_4_tiro_logros"
+          ? "nivel_4_tiro_logros"
+          : recompensa
+    );
+
   if (
     estadoCompleto.nivel >= 2 &&
     !estadoCompleto.nombreDelegacion &&
@@ -145,25 +154,30 @@ function completarEstadoCarrera(carrera) {
     !estadoCompleto.deportesDesbloqueados.includes(
       "tiro"
     ) ||
-    !estadoCompleto.rerollDesbloqueado ||
-    !estadoCompleto
-      .recordsConExperienciaDesbloqueados;
+    !estadoCompleto.paisesDesbloqueados.includes(
+      "CAN"
+    ) ||
+    !estadoCompleto.logrosDesbloqueados;
 
   if (
     estadoCompleto.nivel >= 4 &&
     recompensaNivel4Incompleta &&
     !estadoCompleto.recompensasPendientes.includes(
-      "nivel_4_tiro_reroll"
+      "nivel_4_tiro_logros"
     )
   ) {
     estadoCompleto.recompensasPendientes.push(
-      "nivel_4_tiro_reroll"
+      "nivel_4_tiro_logros"
     );
   }
 
+  const recompensaNivel5Incompleta =
+    !estadoCompleto.deporteColectivoElegido ||
+    !estadoCompleto.rerollDesbloqueado;
+
   if (
     estadoCompleto.nivel >= 5 &&
-    !estadoCompleto.deporteColectivoElegido &&
+    recompensaNivel5Incompleta &&
     !estadoCompleto.recompensasPendientes.includes(
       "elegir_deporte_colectivo"
     )
@@ -215,6 +229,58 @@ function completarEstadoCarrera(carrera) {
 
   estadoCompleto.logrosDesbloqueados =
     Boolean(carrera.logrosDesbloqueados);
+
+  if (
+    estadoCompleto.nivel >= 4 &&
+    estadoCompleto.juegosDisputados > 0 &&
+    !estadoCompleto.logrosConseguidos.includes(
+      "ceremonia_inauguracion"
+    )
+  ) {
+    estadoCompleto.logrosConseguidos.push(
+      "ceremonia_inauguracion"
+    );
+
+    estadoCompleto.detalleLogros[
+      "ceremonia_inauguracion"
+    ] = {
+      edicion: 1,
+      fecha:
+        estadoCompleto.historialEdiciones?.[0]?.fecha ||
+        new Date().toISOString()
+    };
+
+    estadoCompleto.progresoLogros[
+      "ceremonia_inauguracion"
+    ] = {
+      actual: 1,
+      objetivo: 1,
+      texto: "Completado",
+      edicion: 1
+    };
+  }
+
+  /*
+    Compatibilidad con partidas anteriores:
+    los récords dan EXP desde nivel 3,
+    los logros desde nivel 4 y el reroll
+    desde nivel 5.
+  */
+  if (estadoCompleto.nivel >= 3) {
+    estadoCompleto
+      .recordsConExperienciaDesbloqueados =
+        true;
+  }
+
+  if (estadoCompleto.nivel >= 4) {
+    estadoCompleto.logrosDesbloqueados =
+      true;
+  }
+
+  if (estadoCompleto.nivel >= 5) {
+    estadoCompleto.rerollDesbloqueado =
+      true;
+  }
 
   estadoCompleto.detalleLogros = {
     ...(carrera.detalleLogros || {})
@@ -543,8 +609,10 @@ if (!puedeNombrarDelegacion) {
   );
 
 experienciaCarrera.textContent =
-  `${estadoCarrera.experiencia} / ` +
-  `${experienciaNecesaria} EXP`;
+  estadoCarrera.nivel >= 8
+    ? "Nivel 8 · máximo en fase beta"
+    : `${estadoCarrera.experiencia} / ` +
+      `${experienciaNecesaria} EXP`;
 
   juegosDisputadosCarrera.textContent =
     estadoCarrera.juegosDisputados;
@@ -562,10 +630,10 @@ experienciaCarrera.textContent =
     `${estadoCarrera.deportesDesbloqueados.length} desbloqueados`;
 
   const logrosDisponibles =
-    LOGROS_ACTIVOS.length;
+    obtenerLogrosDisponiblesCarrera().length;
 
   const logrosConseguidos =
-    LOGROS_ACTIVOS.filter(
+    obtenerLogrosDisponiblesCarrera().filter(
       (logro) =>
         estadoCarrera.logrosConseguidos.includes(
           logro.id
@@ -581,7 +649,7 @@ experienciaCarrera.textContent =
       `${logrosDisponibles} conseguidos`;
   } else {
     estadoMenuLogros.textContent =
-      "Se desbloquean en el nivel 5";
+      "Se desbloquean en el nivel 4";
   }
 
   actualizarUltimosLogrosCarrera();
@@ -664,7 +732,7 @@ function mostrarSiguienteRecompensaPendiente() {
 
   if (
     siguienteRecompensa ===
-    "nivel_4_tiro_reroll"
+    "nivel_4_tiro_logros"
   ) {
     abrirModalRecompensaNivel4();
     return;
@@ -843,6 +911,14 @@ function elegirPotenciaCarrera(codigoPais) {
   estadoCarrera.potenciaElegida =
     codigoPais;
 
+  /*
+    Desde el nivel 3, los récords batidos
+    empiezan a conceder experiencia.
+  */
+  estadoCarrera
+    .recordsConExperienciaDesbloqueados =
+      true;
+
   completarRecompensaPendiente(
     "elegir_potencia"
   );
@@ -857,6 +933,20 @@ function elegirPotenciaCarrera(codigoPais) {
 }
 
 function abrirModalRecompensaNivel4() {
+  const canada = obtenerPaisPorCodigo("CAN");
+
+  if (
+    canada &&
+    banderaCanadaNivel4 &&
+    banderaAlternativaCanadaNivel4
+  ) {
+    cargarBandera(
+      banderaCanadaNivel4,
+      banderaAlternativaCanadaNivel4,
+      canada
+    );
+  }
+
   modalRecompensaNivel4.classList.remove(
     "oculto"
   );
@@ -879,15 +969,25 @@ function completarRecompensaNivel4() {
     );
   }
 
-  estadoCarrera.rerollDesbloqueado =
+  /*
+    Los logros empiezan a contar desde este
+    momento. No se revisan ediciones anteriores.
+  */
+  estadoCarrera.logrosDesbloqueados =
     true;
 
-  estadoCarrera
-    .recordsConExperienciaDesbloqueados =
-      true;
+  if (
+    !estadoCarrera.paisesDesbloqueados.includes(
+      "CAN"
+    )
+  ) {
+    estadoCarrera.paisesDesbloqueados.push(
+      "CAN"
+    );
+  }
 
   completarRecompensaPendiente(
-    "nivel_4_tiro_reroll"
+    "nivel_4_tiro_logros"
   );
 
   actualizarHubCarrera();
@@ -939,10 +1039,11 @@ function elegirDeporteColectivoCarrera(
     codigoDeporte;
 
   /*
-    Los logros empiezan a contar desde este momento.
-    No se revisan ediciones anteriores.
+    Desde el nivel 5 se puede sustituir una vez
+    por edición el país que acaba de aparecer.
   */
-  estadoCarrera.logrosDesbloqueados = true;
+  estadoCarrera.rerollDesbloqueado =
+    true;
 
   completarRecompensaPendiente(
     "elegir_deporte_colectivo"
@@ -1104,12 +1205,34 @@ let seccionEstadisticasActual =
 let codigoPaisEstadisticasSeleccionado =
   "";
 
-function abrirPantallaEstadisticas() {
-  seccionEstadisticasActual =
-    "resumen";
+let codigoDeporteEstadisticasSeleccionado =
+  "";
 
-  codigoPaisEstadisticasSeleccionado =
-    "";
+const ordenEstadisticas = {
+  paises: { clave: "total", direccion: "desc" },
+  deportes: { clave: "total", direccion: "desc" },
+  sorpresasActuacionesPositivas: { clave: "fortunaIndice", direccion: "desc" },
+  sorpresasActuacionesNegativas: { clave: "fortunaIndice", direccion: "asc" },
+  sorpresasEdicionesPositivas: { clave: "fortunaMedia", direccion: "desc" },
+  sorpresasEdicionesNegativas: { clave: "fortunaMedia", direccion: "asc" }
+};
+
+function abrirPantallaEstadisticas(seccionInicial = "resumen") {
+  const seccionesValidas = [
+    "resumen",
+    "paises",
+    "deportes",
+    "records",
+    "sorpresas",
+    "historial"
+  ];
+
+  seccionEstadisticasActual = seccionesValidas.includes(seccionInicial)
+    ? seccionInicial
+    : "resumen";
+
+  codigoPaisEstadisticasSeleccionado = "";
+  codigoDeporteEstadisticasSeleccionado = "";
 
   filtrosEstadisticas
     .querySelectorAll(
@@ -1119,7 +1242,7 @@ function abrirPantallaEstadisticas() {
       boton.classList.toggle(
         "activo",
         boton.dataset.seccionEstadisticas ===
-          "resumen"
+          seccionEstadisticasActual
       );
     });
 
@@ -1453,8 +1576,9 @@ function renderizarDetallePaisEstadisticas(
             ${fila.total} medallas ·
             media de
             ${formatearNumeroEstadistica(
-              fila.total /
-              fila.participaciones,
+              fila.participaciones > 0
+                ? fila.total / fila.participaciones
+                : 0,
               2
             )}
           </p>
@@ -1498,6 +1622,10 @@ function renderizarDetallePaisEstadisticas(
           )}
         </article>
       </div>
+
+      ${crearHistoriasFortunaPais(
+        fila.codigo
+      )}
 
       ${
         datosDisponibles
@@ -1593,173 +1721,329 @@ function renderizarDetallePaisEstadisticas(
   `;
 }
 
-function renderizarPaisesEstadisticas() {
-  const filas =
-    Object.entries(
-      estadoCarrera.progresoPaises
-    )
-      .map(([codigo, progreso]) => {
-        const pais =
-          PAISES.find(
-            (item) =>
-              item.codigo === codigo
-          );
 
-        const resumenDeportes =
-          obtenerResumenDeportesPais(
-            progreso
-          );
-
-        return {
-          codigo: codigo,
-          nombre:
-            pais?.nombre || codigo,
-          ...progreso,
-          colores: {
-            azul:
-              progreso.colores?.azul || 0,
-            verde:
-              progreso.colores?.verde || 0,
-            amarillo:
-              progreso.colores?.amarillo || 0,
-            rojo:
-              progreso.colores?.rojo || 0
-          },
-          total:
-            obtenerTotalMedallasProgreso(
-              progreso
-            ),
-          deporteMasUsado:
-            resumenDeportes.deporteMasUsado
-        };
-      })
-      .filter(
-        (fila) =>
-          fila.participaciones > 0
-      )
-      .sort(
-        (a, b) =>
-          b.total - a.total ||
-          b.oros - a.oros
+function obtenerHistoriasFortunaPais(
+  codigoPais
+) {
+  const actuaciones =
+    estadoCarrera.historialEdiciones
+      .flatMap((edicion) =>
+        (edicion.resultados || [])
+          .filter(
+            (resultado) =>
+              resultado.paisCodigo ===
+                codigoPais &&
+              Number.isFinite(
+                resultado.fortunaIndice
+              )
+          )
+          .map((resultado) => ({
+            ...resultado,
+            edicion: edicion.edicion
+          }))
       );
 
-  if (filas.length === 0) {
-    contenidoEstadisticas.innerHTML =
-      `<p class="estado-vacio-estadisticas">
-        Aún no hay resultados por país.
-      </p>`;
+  if (actuaciones.length === 0) {
+    return {
+      mejor: null,
+      peor: null
+    };
+  }
 
+  return {
+    mejor: [...actuaciones].sort(
+      (a, b) =>
+        b.fortunaIndice -
+        a.fortunaIndice
+    )[0],
+
+    peor: [...actuaciones].sort(
+      (a, b) =>
+        a.fortunaIndice -
+        b.fortunaIndice
+    )[0]
+  };
+}
+
+function crearTarjetaHistoriaFortuna(
+  titulo,
+  resultado,
+  tipo
+) {
+  if (!resultado) {
+    return `
+      <article class="tarjeta-historia-fortuna vacia">
+        <span>${titulo}</span>
+        <strong>Sin datos todavía</strong>
+        <small>
+          El seguimiento comienza con esta versión.
+        </small>
+      </article>
+    `;
+  }
+
+  const indice =
+    resultado.fortunaIndice >= 0
+      ? `+${resultado.fortunaIndice.toFixed(2)}`
+      : resultado.fortunaIndice.toFixed(2);
+
+  return `
+    <article class="tarjeta-historia-fortuna ${tipo}">
+      <span>${titulo}</span>
+      <strong>
+        ${resultado.deporteNombre}
+        · Edición ${resultado.edicion}
+      </strong>
+      <p>
+        🥇 ${resultado.oros}
+        · 🥈 ${resultado.platas}
+        · 🥉 ${resultado.bronces}
+      </p>
+      <small>
+        ${indice}
+        · ${resultado.fortunaTexto || "Resultado registrado"}
+      </small>
+    </article>
+  `;
+}
+
+function crearHistoriasFortunaPais(
+  codigoPais
+) {
+  const historias =
+    obtenerHistoriasFortunaPais(
+      codigoPais
+    );
+
+  return `
+    <section class="historias-fortuna-pais">
+      <h3>Historias destacadas</h3>
+      <div>
+        ${crearTarjetaHistoriaFortuna(
+          "MEJOR SORPRESA",
+          historias.mejor,
+          "positiva"
+        )}
+        ${crearTarjetaHistoriaFortuna(
+          "MAYOR DECEPCIÓN",
+          historias.peor,
+          "negativa"
+        )}
+      </div>
+    </section>
+  `;
+}
+
+
+function compararValoresEstadisticas(valorA, valorB, direccion) {
+  const a = Number.isFinite(Number(valorA)) ? Number(valorA) : 0;
+  const b = Number.isFinite(Number(valorB)) ? Number(valorB) : 0;
+  return direccion === "asc" ? a - b : b - a;
+}
+
+function ordenarFilasEstadisticas(filas, configuracion, desempate = () => 0) {
+  return [...filas].sort((a, b) =>
+    compararValoresEstadisticas(
+      a[configuracion.clave],
+      b[configuracion.clave],
+      configuracion.direccion
+    ) || desempate(a, b)
+  );
+}
+
+
+const PAISES_OBTENIBLES_BETA = new Set([
+  ...ESTADO_INICIAL_CARRERA.paisesDesbloqueados,
+  "USA", "CHN", "CAN",
+  "JPN", "GBR", "RSA", "ROU",
+  "FIJ", "SMR", "KEN"
+]);
+
+const DEPORTES_OBTENIBLES_BETA = new Set([
+  ...ESTADO_INICIAL_CARRERA.deportesDesbloqueados,
+  "tiro", "futbol", "voleibol", "waterpolo",
+  "ciclismo", "tenis"
+]);
+
+function crearTarjetaCatalogoPais(pais) {
+  const desbloqueado = estadoCarrera.paisesDesbloqueados.includes(pais.codigo);
+  const obtenible = PAISES_OBTENIBLES_BETA.has(pais.codigo);
+  const progreso = estadoCarrera.progresoPaises[pais.codigo] || {};
+  const total = obtenerTotalMedallasProgreso(progreso);
+  return `<button type="button" class="tarjeta-catalogo-estadisticas pais ${desbloqueado ? "desbloqueada" : "bloqueada"} ${!obtenible ? "fuera-beta" : ""}" ${desbloqueado ? `data-codigo-pais-catalogo="${pais.codigo}"` : "disabled"} aria-label="${desbloqueado ? `Ver estadísticas de ${pais.nombre}` : `${pais.nombre}, bloqueado`}">
+    <span class="bandera-catalogo"><img src="assets/banderas/${pais.nombre}.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid'"><span>${pais.codigo}</span></span>
+    <strong>${pais.nombre}</strong>
+    ${desbloqueado ? `<small>${progreso.participaciones || 0} participaciones · ${total} medallas</small>` : `<small>${!obtenible ? "No disponible en esta fase beta" : "País aún no desbloqueado"}</small>`}
+  </button>`;
+}
+
+function crearTarjetaCatalogoDeporte(deporte) {
+  const desbloqueado = estadoCarrera.deportesDesbloqueados.includes(deporte.codigo);
+  const obtenible = DEPORTES_OBTENIBLES_BETA.has(deporte.codigo);
+  const progreso = estadoCarrera.progresoDeportes[deporte.codigo] || {};
+  const total = obtenerTotalMedallasProgreso(progreso);
+  return `<button type="button" class="tarjeta-catalogo-estadisticas deporte ${desbloqueado ? "desbloqueada" : "bloqueada"} ${!obtenible ? "fuera-beta" : ""}" ${desbloqueado ? `data-codigo-deporte-catalogo="${deporte.codigo}"` : "disabled"} aria-label="${desbloqueado ? `Ver estadísticas de ${deporte.nombre}` : `${deporte.nombre}, bloqueado`}">
+    <span class="icono-deporte-catalogo">${obtenerEmojiDeporteTutorial(deporte.codigo)}</span>
+    <strong>${deporte.nombre}</strong>
+    ${desbloqueado ? `<small>${progreso.apariciones || 0} apariciones · ${total} medallas</small>` : `<small>${!obtenible ? "No disponible en esta fase beta" : "Deporte aún no desbloqueado"}</small>`}
+  </button>`;
+}
+
+function crearCatalogoPaisesEstadisticas() {
+  const paises = PAISES.filter(estaActivo).sort((a,b)=>a.nombre.localeCompare(b.nombre,"es"));
+  return `<section class="cabecera-catalogo-estadisticas"><p class="marca">CATÁLOGO DE CARRERA</p><h2>Países</h2><p>${estadoCarrera.paisesDesbloqueados.length} de ${paises.length} desbloqueados. Los sorteos pueden hacer que algunas Carreras terminen con colecciones diferentes.</p></section><div class="rejilla-catalogo-estadisticas">${paises.map(crearTarjetaCatalogoPais).join("")}</div>`;
+}
+
+function crearCatalogoDeportesEstadisticas() {
+  const deportes = [...DEPORTES].sort((a,b)=>a.nombre.localeCompare(b.nombre,"es"));
+  const desbloqueadosVisibles = deportes.filter((deporte) =>
+    estadoCarrera.deportesDesbloqueados.includes(deporte.codigo)
+  ).length;
+  return `<section class="cabecera-catalogo-estadisticas"><p class="marca">CATÁLOGO DE CARRERA</p><h2>Deportes</h2><p>${desbloqueadosVisibles} de ${deportes.length} desbloqueados.</p></section><div class="rejilla-catalogo-estadisticas">${deportes.map(crearTarjetaCatalogoDeporte).join("")}</div>`;
+}
+
+function abrirCatalogoPaisesCarrera() {
+  contenidoCatalogoPaises.innerHTML = crearCatalogoPaisesEstadisticas();
+  mostrarPantalla(pantallaCatalogoPaises);
+}
+
+function abrirCatalogoDeportesCarrera() {
+  contenidoCatalogoDeportes.innerHTML = crearCatalogoDeportesEstadisticas();
+  mostrarPantalla(pantallaCatalogoDeportes);
+}
+
+function abrirDetallePaisDesdeCatalogo(codigo) {
+  abrirPantallaEstadisticas("paises");
+  codigoPaisEstadisticasSeleccionado = codigo;
+  renderizarPaisesEstadisticas();
+
+  contenidoEstadisticas
+    .querySelector(".detalle-pais-estadisticas")
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function abrirDetalleDeporteDesdeCatalogo(codigo) {
+  abrirPantallaEstadisticas("deportes");
+  codigoDeporteEstadisticasSeleccionado = codigo;
+  renderizarDeportesEstadisticas();
+}
+
+function renderizarDetalleDeporteEstadisticas(codigo) {
+  if (!codigo) return "";
+  const deporte = DEPORTES.find(item=>item.codigo===codigo);
+  const progreso = estadoCarrera.progresoDeportes[codigo] || {apariciones:0,oros:0,platas:0,bronces:0};
+  const total = obtenerTotalMedallasProgreso(progreso);
+  return `<section class="detalle-pais-estadisticas detalle-deporte-estadisticas"><header class="cabecera-detalle-pais"><div><p class="marca">ESTADÍSTICAS DEL DEPORTE</p><h2>${deporte?.nombre || codigo}</h2><p>${progreso.apariciones || 0} apariciones · ${total} medallas</p></div><div class="medallero-detalle-pais"><span>🥇 ${progreso.oros || 0}</span><span>🥈 ${progreso.platas || 0}</span><span>🥉 ${progreso.bronces || 0}</span></div></header><div class="resumen-detalle-pais"><article><span>Récord de medallas</span><strong>${progreso.recordMedallas?.valor ?? "—"}</strong><small>${progreso.recordMedallas?.paisNombre || "Sin marca registrada"}</small></article><article><span>Récord de oros</span><strong>${progreso.recordOros?.valor ?? "—"}</strong><small>${progreso.recordOros?.paisNombre || "Sin marca registrada"}</small></article></div></section>`;
+}
+
+function crearCabeceraOrdenableEstadisticas(etiqueta, seccionOrden, clave) {
+  const configuracion = ordenEstadisticas[seccionOrden];
+  const activa = configuracion?.clave === clave;
+  const icono = activa
+    ? (configuracion.direccion === "asc" ? "↑" : "↓")
+    : "↕";
+
+  return `<span class="cabecera-columna-ordenable"><span>${etiqueta}</span><button class="boton-orden-estadisticas ${activa ? "activo" : ""}" type="button" data-orden-estadisticas="${seccionOrden}" data-clave-orden-estadisticas="${clave}" title="Ordenar por ${etiqueta}" aria-label="Ordenar por ${etiqueta}">${icono}</button></span>`;
+}
+
+function renderizarPaisesEstadisticas() {
+  const filas = Object.entries(estadoCarrera.progresoPaises)
+    .map(([codigo, progreso]) => {
+      const pais = PAISES.find((item) => item.codigo === codigo);
+      const resumenDeportes = obtenerResumenDeportesPais(progreso);
+      const total = obtenerTotalMedallasProgreso(progreso);
+      return {
+        codigo,
+        nombre: pais?.nombre || codigo,
+        ...progreso,
+        colores: {
+          azul: progreso.colores?.azul || 0,
+          verde: progreso.colores?.verde || 0,
+          amarillo: progreso.colores?.amarillo || 0,
+          rojo: progreso.colores?.rojo || 0
+        },
+        total,
+        media: progreso.participaciones > 0 ? total / progreso.participaciones : 0,
+        deporteMasUsado: resumenDeportes.deporteMasUsado
+      };
+    })
+    .filter((fila) => fila.participaciones > 0);
+
+  const filasOrdenadas = ordenarFilasEstadisticas(
+    filas,
+    ordenEstadisticas.paises,
+    (a, b) => b.total - a.total || b.oros - a.oros
+  );
+
+  if (filasOrdenadas.length === 0 && !codigoPaisEstadisticasSeleccionado) {
+    contenidoEstadisticas.innerHTML = `<p class="mensaje-estadisticas-vacio">Todavía no hay actuaciones de países registradas.</p>`;
     return;
   }
 
-  const filaSeleccionada =
-    filas.find(
-      (fila) =>
-        fila.codigo ===
-        codigoPaisEstadisticasSeleccionado
+  let filaSeleccionada = filasOrdenadas.find(
+    (fila) => fila.codigo === codigoPaisEstadisticasSeleccionado
+  );
+
+  if (!filaSeleccionada && codigoPaisEstadisticasSeleccionado) {
+    const paisSeleccionado = PAISES.find(
+      (pais) => pais.codigo === codigoPaisEstadisticasSeleccionado
     );
 
+    if (paisSeleccionado) {
+      const progreso = estadoCarrera.progresoPaises[codigoPaisEstadisticasSeleccionado] || {};
+      const resumenDeportes = obtenerResumenDeportesPais(progreso);
+      const total = obtenerTotalMedallasProgreso(progreso);
+
+      filaSeleccionada = {
+        codigo: paisSeleccionado.codigo,
+        nombre: paisSeleccionado.nombre,
+        participaciones: progreso.participaciones || 0,
+        oros: progreso.oros || 0,
+        platas: progreso.platas || 0,
+        bronces: progreso.bronces || 0,
+        colores: {
+          azul: progreso.colores?.azul || 0,
+          verde: progreso.colores?.verde || 0,
+          amarillo: progreso.colores?.amarillo || 0,
+          rojo: progreso.colores?.rojo || 0
+        },
+        deportes: progreso.deportes || {},
+        total,
+        media: progreso.participaciones > 0 ? total / progreso.participaciones : 0,
+        deporteMasUsado: resumenDeportes.deporteMasUsado
+      };
+    }
+  }
+
   contenidoEstadisticas.innerHTML = `
-    <div class="tabla-estadisticas-contenedor">
-      <table
-        class="tabla-estadisticas tabla-paises-estadisticas"
-      >
-        <thead>
-          <tr>
-            <th>País</th>
-            <th>Participaciones</th>
-            <th>🥇</th>
-            <th>🥈</th>
-            <th>🥉</th>
-            <th>Total</th>
-            <th>Media por JJOO</th>
-            <th>Deporte más usado</th>
-            <th>Colores</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          ${filas.map((fila) => `
-            <tr
-              class="fila-pais-estadisticas ${
-                fila.codigo ===
-                codigoPaisEstadisticasSeleccionado
-                  ? "seleccionada"
-                  : ""
-              }"
-              data-codigo-pais-estadisticas="${
-                fila.codigo
-              }"
-              tabindex="0"
-              role="button"
-              aria-pressed="${
-                fila.codigo ===
-                codigoPaisEstadisticasSeleccionado
-              }"
-              aria-label="Ver estadísticas detalladas de ${
-                fila.nombre
-              }"
-            >
-              <td>
-                <strong>${fila.nombre}</strong>
-                <small>${fila.codigo}</small>
-              </td>
-
-              <td>${fila.participaciones}</td>
-              <td>${fila.oros}</td>
-              <td>${fila.platas}</td>
-              <td>${fila.bronces}</td>
-              <td><strong>${fila.total}</strong></td>
-
-              <td>
-                ${formatearNumeroEstadistica(
-                  fila.total /
-                  fila.participaciones,
-                  2
-                )}
-              </td>
-
-              <td>
-                ${
-                  fila.deporteMasUsado
-                    ? `
-                      <strong>
-                        ${fila.deporteMasUsado.nombre}
-                      </strong>
-
-                      <small>
-                        ${fila.deporteMasUsado
-                          .participaciones}
-                        veces
-                      </small>
-                    `
-                    : `
-                      <span class="dato-no-disponible">
-                        Desde esta versión
-                      </span>
-                    `
-                }
-              </td>
-
-              <td>
-                ${crearLeyendaColoresPais(
-                  fila.colores
-                )}
-              </td>
-            </tr>
-          `).join("")}
-        </tbody>
+    ${renderizarDetallePaisEstadisticas(filaSeleccionada)}
+    <section class="bloque-tabla-rendimiento"><h3>Rendimiento acumulado</h3><div class="tabla-estadisticas-contenedor">
+      <table class="tabla-estadisticas tabla-paises-estadisticas">
+        <thead><tr>
+          <th>País</th>
+          <th>${crearCabeceraOrdenableEstadisticas("Participaciones", "paises", "participaciones")}</th>
+          <th>${crearCabeceraOrdenableEstadisticas("🥇", "paises", "oros")}</th>
+          <th>${crearCabeceraOrdenableEstadisticas("🥈", "paises", "platas")}</th>
+          <th>${crearCabeceraOrdenableEstadisticas("🥉", "paises", "bronces")}</th>
+          <th>${crearCabeceraOrdenableEstadisticas("Total", "paises", "total")}</th>
+          <th>${crearCabeceraOrdenableEstadisticas("Media por JJOO", "paises", "media")}</th>
+          <th>Deporte más usado</th>
+          <th>Colores</th>
+        </tr></thead>
+        <tbody>${filasOrdenadas.map((fila) => `
+          <tr class="fila-pais-estadisticas ${fila.codigo === codigoPaisEstadisticasSeleccionado ? "seleccionada" : ""}" data-codigo-pais-estadisticas="${fila.codigo}" tabindex="0" role="button" aria-pressed="${fila.codigo === codigoPaisEstadisticasSeleccionado}" aria-label="Ver estadísticas detalladas de ${fila.nombre}">
+            <td data-etiqueta="País"><strong>${fila.nombre}</strong><small>${fila.codigo}</small></td>
+            <td data-etiqueta="Participaciones">${fila.participaciones}</td>
+            <td data-etiqueta="Oros">${fila.oros}</td>
+            <td data-etiqueta="Platas">${fila.platas}</td>
+            <td data-etiqueta="Bronces">${fila.bronces}</td>
+            <td data-etiqueta="Total"><strong>${fila.total}</strong></td>
+            <td data-etiqueta="Media por JJOO">${formatearNumeroEstadistica(fila.media, 2)}</td>
+            <td data-etiqueta="Deporte más usado">${fila.deporteMasUsado ? `<strong>${fila.deporteMasUsado.nombre}</strong><small>${fila.deporteMasUsado.participaciones} veces</small>` : `<span class="dato-no-disponible">Desde esta versión</span>`}</td>
+            <td data-etiqueta="Colores">${crearLeyendaColoresPais(fila.colores)}</td>
+          </tr>`).join("")}</tbody>
       </table>
-    </div>
-
-    <p class="ayuda-click-pais">
-      *Haz click en el país para ver sus
-      estadísticas detalladas
-    </p>
-
-    ${renderizarDetallePaisEstadisticas(
-      filaSeleccionada
-    )}
+    </div></section>
   `;
 }
 
@@ -1789,94 +2073,122 @@ function seleccionarPaisEstadisticas(
 }
 
 function renderizarDeportesEstadisticas() {
-  const filas =
-    Object.entries(
-      estadoCarrera.progresoDeportes
-    )
-      .map(([codigo, progreso]) => {
-        const deporte =
-          DEPORTES.find(
-            (item) =>
-              item.codigo === codigo
-          );
+  const filas = Object.entries(estadoCarrera.progresoDeportes)
+    .map(([codigo, progreso]) => {
+      const deporte = DEPORTES.find((item) => item.codigo === codigo);
+      return {
+        codigo,
+        nombre: deporte?.nombre || codigo,
+        ...progreso,
+        total: obtenerTotalMedallasProgreso(progreso),
+        valorRecordMedallas: progreso.recordMedallas?.valor || 0,
+        valorRecordOros: progreso.recordOros?.valor || 0
+      };
+    })
+    .filter((fila) => fila.apariciones > 0);
 
-        return {
-          codigo: codigo,
-          nombre:
-            deporte?.nombre || codigo,
-          ...progreso,
-          total:
-            obtenerTotalMedallasProgreso(
-              progreso
-            )
-        };
-      })
-      .filter(
-        (fila) =>
-          fila.apariciones > 0
-      )
-      .sort(
-        (a, b) =>
-          b.total - a.total ||
-          b.oros - a.oros
-      );
+  const filasOrdenadas = ordenarFilasEstadisticas(
+    filas,
+    ordenEstadisticas.deportes,
+    (a, b) => b.total - a.total || b.oros - a.oros
+  );
 
-  if (filas.length === 0) {
-    contenidoEstadisticas.innerHTML =
-      `<p class="estado-vacio-estadisticas">
-        Aún no hay resultados por deporte.
-      </p>`;
-
+  if (filasOrdenadas.length === 0) {
+    contenidoEstadisticas.innerHTML = `<p class="mensaje-estadisticas-vacio">Todavía no hay actuaciones de deportes registradas.</p>`;
     return;
   }
 
   contenidoEstadisticas.innerHTML = `
-    <div class="tabla-estadisticas-contenedor">
+    ${renderizarDetalleDeporteEstadisticas(codigoDeporteEstadisticasSeleccionado)}
+    <section class="bloque-tabla-rendimiento"><h3>Rendimiento acumulado</h3><div class="tabla-estadisticas-contenedor">
       <table class="tabla-estadisticas">
-        <thead>
+        <thead><tr>
+          <th>Deporte</th>
+          <th>${crearCabeceraOrdenableEstadisticas("Apariciones", "deportes", "apariciones")}</th>
+          <th>${crearCabeceraOrdenableEstadisticas("🥇", "deportes", "oros")}</th>
+          <th>${crearCabeceraOrdenableEstadisticas("🥈", "deportes", "platas")}</th>
+          <th>${crearCabeceraOrdenableEstadisticas("🥉", "deportes", "bronces")}</th>
+          <th>${crearCabeceraOrdenableEstadisticas("Total", "deportes", "total")}</th>
+          <th>${crearCabeceraOrdenableEstadisticas("Récord medallas", "deportes", "valorRecordMedallas")}</th>
+          <th>${crearCabeceraOrdenableEstadisticas("Récord oros", "deportes", "valorRecordOros")}</th>
+        </tr></thead>
+        <tbody>${filasOrdenadas.map((fila) => `
           <tr>
-            <th>Deporte</th>
-            <th>Apariciones</th>
-            <th>🥇</th>
-            <th>🥈</th>
-            <th>🥉</th>
-            <th>Total</th>
-            <th>Récord medallas</th>
-            <th>Récord oros</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          ${filas.map((fila) => `
-            <tr>
-              <td>
-                <strong>${fila.nombre}</strong>
-              </td>
-              <td>${fila.apariciones}</td>
-              <td>${fila.oros}</td>
-              <td>${fila.platas}</td>
-              <td>${fila.bronces}</td>
-              <td><strong>${fila.total}</strong></td>
-              <td>
-                ${
-                  fila.recordMedallas
-                    ? `${fila.recordMedallas.valor} · ` +
-                      `${fila.recordMedallas.paisNombre}`
-                    : "—"
-                }
-              </td>
-              <td>
-                ${
-                  fila.recordOros
-                    ? `${fila.recordOros.valor} · ` +
-                      `${fila.recordOros.paisNombre}`
-                    : "—"
-                }
-              </td>
-            </tr>
-          `).join("")}
-        </tbody>
+            <td data-etiqueta="Deporte"><strong>${fila.nombre}</strong></td>
+            <td data-etiqueta="Apariciones">${fila.apariciones}</td>
+            <td data-etiqueta="Oros">${fila.oros}</td>
+            <td data-etiqueta="Platas">${fila.platas}</td>
+            <td data-etiqueta="Bronces">${fila.bronces}</td>
+            <td data-etiqueta="Total"><strong>${fila.total}</strong></td>
+            <td data-etiqueta="Récord medallas">${fila.recordMedallas ? `${fila.recordMedallas.valor} · ${fila.recordMedallas.paisNombre}` : "—"}</td>
+            <td data-etiqueta="Récord oros">${fila.recordOros ? `${fila.recordOros.valor} · ${fila.recordOros.paisNombre}` : "—"}</td>
+          </tr>`).join("")}</tbody>
       </table>
+    </div></section>`;
+}
+
+function seleccionarDeporteEstadisticas(codigo) {
+  codigoDeporteEstadisticasSeleccionado = codigoDeporteEstadisticasSeleccionado === codigo ? "" : codigo;
+  renderizarDeportesEstadisticas();
+  if (codigoDeporteEstadisticasSeleccionado) contenidoEstadisticas.querySelector(".detalle-deporte-estadisticas")?.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function crearResultadoEdicionRecord(
+  numeroEdicion,
+  record
+) {
+  const edicion =
+    estadoCarrera.historialEdiciones.find(
+      (item) =>
+        item.edicion === numeroEdicion
+    );
+
+  if (!edicion) {
+    return `
+      <p class="sin-detalle-record">
+        El detalle completo no está disponible
+        para esta edición anterior.
+      </p>
+    `;
+  }
+
+  return `
+    <div class="detalle-edicion-record">
+      <div class="medallero-edicion-record">
+        <span>🥇 ${edicion.oros}</span>
+        <span>🥈 ${edicion.platas}</span>
+        <span>🥉 ${edicion.bronces}</span>
+        <strong>${edicion.total} medallas</strong>
+      </div>
+
+      <div class="delegacion-edicion-record">
+        ${(edicion.resultados || []).map(
+          (resultado) => `
+            <article class="${
+              record?.paisNombre &&
+              resultado.paisNombre ===
+                record.paisNombre
+                ? "resultado-record-destacado"
+                : ""
+            }">
+              <div>
+                <strong>
+                  ${resultado.deporteNombre}
+                </strong>
+                <span>
+                  ${resultado.paisNombre}
+                </span>
+              </div>
+
+              <p>
+                🥇 ${resultado.oros}
+                · 🥈 ${resultado.platas}
+                · 🥉 ${resultado.bronces}
+              </p>
+            </article>
+          `
+        ).join("")}
+      </div>
     </div>
   `;
 }
@@ -1895,26 +2207,41 @@ function crearTarjetaRecordEstadisticas(
   }
 
   return `
-    <article class="tarjeta-record-estadistica">
-      <span class="icono-record-estadistica">
-        🏆
-      </span>
+    <details class="tarjeta-record-estadistica">
+      <summary>
+        <span class="icono-record-estadistica">
+          🏆
+        </span>
 
-      <div>
-        <small>${titulo}</small>
-        <strong>${record.valor}</strong>
-        <p>
-          Edición ${record.edicion}
-          ${
-            record.paisNombre
-              ? ` · ${record.paisNombre}`
-              : ""
-          }
-        </p>
-      </div>
-    </article>
+        <div>
+          <small>${titulo}</small>
+          <strong>${record.valor}</strong>
+
+          <p>
+            🥇 ${record.oros ?? "—"}
+            · 🥈 ${record.platas ?? "—"}
+            · 🥉 ${record.bronces ?? "—"}
+          </p>
+
+          <p>
+            Edición ${record.edicion}
+            ${
+              record.paisNombre
+                ? ` · ${record.paisNombre}`
+                : ""
+            }
+          </p>
+        </div>
+      </summary>
+
+      ${crearResultadoEdicionRecord(
+        record.edicion,
+        record
+      )}
+    </details>
   `;
 }
+
 
 function renderizarRecordsEstadisticas() {
   const tarjetasDeportes =
@@ -1993,6 +2320,98 @@ function renderizarRecordsEstadisticas() {
       }
     </div>
   `;
+}
+
+function obtenerDatosSorpresasEstadisticas() {
+  const actuaciones = [];
+  const ediciones = [];
+  estadoCarrera.historialEdiciones.forEach((edicion) => {
+    const resultados = (edicion.resultados || []).filter(
+      (resultado) => Number.isFinite(resultado.fortunaIndice)
+    );
+    resultados.forEach((resultado) => actuaciones.push({
+      ...resultado,
+      edicion: edicion.edicion,
+      total: (resultado.oros || 0) + (resultado.platas || 0) + (resultado.bronces || 0)
+    }));
+    if (resultados.length) {
+      const fortunaTotal = resultados.reduce((suma, resultado) => suma + resultado.fortunaIndice, 0);
+      ediciones.push({
+        ...edicion,
+        fortunaMedia: fortunaTotal / resultados.length,
+        actuacionesConFortuna: resultados.length
+      });
+    }
+  });
+  return { actuaciones, ediciones };
+}
+
+function formatearIndiceFortuna(indice) {
+  return `${indice >= 0 ? "+" : ""}${indice.toFixed(2)}`;
+}
+
+function crearTablaSorpresasActuaciones(titulo, filas, seccionOrden, tipo) {
+  const topCinco = [...filas]
+    .sort((a, b) =>
+      tipo === "positiva"
+        ? b.fortunaIndice - a.fortunaIndice
+        : a.fortunaIndice - b.fortunaIndice
+    )
+    .slice(0, 5);
+  const ordenadas = ordenarFilasEstadisticas(
+    topCinco,
+    ordenEstadisticas[seccionOrden],
+    (a, b) => b.total - a.total
+  );
+  return `<section class="bloque-ranking-sorpresas ${tipo}"><h3>${titulo}</h3><div class="tabla-estadisticas-contenedor"><table class="tabla-estadisticas tabla-sorpresas"><thead><tr>
+    <th>Actuación</th>
+    <th>${crearCabeceraOrdenableEstadisticas("Edición", seccionOrden, "edicion")}</th>
+    <th>${crearCabeceraOrdenableEstadisticas("🥇", seccionOrden, "oros")}</th>
+    <th>${crearCabeceraOrdenableEstadisticas("🥈", seccionOrden, "platas")}</th>
+    <th>${crearCabeceraOrdenableEstadisticas("🥉", seccionOrden, "bronces")}</th>
+    <th>${crearCabeceraOrdenableEstadisticas("Total", seccionOrden, "total")}</th>
+    <th>${crearCabeceraOrdenableEstadisticas("Fortuna", seccionOrden, "fortunaIndice")}</th>
+  </tr></thead><tbody>${ordenadas.map((fila) => `<tr>
+    <td data-etiqueta="Actuación"><strong>${fila.paisNombre}</strong><small>${fila.deporteNombre}</small></td>
+    <td data-etiqueta="Edición">${fila.edicion}</td><td data-etiqueta="Oros">${fila.oros || 0}</td><td data-etiqueta="Platas">${fila.platas || 0}</td><td data-etiqueta="Bronces">${fila.bronces || 0}</td><td data-etiqueta="Total"><strong>${fila.total}</strong></td>
+    <td data-etiqueta="Fortuna"><strong>${formatearIndiceFortuna(fila.fortunaIndice)}</strong><small>${fila.fortunaTexto || ""}</small></td>
+  </tr>`).join("")}</tbody></table></div></section>`;
+}
+
+function crearTablaSorpresasEdiciones(titulo, filas, seccionOrden, tipo) {
+  const topCinco = [...filas]
+    .sort((a, b) =>
+      tipo === "positiva"
+        ? b.fortunaMedia - a.fortunaMedia
+        : a.fortunaMedia - b.fortunaMedia
+    )
+    .slice(0, 5);
+  const ordenadas = ordenarFilasEstadisticas(
+    topCinco,
+    ordenEstadisticas[seccionOrden],
+    (a, b) => b.total - a.total
+  );
+  return `<section class="bloque-ranking-sorpresas ${tipo}"><h3>${titulo}</h3><div class="tabla-estadisticas-contenedor"><table class="tabla-estadisticas tabla-sorpresas"><thead><tr>
+    <th>Edición</th><th>${crearCabeceraOrdenableEstadisticas("🥇", seccionOrden, "oros")}</th><th>${crearCabeceraOrdenableEstadisticas("🥈", seccionOrden, "platas")}</th><th>${crearCabeceraOrdenableEstadisticas("🥉", seccionOrden, "bronces")}</th><th>${crearCabeceraOrdenableEstadisticas("Total", seccionOrden, "total")}</th><th>${crearCabeceraOrdenableEstadisticas("Media fortuna", seccionOrden, "fortunaMedia")}</th>
+  </tr></thead><tbody>${ordenadas.map((fila) => `<tr>
+    <td data-etiqueta="Edición"><strong>JJOO ${fila.edicion}</strong><small>${fila.actuacionesConFortuna} actuaciones</small></td><td data-etiqueta="Oros">${fila.oros || 0}</td><td data-etiqueta="Platas">${fila.platas || 0}</td><td data-etiqueta="Bronces">${fila.bronces || 0}</td><td data-etiqueta="Total"><strong>${fila.total || 0}</strong></td><td data-etiqueta="Media fortuna"><strong>${formatearIndiceFortuna(fila.fortunaMedia)}</strong></td>
+  </tr>`).join("")}</tbody></table></div></section>`;
+}
+
+function renderizarSorpresasEstadisticas() {
+  const datos = obtenerDatosSorpresasEstadisticas();
+  if (!datos.actuaciones.length || !datos.ediciones.length) {
+    contenidoEstadisticas.innerHTML = `<div class="estado-vacio-estadisticas"><strong>Sin datos de fortuna todavía</strong><p>El seguimiento de sorpresas comienza con las ediciones que guardan el índice de fortuna.</p></div>`;
+    return;
+  }
+  contenidoEstadisticas.innerHTML = `
+    <section class="introduccion-sorpresas-estadisticas"><p class="marca">FORTUNA Y DECEPCIÓN</p><h2>Las mayores sorpresas de tu Carrera</h2><p>Las actuaciones comparan cada pareja país–deporte. La fortuna global de una edición es la media de todos sus índices registrados.</p></section>
+    <div class="rejilla-rankings-sorpresas">
+      ${crearTablaSorpresasActuaciones("Top 5 actuaciones más afortunadas", datos.actuaciones.filter((fila) => fila.fortunaIndice >= 0), "sorpresasActuacionesPositivas", "positiva")}
+      ${crearTablaSorpresasActuaciones("Top 5 actuaciones más desafortunadas", datos.actuaciones.filter((fila) => fila.fortunaIndice < 0), "sorpresasActuacionesNegativas", "negativa")}
+      ${crearTablaSorpresasEdiciones("Top 5 ediciones más afortunadas", datos.ediciones.filter((fila) => fila.fortunaMedia >= 0), "sorpresasEdicionesPositivas", "positiva")}
+      ${crearTablaSorpresasEdiciones("Top 5 ediciones más desafortunadas", datos.ediciones.filter((fila) => fila.fortunaMedia < 0), "sorpresasEdicionesNegativas", "negativa")}
+    </div>`;
 }
 
 function renderizarHistorialEstadisticas() {
@@ -2098,6 +2517,14 @@ function renderizarEstadisticas() {
 
   if (
     seccionEstadisticasActual ===
+    "sorpresas"
+  ) {
+    renderizarSorpresasEstadisticas();
+    return;
+  }
+
+  if (
+    seccionEstadisticasActual ===
     "historial"
   ) {
     renderizarHistorialEstadisticas();
@@ -2107,9 +2534,51 @@ function renderizarEstadisticas() {
   renderizarResumenEstadisticas();
 }
 
+contenidoCatalogoPaises.addEventListener("click", (evento) => {
+  const tarjeta = evento.target.closest("[data-codigo-pais-catalogo]");
+  if (tarjeta) abrirDetallePaisDesdeCatalogo(tarjeta.dataset.codigoPaisCatalogo);
+});
+
+contenidoCatalogoDeportes.addEventListener("click", (evento) => {
+  const tarjeta = evento.target.closest("[data-codigo-deporte-catalogo]");
+  if (tarjeta) abrirDetalleDeporteDesdeCatalogo(tarjeta.dataset.codigoDeporteCatalogo);
+});
+
 contenidoEstadisticas.addEventListener(
   "click",
   (evento) => {
+    const botonOrden = evento.target.closest(
+      "[data-orden-estadisticas]"
+    );
+
+    if (botonOrden) {
+      const seccionOrden = botonOrden.dataset.ordenEstadisticas;
+      const clave = botonOrden.dataset.claveOrdenEstadisticas;
+      const configuracion = ordenEstadisticas[seccionOrden];
+
+      if (configuracion) {
+        if (configuracion.clave === clave) {
+          configuracion.direccion = configuracion.direccion === "asc" ? "desc" : "asc";
+        } else {
+          configuracion.clave = clave;
+          configuracion.direccion = "desc";
+        }
+        renderizarEstadisticas();
+      }
+      return;
+    }
+
+    const tarjetaDeporte = evento.target.closest(
+      "[data-codigo-deporte-estadisticas]"
+    );
+
+    if (tarjetaDeporte) {
+      seleccionarDeporteEstadisticas(
+        tarjetaDeporte.dataset.codigoDeporteEstadisticas
+      );
+      return;
+    }
+
     const fila = evento.target.closest(
       "[data-codigo-pais-estadisticas]"
     );
@@ -2132,6 +2601,18 @@ contenidoEstadisticas.addEventListener(
       evento.key !== "Enter" &&
       evento.key !== " "
     ) {
+      return;
+    }
+
+    const tarjetaDeporte = evento.target.closest(
+      "[data-codigo-deporte-estadisticas]"
+    );
+
+    if (tarjetaDeporte) {
+      evento.preventDefault();
+      seleccionarDeporteEstadisticas(
+        tarjetaDeporte.dataset.codigoDeporteEstadisticas
+      );
       return;
     }
 
@@ -2160,8 +2641,11 @@ function cambiarSeccionEstadisticas(
     seccion;
 
   if (seccion !== "paises") {
-    codigoPaisEstadisticasSeleccionado =
-      "";
+    codigoPaisEstadisticasSeleccionado = "";
+  }
+
+  if (seccion !== "deportes") {
+    codigoDeporteEstadisticasSeleccionado = "";
   }
 
   filtrosEstadisticas
@@ -2491,9 +2975,303 @@ function abrirPantallaBetaSuperada() {
   );
 }
 
-function continuarTrasBetaSuperada() {
+function seguirCarreraTrasBetaSuperada() {
+  actualizarHubCarrera();
+  mostrarPantalla(pantallaCarrera);
+}
+
+function nuevaCarreraTrasBetaSuperada() {
+  const confirmar = window.confirm(
+    "¿Quieres empezar una Carrera nueva? " +
+    "Se borrará todo el progreso de la Carrera actual."
+  );
+
+  if (!confirmar) {
+    return;
+  }
+
+  localStorage.removeItem(CLAVE_CARRERA);
+  estadoCarrera = crearEstadoInicialCarrera();
+  guardarCarrera(estadoCarrera);
   iniciarModoCarrera();
 }
+
+
+function obtenerMejorPaisCarrera() {
+  return Object.entries(
+    estadoCarrera.progresoPaises || {}
+  )
+    .map(([codigo, progreso]) => {
+      const pais =
+        PAISES.find(
+          (item) =>
+            item.codigo === codigo
+        );
+
+      const total =
+        (progreso.oros || 0) +
+        (progreso.platas || 0) +
+        (progreso.bronces || 0);
+
+      return {
+        nombre: pais?.nombre || codigo,
+        total: total,
+        oros: progreso.oros || 0
+      };
+    })
+    .sort(
+      (a, b) =>
+        b.total - a.total ||
+        b.oros - a.oros
+    )[0] || {
+      nombre: "Sin datos",
+      total: 0,
+      oros: 0
+    };
+}
+
+async function generarImagenResumenCarrera() {
+  const canvas = canvasCompartirResultado;
+  const contexto = canvas.getContext("2d");
+
+  if (!contexto) {
+    throw new Error(
+      "El navegador no permite crear el canvas."
+    );
+  }
+
+  const ancho = canvas.width;
+  const alto = canvas.height;
+  const medallero = estadoCarrera.medalleroTotal;
+  const total =
+    medallero.oros +
+    medallero.platas +
+    medallero.bronces;
+  const logros =
+    obtenerLogrosDisponiblesCarrera()
+      .filter((logro) =>
+        estadoCarrera.logrosConseguidos.includes(
+          logro.id
+        )
+      ).length;
+  const mejorPais = obtenerMejorPaisCarrera();
+  const nombre =
+    estadoCarrera.nombreDelegacion ||
+    "Tu delegación";
+
+  contexto.clearRect(0, 0, ancho, alto);
+
+  const fondo = contexto.createLinearGradient(
+    0,
+    0,
+    0,
+    alto
+  );
+  fondo.addColorStop(0, "#142957");
+  fondo.addColorStop(1, "#07142f");
+  contexto.fillStyle = fondo;
+  contexto.fillRect(0, 0, ancho, alto);
+
+  contexto.strokeStyle = "#f4c63f";
+  contexto.lineWidth = 5;
+  dibujarRectanguloRedondeado(
+    contexto,
+    42,
+    42,
+    ancho - 84,
+    alto - 84,
+    34
+  );
+  contexto.stroke();
+
+  contexto.textAlign = "center";
+  contexto.fillStyle = "#f4c63f";
+  contexto.font = "700 30px Arial";
+  contexto.fillText("ROAD TO GOLD", ancho / 2, 115);
+
+  contexto.fillStyle = "#ffffff";
+  contexto.font = "800 48px Arial";
+  contexto.fillText("CARRERA · FASE BETA", ancho / 2, 180);
+
+  contexto.fillStyle = "#aebbd5";
+  contexto.font = "600 27px Arial";
+  contexto.fillText(
+    ajustarTextoCanvas(contexto, nombre, 820),
+    ancho / 2,
+    230
+  );
+
+  contexto.fillStyle = "#f4c63f";
+  contexto.font = "900 112px Arial";
+  contexto.fillText(String(total), ancho / 2, 380);
+
+  contexto.fillStyle = "#ffffff";
+  contexto.font = "700 30px Arial";
+  contexto.fillText("MEDALLAS ACUMULADAS", ancho / 2, 425);
+
+  const medallas = [
+    ["🥇", medallero.oros, "OROS"],
+    ["🥈", medallero.platas, "PLATAS"],
+    ["🥉", medallero.bronces, "BRONCES"]
+  ];
+
+  medallas.forEach(([icono, valor, etiqueta], indice) => {
+    const x = 195 + indice * 345;
+    contexto.fillStyle = "rgba(255,255,255,0.055)";
+    dibujarRectanguloRedondeado(
+      contexto,
+      x - 135,
+      470,
+      270,
+      145,
+      22
+    );
+    contexto.fill();
+    contexto.fillStyle = "#ffffff";
+    contexto.font = "700 35px Arial";
+    contexto.fillText(`${icono} ${valor}`, x, 530);
+    contexto.fillStyle = "#aebbd5";
+    contexto.font = "700 18px Arial";
+    contexto.fillText(etiqueta, x, 573);
+  });
+
+  const datos = [
+    ["JJOO DISPUTADOS", estadoCarrera.juegosDisputados],
+    ["LOGROS", logros],
+    ["NIVEL", "8 · MÁXIMO BETA"]
+  ];
+
+  datos.forEach(([etiqueta, valor], indice) => {
+    const y = 700 + indice * 135;
+    contexto.fillStyle = "rgba(255,255,255,0.055)";
+    dibujarRectanguloRedondeado(
+      contexto,
+      110,
+      y,
+      ancho - 220,
+      105,
+      20
+    );
+    contexto.fill();
+    contexto.textAlign = "left";
+    contexto.fillStyle = "#aebbd5";
+    contexto.font = "700 20px Arial";
+    contexto.fillText(etiqueta, 150, y + 42);
+    contexto.textAlign = "right";
+    contexto.fillStyle = "#ffffff";
+    contexto.font = "800 31px Arial";
+    contexto.fillText(String(valor), ancho - 150, y + 65);
+  });
+
+  contexto.textAlign = "center";
+  contexto.fillStyle = "#ffffff";
+  contexto.font = "700 25px Arial";
+  contexto.fillText(
+    `Mejor país: ${ajustarTextoCanvas(contexto, mejorPais.nombre, 600)}`,
+    ancho / 2,
+    1125
+  );
+  contexto.fillStyle = "#aebbd5";
+  contexto.font = "600 21px Arial";
+  contexto.fillText(
+    `${mejorPais.total} medallas acumuladas`,
+    ancho / 2,
+    1162
+  );
+
+  contexto.fillStyle = "#f4c63f";
+  contexto.font = "800 29px Arial";
+  contexto.fillText("@SportsOnData en X", ancho / 2, 1230);
+  contexto.fillStyle = "#ffffff";
+  contexto.font = "600 24px Arial";
+  contexto.fillText(URL_COMPARTIR_ROAD_TO_GOLD, ancho / 2, 1275);
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject(new Error("No se pudo crear la imagen."));
+        }
+      },
+      "image/png"
+    );
+  });
+}
+
+async function compartirResumenCarrera() {
+  const medallero = estadoCarrera.medalleroTotal;
+  const total =
+    medallero.oros +
+    medallero.platas +
+    medallero.bronces;
+  const logros =
+    obtenerLogrosDisponiblesCarrera()
+      .filter((logro) =>
+        estadoCarrera.logrosConseguidos.includes(
+          logro.id
+        )
+      ).length;
+  const mejorPais = obtenerMejorPaisCarrera();
+  const texto =
+    `He completado la primera fase de mi Carrera ` +
+    `en Road to Gold con ${total} medallas, ` +
+    `${medallero.oros} oros y ${logros} logros. ` +
+    `Mi mejor país ha sido ${mejorPais.nombre} ` +
+    `con ${mejorPais.total} medallas.\n\n` +
+    `¿Puedes construir una delegación mejor?\n` +
+    `Dame tu feedback en @SportsOnData en X.\n` +
+    `${URL_COMPARTIR_ROAD_TO_GOLD}`;
+
+  botonCompartirCarrera.disabled = true;
+
+  try {
+    const blob = await generarImagenResumenCarrera();
+    const archivo = new File(
+      [blob],
+      "road-to-gold-carrera.png",
+      { type: "image/png" }
+    );
+
+    if (
+      navigator.share &&
+      navigator.canShare?.({ files: [archivo] })
+    ) {
+      await navigator.share({
+        title: "Mi Carrera en Road to Gold",
+        text: texto,
+        files: [archivo]
+      });
+      return;
+    }
+
+    descargarImagenResultado(blob);
+
+    try {
+      await navigator.clipboard.writeText(texto);
+      window.alert(
+        "Imagen descargada y resumen copiado."
+      );
+    } catch (errorPortapapeles) {
+      window.prompt(
+        "La imagen se ha descargado. Copia este resultado:",
+        texto
+      );
+    }
+  } catch (error) {
+    if (error?.name !== "AbortError") {
+      console.error(
+        "Error al compartir la Carrera:",
+        error
+      );
+      window.prompt("Copia este resultado:", texto);
+    }
+  } finally {
+    botonCompartirCarrera.disabled = false;
+  }
+}
+
 
 
 const CODIGOS_SORTEO_NIVEL6 = [
@@ -2516,6 +3294,15 @@ function obtenerPaisesNivel6(codigos) {
   return codigos
     .map(obtenerPaisPorCodigo)
     .filter(Boolean);
+}
+
+function obtenerCodigosSorteoDisponiblesNivel6() {
+  return CODIGOS_SORTEO_NIVEL6.filter(
+    (codigo) =>
+      !estadoCarrera.paisesDesbloqueados.includes(
+        codigo
+      )
+  );
 }
 
 function mostrarErrorDatosNivel6(codigosFaltantes) {
@@ -2572,8 +3359,14 @@ function reiniciarVistaNivel6() {
   botonIniciarSorteoNivel6.textContent =
     "Iniciar sorteo";
 
+  const nombresPaisesDisponibles =
+    obtenerPaisesNivel6(
+      obtenerCodigosSorteoDisponiblesNivel6()
+    ).map((pais) => pais.nombre);
+
   nombrePaisSorteoNivel6.textContent =
-    "Japón · Reino Unido · Canadá";
+    nombresPaisesDisponibles.join(" · ") ||
+    "Todos los países ya están desbloqueados";
 
   textoEstadoSorteoNivel6.textContent =
     "Pulsa para iniciar el sorteo";
@@ -2673,21 +3466,35 @@ function iniciarSorteoNivel6() {
     return;
   }
 
+  const codigosDisponibles =
+    obtenerCodigosSorteoDisponiblesNivel6();
+
   const paisesDisponibles =
     obtenerPaisesNivel6(
-      CODIGOS_SORTEO_NIVEL6
+      codigosDisponibles
     );
 
-  if (
-    paisesDisponibles.length !==
-    CODIGOS_SORTEO_NIVEL6.length
-  ) {
-    mostrarErrorDatosNivel6(
-      CODIGOS_SORTEO_NIVEL6.filter(
-        (codigo) =>
-          !obtenerPaisPorCodigo(codigo)
-      )
+  const codigosFaltantes =
+    codigosDisponibles.filter(
+      (codigo) =>
+        !obtenerPaisPorCodigo(codigo)
     );
+
+  if (codigosFaltantes.length > 0) {
+    mostrarErrorDatosNivel6(
+      codigosFaltantes
+    );
+
+    return;
+  }
+
+  if (paisesDisponibles.length === 0) {
+    mensajeDatosNivel6.classList.remove(
+      "oculto"
+    );
+
+    mensajeDatosNivel6.textContent =
+      "Todos los países de este sorteo ya están desbloqueados.";
 
     return;
   }
@@ -2902,7 +3709,7 @@ function abrirPantallaLogros() {
 }
 
 function calcularExperienciaLogrosConseguidos() {
-  return LOGROS_ACTIVOS.reduce(
+  return obtenerLogrosDisponiblesCarrera().reduce(
     (total, logro) => {
       if (
         estadoCarrera.logrosConseguidos.includes(
@@ -2919,11 +3726,14 @@ function calcularExperienciaLogrosConseguidos() {
 }
 
 function renderizarPantallaLogros() {
+  const logrosDisponiblesCarrera =
+    obtenerLogrosDisponiblesCarrera();
+
   const disponibles =
-    LOGROS_ACTIVOS.length;
+    logrosDisponiblesCarrera.length;
 
   const conseguidos =
-    LOGROS_ACTIVOS.filter(
+    logrosDisponiblesCarrera.filter(
       (logro) =>
         estadoCarrera.logrosConseguidos.includes(
           logro.id
@@ -3894,7 +4704,13 @@ function registrarResultadosCarrera() {
         color: resultado.color,
         oros: resultado.oros,
         platas: resultado.platas,
-        bronces: resultado.bronces
+        bronces: resultado.bronces,
+        fortunaIndice:
+          resultado.fortuna?.indice ?? null,
+        fortunaTexto:
+          resultado.fortuna?.texto || "",
+        fortunaClase:
+          resultado.fortuna?.clase || ""
       })
     )
   };
@@ -3982,12 +4798,19 @@ function crearProgresoDeporteCarrera() {
 }
 
 function procesarSubidasNivelCarrera() {
+  if (estadoCarrera.nivel >= 8) {
+    estadoCarrera.nivel = 8;
+    estadoCarrera.experiencia = 0;
+    return;
+  }
+
   let experienciaNecesaria =
     obtenerExperienciaNecesaria(
       estadoCarrera.nivel
     );
 
   while (
+    estadoCarrera.nivel < 8 &&
     estadoCarrera.experiencia >=
     experienciaNecesaria
   ) {
@@ -4004,6 +4827,11 @@ function procesarSubidasNivelCarrera() {
       obtenerExperienciaNecesaria(
         estadoCarrera.nivel
       );
+  }
+
+  if (estadoCarrera.nivel >= 8) {
+    estadoCarrera.nivel = 8;
+    estadoCarrera.experiencia = 0;
   }
 }
 
@@ -4030,7 +4858,7 @@ function aplicarRecompensaNivelCarrera(nivel) {
 
   if (nivel === 4) {
     agregarRecompensaPendiente(
-      "nivel_4_tiro_reroll"
+      "nivel_4_tiro_logros"
     );
   }
 
@@ -4159,6 +4987,10 @@ function mostrarProgresoResultadoCarrera(
     "oculto"
   );
 
+  if (detalleExperienciaCarrera) {
+    detalleExperienciaCarrera.open = false;
+  }
+
   mostrarRecordsResultadoCarrera(
     resumen.records
   );
@@ -4262,3 +5094,67 @@ function mostrarProgresoResultadoCarrera(
     );
   }
 }
+
+
+window.subirNivelCarreraPrueba = function(
+  cantidad = 1
+) {
+  if (!estadoCarrera) {
+    estadoCarrera = cargarCarrera();
+  }
+
+  const niveles =
+    Math.max(
+      1,
+      Math.floor(Number(cantidad) || 1)
+    );
+
+  for (
+    let indice = 0;
+    indice < niveles &&
+    estadoCarrera.nivel < 8;
+    indice += 1
+  ) {
+    estadoCarrera.nivel += 1;
+
+    aplicarRecompensaNivelCarrera(
+      estadoCarrera.nivel
+    );
+  }
+
+  estadoCarrera.experiencia = 0;
+
+  guardarCarrera(estadoCarrera);
+  actualizarHubCarrera();
+  mostrarSiguienteRecompensaPendiente();
+
+  return estadoCarrera;
+};
+
+window.irNivelCarreraPrueba = function(
+  nivelObjetivo
+) {
+  if (!estadoCarrera) {
+    estadoCarrera = cargarCarrera();
+  }
+
+  const objetivo =
+    Math.min(
+      8,
+      Math.max(
+        estadoCarrera.nivel,
+        Math.floor(Number(nivelObjetivo) || 1)
+      )
+    );
+
+  const diferencia =
+    objetivo - estadoCarrera.nivel;
+
+  if (diferencia <= 0) {
+    return estadoCarrera;
+  }
+
+  return window.subirNivelCarreraPrueba(
+    diferencia
+  );
+};

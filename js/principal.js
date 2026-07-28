@@ -1031,15 +1031,28 @@ botonTutorialComenzar.addEventListener(
   completarTutorialInicialCarrera
 );
 
+botonAbrirPaisesCarrera.addEventListener(
+  "click",
+  abrirCatalogoPaisesCarrera
+);
+
+botonAbrirDeportesCarrera.addEventListener(
+  "click",
+  abrirCatalogoDeportesCarrera
+);
+
 botonAbrirEstadisticas.addEventListener(
   "click",
-  abrirPantallaEstadisticas
+  () => abrirPantallaEstadisticas("resumen")
 );
 
 botonVolverEstadisticas.addEventListener(
   "click",
   iniciarModoCarrera
 );
+
+botonVolverCatalogoPaises.addEventListener("click", iniciarModoCarrera);
+botonVolverCatalogoDeportes.addEventListener("click", iniciarModoCarrera);
 
 filtrosEstadisticas.addEventListener(
   "click",
@@ -1182,9 +1195,19 @@ botonCompletarNivel7.addEventListener(
   completarRecompensaNivel7
 );
 
-botonContinuarTrasBeta.addEventListener(
+botonSeguirCarreraTrasBeta.addEventListener(
   "click",
-  continuarTrasBetaSuperada
+  seguirCarreraTrasBetaSuperada
+);
+
+botonNuevaCarreraTrasBeta.addEventListener(
+  "click",
+  nuevaCarreraTrasBetaSuperada
+);
+
+botonCompartirCarrera.addEventListener(
+  "click",
+  compartirResumenCarrera
 );
 
 botonIniciarSorteoNivel6.addEventListener(
