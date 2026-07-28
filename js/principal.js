@@ -125,46 +125,304 @@ botonDraftAleatorio.disabled = false;
 
 
 const URL_COMPARTIR_ROAD_TO_GOLD =
-  "sportsondata.github.io/Road-to-Gold/";
+  "https://sportsondata.github.io/Road-to-Gold/";
 
-function obtenerResultadosDestacadosParaCompartir() {
-  return [...resultadosJuegos]
-    .map((resultado) => {
-      const pruebas =
-        resultado.deporte
-          .tamanoSimulacion || 0;
+function enriquecerResultadoParaCompartir(
+  resultado
+) {
+  const pruebas =
+    resultado.deporte.tamanoSimulacion || 0;
 
-      const medallasPorPrueba =
-        resultado.deporte
-          .medallasPorPrueba || 3;
+  const medallasPorPrueba =
+    resultado.deporte.medallasPorPrueba || 3;
 
-      const oportunidades =
-        pruebas * medallasPorPrueba;
+  const oportunidades =
+    pruebas * medallasPorPrueba;
 
-      const total =
-        resultado.oros +
-        resultado.platas +
-        resultado.bronces;
+  const total =
+    resultado.oros +
+    resultado.platas +
+    resultado.bronces;
 
-      return {
-        ...resultado,
-        total: total,
-        puntuacionNormalizada:
-          oportunidades > 0
-            ? total / oportunidades
-            : 0
-      };
-    })
-    .sort(
-      (a, b) =>
-        b.puntuacionNormalizada -
-          a.puntuacionNormalizada ||
-        b.oros - a.oros ||
-        b.total - a.total
-    )
-    .slice(0, 3);
+  return {
+    ...resultado,
+    total: total,
+
+    puntuacionNormalizada:
+      oportunidades > 0
+        ? total / oportunidades
+        : 0,
+
+    indiceFortuna:
+      resultado.fortuna?.indice || 0,
+
+    claseFortuna:
+      resultado.fortuna?.clase ||
+      "fortuna-neutral",
+
+    simboloFortuna:
+      resultado.fortuna?.simbolo || "—"
+  };
 }
 
+function ordenarPorRendimientoNormalizado(
+  resultados
+) {
+  return [...resultados].sort(
+    (a, b) =>
+      b.puntuacionNormalizada -
+        a.puntuacionNormalizada ||
+      b.oros - a.oros ||
+      b.total - a.total
+  );
+}
+
+function obtenerSiguienteMejorNormalizado(
+  ordenados,
+  usados
+) {
+  return ordenados.find(
+    (resultado) =>
+      !usados.has(resultado)
+  );
+}
+
+function obtenerResultadosDestacadosParaCompartir() {
+  const resultados =
+    resultadosJuegos.map(
+      enriquecerResultadoParaCompartir
+    );
+
+  const normalizados =
+    ordenarPorRendimientoNormalizado(
+      resultados
+    );
+
+  const usados = new Set();
+  const seleccion = [];
+
+  const agregar = (
+    resultado,
+    etiqueta
+  ) => {
+    if (
+      !resultado ||
+      usados.has(resultado)
+    ) {
+      return false;
+    }
+
+    usados.add(resultado);
+
+    seleccion.push({
+      resultado: resultado,
+      etiqueta: etiqueta
+    });
+
+    return true;
+  };
+
+  const mejorNormalizado =
+    normalizados[0];
+
+  const doblesVerdes =
+    resultados
+      .filter(
+        (resultado) =>
+          resultado.claseFortuna ===
+          "fortuna-muy-positiva"
+      )
+      .sort(
+        (a, b) =>
+          b.indiceFortuna -
+          a.indiceFortuna
+      );
+
+  const doblesRojas =
+    resultados
+      .filter(
+        (resultado) =>
+          resultado.claseFortuna ===
+          "fortuna-muy-negativa"
+      )
+      .sort(
+        (a, b) =>
+          a.indiceFortuna -
+          b.indiceFortuna
+      );
+
+  const intensidadVerde =
+    doblesVerdes
+      .slice(0, 2)
+      .reduce(
+        (total, resultado) =>
+          total + resultado.indiceFortuna,
+        0
+      );
+
+  const intensidadRoja =
+    doblesRojas
+      .slice(0, 2)
+      .reduce(
+        (total, resultado) =>
+          total +
+          Math.abs(resultado.indiceFortuna),
+        0
+      );
+
+  if (
+    doblesVerdes.length >= 2 &&
+    (
+      doblesRojas.length < 2 ||
+      intensidadVerde >= intensidadRoja
+    )
+  ) {
+    doblesVerdes
+      .slice(0, 2)
+      .forEach((resultado) => {
+        agregar(
+          resultado,
+          "GOLPE DE FORTUNA"
+        );
+      });
+
+    agregar(
+      mejorNormalizado,
+      "MEJOR RENDIMIENTO"
+    );
+
+    while (
+      seleccion.length < 3
+    ) {
+      agregar(
+        obtenerSiguienteMejorNormalizado(
+          normalizados,
+          usados
+        ),
+        "MEJOR RENDIMIENTO"
+      );
+    }
+
+    return seleccion.slice(0, 3);
+  }
+
+  if (
+    doblesRojas.length >= 2
+  ) {
+    doblesRojas
+      .slice(0, 2)
+      .forEach((resultado) => {
+        agregar(
+          resultado,
+          "DESASTRE ABSOLUTO"
+        );
+      });
+
+    agregar(
+      mejorNormalizado,
+      "MEJOR RENDIMIENTO"
+    );
+
+    while (
+      seleccion.length < 3
+    ) {
+      agregar(
+        obtenerSiguienteMejorNormalizado(
+          normalizados,
+          usados
+        ),
+        "MEJOR RENDIMIENTO"
+      );
+    }
+
+    return seleccion.slice(0, 3);
+  }
+
+  agregar(
+    mejorNormalizado,
+    "MEJOR RENDIMIENTO"
+  );
+
+  const masAfortunado =
+    resultados
+      .filter(
+        (resultado) =>
+          (
+            resultado.claseFortuna ===
+              "fortuna-positiva" ||
+            resultado.claseFortuna ===
+              "fortuna-muy-positiva"
+          ) &&
+          !usados.has(resultado)
+      )
+      .sort(
+        (a, b) =>
+          b.indiceFortuna -
+          a.indiceFortuna
+      )[0];
+
+  if (
+    !agregar(
+      masAfortunado,
+      "GOLPE DE FORTUNA"
+    )
+  ) {
+    agregar(
+      obtenerSiguienteMejorNormalizado(
+        normalizados,
+        usados
+      ),
+      "MEJOR RENDIMIENTO"
+    );
+  }
+
+  const peorSuerte =
+    resultados
+      .filter(
+        (resultado) =>
+          (
+            resultado.claseFortuna ===
+              "fortuna-negativa" ||
+            resultado.claseFortuna ===
+              "fortuna-muy-negativa"
+          ) &&
+          !usados.has(resultado)
+      )
+      .sort(
+        (a, b) =>
+          a.indiceFortuna -
+          b.indiceFortuna
+      )[0];
+
+  if (
+    !agregar(
+      peorSuerte,
+      "DESASTRE ABSOLUTO"
+    )
+  ) {
+    agregar(
+      obtenerSiguienteMejorNormalizado(
+        normalizados,
+        usados
+      ),
+      "MEJOR RENDIMIENTO"
+    );
+  }
+
+  while (
+    seleccion.length < 3
+  ) {
+    agregar(
+      obtenerSiguienteMejorNormalizado(
+        normalizados,
+        usados
+      ),
+      "MEJOR RENDIMIENTO"
+    );
+  }
+
+  return seleccion.slice(0, 3);
+}
 
 function dibujarRectanguloRedondeado(
   contexto,
@@ -175,13 +433,70 @@ function dibujarRectanguloRedondeado(
   radio
 ) {
   contexto.beginPath();
-  contexto.roundRect(
+
+  if (
+    typeof contexto.roundRect ===
+    "function"
+  ) {
+    contexto.roundRect(
+      x,
+      y,
+      ancho,
+      alto,
+      radio
+    );
+
+    return;
+  }
+
+  const r =
+    Math.min(
+      radio,
+      ancho / 2,
+      alto / 2
+    );
+
+  contexto.moveTo(x + r, y);
+  contexto.lineTo(x + ancho - r, y);
+
+  contexto.quadraticCurveTo(
+    x + ancho,
+    y,
+    x + ancho,
+    y + r
+  );
+
+  contexto.lineTo(
+    x + ancho,
+    y + alto - r
+  );
+
+  contexto.quadraticCurveTo(
+    x + ancho,
+    y + alto,
+    x + ancho - r,
+    y + alto
+  );
+
+  contexto.lineTo(x + r, y);
+
+  contexto.quadraticCurveTo(
+    x,
+    y + alto,
+    x,
+    y + alto - r
+  );
+
+  contexto.lineTo(x, y + r);
+
+  contexto.quadraticCurveTo(
     x,
     y,
-    ancho,
-    alto,
-    radio
+    x + r,
+    y
   );
+
+  contexto.closePath();
 }
 
 function ajustarTextoCanvas(
@@ -211,12 +526,26 @@ function ajustarTextoCanvas(
   return textoCortado + "…";
 }
 
+function formatearIndiceFortunaCompartir(
+  indice
+) {
+  return indice >= 0
+    ? `+${indice.toFixed(2)}`
+    : indice.toFixed(2);
+}
+
 async function generarImagenResultadoCompartible() {
   const canvas =
     canvasCompartirResultado;
 
   const contexto =
     canvas.getContext("2d");
+
+  if (!contexto) {
+    throw new Error(
+      "El navegador no permite crear el canvas."
+    );
+  }
 
   const ancho = canvas.width;
   const alto = canvas.height;
@@ -274,6 +603,7 @@ async function generarImagenResultadoCompartible() {
   );
 
   contexto.fillStyle = fondo;
+
   contexto.fillRect(
     0,
     0,
@@ -298,61 +628,40 @@ async function generarImagenResultadoCompartible() {
   contexto.stroke();
 
   contexto.textAlign = "center";
-
-  contexto.fillStyle =
-    "#f4c63f";
-
-  contexto.font =
-    "700 30px Arial";
-
+  contexto.fillStyle = "#f4c63f";
+  contexto.font = "700 30px Arial";
   contexto.fillText(
     "ROAD TO GOLD",
     ancho / 2,
     115
   );
 
-  contexto.fillStyle =
-    "#ffffff";
-
-  contexto.font =
-    "800 48px Arial";
-
+  contexto.fillStyle = "#ffffff";
+  contexto.font = "800 48px Arial";
   contexto.fillText(
     "PARTIDA RÁPIDA",
     ancho / 2,
     180
   );
 
-  contexto.fillStyle =
-    "#aebbd5";
-
-  contexto.font =
-    "500 26px Arial";
-
+  contexto.fillStyle = "#aebbd5";
+  contexto.font = "500 26px Arial";
   contexto.fillText(
     "Tu delegación olímpica",
     ancho / 2,
     225
   );
 
-  contexto.fillStyle =
-    "#f4c63f";
-
-  contexto.font =
-    "900 112px Arial";
-
+  contexto.fillStyle = "#f4c63f";
+  contexto.font = "900 112px Arial";
   contexto.fillText(
     String(totalMedallas),
     ancho / 2,
     360
   );
 
-  contexto.fillStyle =
-    "#ffffff";
-
-  contexto.font =
-    "700 30px Arial";
-
+  contexto.fillStyle = "#ffffff";
+  contexto.font = "700 30px Arial";
   contexto.fillText(
     "MEDALLAS",
     ancho / 2,
@@ -384,11 +693,8 @@ async function generarImagenResultadoCompartible() {
 
       contexto.fill();
 
-      contexto.fillStyle =
-        "#ffffff";
-
-      contexto.font =
-        "700 35px Arial";
+      contexto.fillStyle = "#ffffff";
+      contexto.font = "700 35px Arial";
 
       contexto.fillText(
         `${icono} ${valor}`,
@@ -396,11 +702,8 @@ async function generarImagenResultadoCompartible() {
         505
       );
 
-      contexto.fillStyle =
-        "#aebbd5";
-
-      contexto.font =
-        "700 18px Arial";
+      contexto.fillStyle = "#aebbd5";
+      contexto.font = "700 18px Arial";
 
       contexto.fillText(
         etiqueta,
@@ -410,21 +713,20 @@ async function generarImagenResultadoCompartible() {
     }
   );
 
-  contexto.fillStyle =
-    "#ffffff";
-
-  contexto.font =
-    "800 29px Arial";
+  contexto.fillStyle = "#ffffff";
+  contexto.font = "800 29px Arial";
 
   contexto.fillText(
-    "MIS 3 MEJORES RENDIMIENTOS",
+    "HISTORIAS DE LA DELEGACIÓN",
     ancho / 2,
     655
   );
 
-
   destacados.forEach(
-    (resultado, indice) => {
+    (destacado, indice) => {
+      const resultado =
+        destacado.resultado;
+
       const y =
         700 + indice * 160;
 
@@ -442,95 +744,99 @@ async function generarImagenResultadoCompartible() {
 
       contexto.fill();
 
-        contexto.fillStyle =
-    "rgba(255,255,255,0.08)";
+      contexto.fillStyle =
+        "rgba(255,255,255,0.08)";
 
-  dibujarRectanguloRedondeado(
-    contexto,
-    115,
-    y + 25,
-    125,
-    82,
-    16
-  );
+      dibujarRectanguloRedondeado(
+        contexto,
+        110,
+        y + 25,
+        135,
+        82,
+        16
+      );
 
-  contexto.fill();
+      contexto.fill();
 
-  contexto.fillStyle =
-    "#f4c63f";
+      contexto.textAlign = "center";
+      contexto.fillStyle = "#f4c63f";
+      contexto.font = "800 26px Arial";
 
-  contexto.font =
-    "800 26px Arial";
-
-  contexto.textAlign =
-    "center";
-
-  contexto.fillText(
-    resultado.pais.codigo,
-    177,
-    y + 76
-  );
+      contexto.fillText(
+        resultado.pais.codigo,
+        177,
+        y + 77
+      );
 
       contexto.textAlign = "left";
+      contexto.fillStyle = "#f4c63f";
+      contexto.font = "800 17px Arial";
 
-      contexto.fillStyle =
-        "#ffffff";
+      contexto.fillText(
+        destacado.etiqueta,
+        280,
+        y + 30
+      );
 
-      contexto.font =
-        "800 30px Arial";
+      contexto.fillStyle = "#ffffff";
+      contexto.font = "800 29px Arial";
 
       contexto.fillText(
         ajustarTextoCanvas(
           contexto,
           resultado.deporte.nombre,
-          390
+          335
         ),
         280,
-        y + 52
+        y + 65
       );
 
-      contexto.fillStyle =
-        "#aebbd5";
-
-      contexto.font =
-        "500 21px Arial";
+      contexto.fillStyle = "#aebbd5";
+      contexto.font = "500 20px Arial";
 
       contexto.fillText(
         ajustarTextoCanvas(
           contexto,
           resultado.pais.nombre,
-          390
+          335
         ),
         280,
-        y + 88
+        y + 96
       );
 
-      contexto.textAlign =
-        "right";
-
-      contexto.fillStyle =
-        "#ffffff";
-
-      contexto.font =
-        "700 27px Arial";
+      contexto.textAlign = "right";
+      contexto.fillStyle = "#ffffff";
+      contexto.font = "700 25px Arial";
 
       contexto.fillText(
-        `🥇 ${resultado.oros}   ` +
-        `🥈 ${resultado.platas}   ` +
+        `🥇 ${resultado.oros}  ` +
+        `🥈 ${resultado.platas}  ` +
         `🥉 ${resultado.bronces}`,
-        ancho - 115,
-        y + 73
+        ancho - 105,
+        y + 58
+      );
+
+      contexto.fillStyle =
+        resultado.indiceFortuna >= 0
+          ? "#66d68a"
+          : "#ff7777";
+
+      contexto.font = "800 23px Arial";
+
+      contexto.fillText(
+        `${resultado.simboloFortuna} ` +
+        `${formatearIndiceFortunaCompartir(
+          resultado.indiceFortuna
+        )}`,
+        ancho - 105,
+        y + 94
       );
     }
   );
 
   contexto.textAlign = "center";
-
-  contexto.fillStyle =
-    "#f4c63f";
-
-  contexto.font =
-    "800 34px Arial";
+  contexto.fillStyle = "#f4c63f";
+  contexto.font = "800 34px Arial";
 
   contexto.fillText(
     "¿PUEDES SUPERAR MI DELEGACIÓN?",
@@ -538,11 +844,8 @@ async function generarImagenResultadoCompartible() {
     1230
   );
 
-  contexto.fillStyle =
-    "#ffffff";
-
-  contexto.font =
-    "600 25px Arial";
+  contexto.fillStyle = "#ffffff";
+  contexto.font = "600 25px Arial";
 
   contexto.fillText(
     URL_COMPARTIR_ROAD_TO_GOLD,
@@ -578,6 +881,7 @@ function descargarImagenResultado(blob) {
     document.createElement("a");
 
   enlace.href = url;
+
   enlace.download =
     "road-to-gold-resultado.png";
 
@@ -622,6 +926,11 @@ async function compartirResultadoPartidaRapida() {
       }
     );
 
+    const textoCompartir =
+      "¿Puedes superar mi delegación " +
+      "en Road to Gold?\n" +
+      URL_COMPARTIR_ROAD_TO_GOLD;
+
     if (
       navigator.share &&
       navigator.canShare?.({
@@ -631,8 +940,10 @@ async function compartirResultadoPartidaRapida() {
       await navigator.share({
         title:
           "Mi delegación en Road to Gold",
+
         text:
-          "¿Puedes superar mi delegación?",
+          textoCompartir,
+
         files: [archivo]
       });
 
@@ -652,9 +963,9 @@ async function compartirResultadoPartidaRapida() {
         "Compartición cancelada.";
     } else {
       console.error(
-  "Error al compartir resultado:",
-  error
-);
+        "Error al compartir resultado:",
+        error
+      );
 
       mensajeCompartirResultado.textContent =
         "No se pudo generar la imagen.";
@@ -803,6 +1114,7 @@ botonVolverInicioResultados.addEventListener(
 botonComenzarDraft.addEventListener("click", comenzarDraft);
 botonComenzarJuegos.addEventListener("click", comenzarJuegos);
 botonReroll.addEventListener("click", usarReroll);
+
 botonVolverInicioDraft.addEventListener(
   "click",
   () => {

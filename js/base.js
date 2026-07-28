@@ -658,13 +658,14 @@ const botonLimpiarRecords = document.querySelector(
   "#botonLimpiarRecords"
 );
 const botonReroll = document.querySelector("#botonReroll");
-const botonDraftAleatorio = document.querySelector(
-  "#botonDraftAleatorio"
-);
+
 const botonVolverInicioDraft =
   document.querySelector(
     "#botonVolverInicioDraft"
   );
+const botonDraftAleatorio = document.querySelector(
+  "#botonDraftAleatorio"
+);
 const botonNuevaPartida = document.querySelector("#botonNuevaPartida");
 
 const botonCompartirResultado =

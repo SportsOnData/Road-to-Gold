@@ -4649,3 +4649,14 @@ button {
     width: min(32vw, 96px);
   }
 }
+
+
+#botonVolverInicioDraft {
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  #botonVolverInicioDraft {
+    width: 100%;
+  }
+}
