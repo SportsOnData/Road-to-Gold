@@ -4591,3 +4591,61 @@ button {
     font-size: 2.2rem;
   }
 }
+
+
+/* ================================= */
+/* ACCIONES Y COMPARTIR RESULTADO    */
+/* ================================= */
+
+.acciones-resultados-finales {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 11px;
+  margin-top: 20px;
+}
+
+.boton-compartir-resultado {
+  border-color: var(--dorado);
+}
+
+.mensaje-compartir-resultado {
+  margin: 12px 0 0;
+  color: var(--texto-secundario);
+  text-align: center;
+  font-size: 0.84rem;
+}
+
+.canvas-compartir-resultado {
+  position: absolute;
+  left: -99999px;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+@media (max-width: 760px) {
+  /*
+    La bandera de la ceremonia queda menos dominante
+    y deja más espacio al nombre del deporte.
+  */
+  .bandera-ceremonia {
+    width: min(34vw, 112px);
+    height: auto;
+  }
+
+  .acciones-resultados-finales {
+    grid-template-columns: 1fr;
+  }
+
+  .acciones-resultados-finales .boton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 390px) {
+  .bandera-ceremonia {
+    width: min(32vw, 96px);
+  }
+}

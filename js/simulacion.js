@@ -463,6 +463,18 @@ return `
   botonNuevaPartida.textContent =
     "Volver al menú de Carrera";
 
+  botonCompartirResultado.classList.add(
+    "oculto"
+  );
+
+  botonVolverInicioResultados.classList.add(
+    "oculto"
+  );
+
+  mensajeCompartirResultado.classList.add(
+    "oculto"
+  );
+
   const resumenCarrera =
     registrarResultadosCarrera();
 
@@ -482,6 +494,18 @@ zonaRecords.classList.remove("oculto");
 
 botonNuevaPartida.textContent =
   "Nueva partida";
+
+botonCompartirResultado.classList.remove(
+  "oculto"
+);
+
+botonVolverInicioResultados.classList.remove(
+  "oculto"
+);
+
+mensajeCompartirResultado.classList.add(
+  "oculto"
+);
 
 const estadoRecords =
   guardarRecordsPartida(

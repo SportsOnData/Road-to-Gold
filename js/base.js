@@ -661,7 +661,31 @@ const botonReroll = document.querySelector("#botonReroll");
 const botonDraftAleatorio = document.querySelector(
   "#botonDraftAleatorio"
 );
+const botonVolverInicioDraft =
+  document.querySelector(
+    "#botonVolverInicioDraft"
+  );
 const botonNuevaPartida = document.querySelector("#botonNuevaPartida");
+
+const botonCompartirResultado =
+  document.querySelector(
+    "#botonCompartirResultado"
+  );
+
+const botonVolverInicioResultados =
+  document.querySelector(
+    "#botonVolverInicioResultados"
+  );
+
+const mensajeCompartirResultado =
+  document.querySelector(
+    "#mensajeCompartirResultado"
+  );
+
+const canvasCompartirResultado =
+  document.querySelector(
+    "#canvasCompartirResultado"
+  );
 const botonComenzarDraft = document.querySelector(
   "#botonComenzarDraft"
 );

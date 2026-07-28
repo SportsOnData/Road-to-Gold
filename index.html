@@ -643,6 +643,13 @@
   >
               ↻ Usar reroll
             </button>
+            <button
+  id="botonVolverInicioDraft"
+  class="boton boton-secundario"
+  type="button"
+>
+  ← Volver al inicio
+</button>
 
         </div>
 
@@ -1120,13 +1127,45 @@
   </section>
 
 
-  <button
-    id="botonNuevaPartida"
-    class="boton boton-principal"
-    type="button"
-  >
-    Nueva partida
-  </button>
+  <div class="acciones-resultados-finales">
+    <button
+      id="botonNuevaPartida"
+      class="boton boton-principal"
+      type="button"
+    >
+      Nueva partida
+    </button>
+
+    <button
+      id="botonCompartirResultado"
+      class="boton boton-secundario boton-compartir-resultado"
+      type="button"
+    >
+      📤 Compartir resultado
+    </button>
+
+    <button
+      id="botonVolverInicioResultados"
+      class="boton boton-secundario"
+      type="button"
+    >
+      Volver al inicio
+    </button>
+  </div>
+
+  <p
+    id="mensajeCompartirResultado"
+    class="mensaje-compartir-resultado oculto"
+    aria-live="polite"
+  ></p>
+
+  <canvas
+    id="canvasCompartirResultado"
+    class="canvas-compartir-resultado"
+    width="1080"
+    height="1350"
+    aria-hidden="true"
+  ></canvas>
 </section>
 
 
