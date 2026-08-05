@@ -5941,3 +5941,108 @@ button {
     padding-inline: 0.75rem;
   }
 }
+
+
+/* ================================= */
+/* DESAFÍO DIARIO · JERARQUÍA MÓVIL  */
+/* ================================= */
+
+.bloque-objetivos-principales-desafio {
+  margin-top: 0.9rem;
+}
+
+.acciones-desafio-principales {
+  margin: 1rem 0;
+}
+
+.desplegable-intentos-desafio {
+  padding: 0;
+  overflow: hidden;
+}
+
+.desplegable-intentos-desafio > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 800;
+}
+
+.desplegable-intentos-desafio > summary::-webkit-details-marker {
+  display: none;
+}
+
+.desplegable-intentos-desafio > summary::after {
+  content: "+";
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  color: var(--dorado);
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.desplegable-intentos-desafio[open] > summary::after {
+  content: "−";
+}
+
+.desplegable-intentos-desafio > summary small {
+  margin-left: auto;
+  color: var(--texto-secundario);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.contenido-desplegable-intentos {
+  padding: 0 1.1rem 1.1rem;
+}
+
+@media (max-width: 620px) {
+  .pantalla-desafio-diario .resumen-desafio-diario {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pantalla-desafio-diario .tarjeta-desafio-destacada {
+    grid-column: 1 / -1;
+  }
+
+  .pantalla-desafio-diario .acciones-desafio-principales {
+    position: sticky;
+    bottom: 0.55rem;
+    z-index: 8;
+    padding: 0.7rem;
+    border: 1px solid rgba(255, 214, 74, 0.24);
+    border-radius: 16px;
+    background: rgba(5, 16, 35, 0.94);
+    backdrop-filter: blur(10px);
+  }
+
+  .pantalla-desafio-diario .acciones-desafio-principales .boton-principal {
+    width: 100%;
+  }
+
+  .pantalla-desafio-diario .acciones-desafio-principales .nota-fase-desafio {
+    margin-top: 0.45rem;
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+
+  .desplegable-intentos-desafio > summary {
+    padding: 0.9rem;
+  }
+
+  .desplegable-intentos-desafio > summary small {
+    display: none;
+  }
+
+  .contenido-desplegable-intentos {
+    padding: 0 0.9rem 0.9rem;
+  }
+}

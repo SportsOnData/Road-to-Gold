@@ -121,21 +121,39 @@
         </article>
       </section>
 
-      <section class="bloque-desafio-diario bloque-historial-desafio">
-        <div class="cabecera-bloque-historial-desafio">
-          <div>
-            <h2>Intentos de hoy</h2>
-            <p class="texto-secundario-desafio">El intento se consume al comenzar. Una recarga o abandono queda registrado.</p>
-          </div>
-          <button id="botonVerMejorIntentoDesafio" class="boton boton-secundario boton-compacto oculto" type="button">Ver mejor intento</button>
-        </div>
-        <div id="historialIntentosDesafio" class="historial-intentos-desafio" aria-live="polite"></div>
-      </section>
-
-      <section class="bloque-desafio-diario">
+      <section class="bloque-desafio-diario bloque-objetivos-principales-desafio">
         <h2>Objetivos</h2>
         <div id="objetivosDesafioDiario" class="rejilla-objetivos-desafio"></div>
       </section>
+
+      <div class="acciones-desafio-diario acciones-desafio-principales">
+        <div class="botones-prueba-desafio">
+          <button
+            id="botonComenzarDesafio"
+            class="boton boton-principal"
+            type="button"
+          >
+            Comenzar desafío
+          </button>
+        </div>
+        <p class="nota-fase-desafio">
+          El intento se consume al comenzar el draft. Recargar o abandonar también cuenta.
+        </p>
+      </div>
+
+      <details class="bloque-desafio-diario bloque-historial-desafio desplegable-intentos-desafio">
+        <summary>
+          <span>Intentos de hoy</span>
+          <small>Mostrar historial</small>
+        </summary>
+        <div class="contenido-desplegable-intentos">
+          <div class="cabecera-bloque-historial-desafio">
+            <p class="texto-secundario-desafio">Consulta los intentos completados, abandonados o pendientes.</p>
+            <button id="botonVerMejorIntentoDesafio" class="boton boton-secundario boton-compacto oculto" type="button">Ver mejor intento</button>
+          </div>
+          <div id="historialIntentosDesafio" class="historial-intentos-desafio" aria-live="polite"></div>
+        </div>
+      </details>
 
       <section class="bloque-desafio-diario">
         <h2>Deportes</h2>
@@ -147,22 +165,6 @@
         <p id="resumenPaisesDesafio" class="texto-secundario-desafio"></p>
         <div id="paisesDesafioDiario" class="lista-configuracion-desafio"></div>
       </section>
-
-      <div class="acciones-desafio-diario">
-        <div class="botones-prueba-desafio">
-          <button
-            id="botonComenzarDesafio"
-            class="boton boton-principal"
-            type="button"
-          >
-            Comenzar desafío
-          </button>
-
-        </div>
-        <p class="nota-fase-desafio">
-          Los intentos se consumen al comenzar el draft. Recargar o abandonar también cuenta como intento.
-        </p>
-      </div>
     </section>
 
 
