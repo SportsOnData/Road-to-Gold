@@ -26,21 +26,15 @@ function cargarBandera(imagen, alternativa, pais) {
 }
 
 function mostrarPantalla(pantallaVisible) {
-  pantallaInicio.classList.add("oculto");
-  pantallaCarrera.classList.add("oculto");
-  pantallaLogros.classList.add("oculto");
-  pantallaBetaSuperada.classList.add("oculto");
-  pantallaEstadisticas.classList.add("oculto");
-  pantallaCatalogoPaises?.classList.add("oculto");
-  pantallaCatalogoDeportes?.classList.add("oculto");
-  pantallaTutorialInicial.classList.add("oculto");
-  pantallaDeportes.classList.add("oculto");
-  pantallaJuego.classList.add("oculto");
-  pantallaFinal.classList.add("oculto");
-  pantallaCeremonia.classList.add("oculto");
-  pantallaResultados.classList.add("oculto");
-  pantallaRecord.classList.add("oculto");
-  pantallaVisible.classList.remove("oculto");
+  document
+    .querySelectorAll(".pantalla")
+    .forEach(pantalla => {
+      pantalla.classList.add("oculto");
+    });
+
+  if (pantallaVisible) {
+    pantallaVisible.classList.remove("oculto");
+  }
 }
 
 function mezclar(lista) {

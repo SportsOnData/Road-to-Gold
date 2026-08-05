@@ -446,6 +446,8 @@ return `
   totalMedallas.textContent =
     numeroTotalMedallas;
 
+  resumenResultadoDesafio.classList.add("oculto");
+
   if (
     modoJuegoActual === MODO_CARRERA &&
     estadoCarrera
@@ -469,7 +471,30 @@ return `
     );
   }
 
-    if (
+  if (typeof esDesafioDiarioEnCurso === "function" && esDesafioDiarioEnCurso()) {
+    modoJuegoActual = MODO_DESAFIO_DIARIO;
+    limpiarCelebracionRecords();
+    zonaRecords.classList.add("oculto");
+    resumenProgresoCarrera.classList.add("oculto");
+    resumenLogrosConseguidos.classList.add("oculto");
+    resumenRecordsCarrera.classList.add("oculto");
+
+    tituloResultadosJuegos.textContent = "Resultado del desafío";
+    nombreDelegacionResultados.classList.add("oculto");
+    botonNuevaPartida.textContent = "Volver al desafío";
+    botonCompartirResultado.classList.add("oculto");
+    botonVolverInicioResultados.classList.add("oculto");
+    mensajeCompartirResultado.classList.add("oculto");
+
+    const evaluacion = evaluarResultadoDesafio(resultadosJuegos);
+    mostrarResumenResultadoDesafio(evaluacion);
+    mostrarPantalla(pantallaResultados);
+    return;
+  }
+
+  pantallaResultados.classList.remove("resultado-modo-desafio");
+
+  if (
   modoJuegoActual === MODO_CARRERA
 ) {
   limpiarCelebracionRecords();

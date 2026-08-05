@@ -22,6 +22,8 @@
         alt="Sports Data"
 >
 
+      <span class="etiqueta-beta" aria-label="Versión beta">BETA</span>
+
       <h1>Road to Gold</h1>
 
       <p class="subtitulo">
@@ -44,18 +46,124 @@
         >
           Modo Carrera
         </button>
+
+        <button
+          id="botonDesafioDiario"
+          class="boton boton-secundario"
+          type="button"
+        >
+          Desafío diario
+        </button>
       </div>
 
-      <button
-        id="botonLimpiarRecords"
-        class="boton boton-secundario boton-limpiar-records"
-        type="button"
-      >
-        Limpiar récords
-      </button>
+      <div class="acciones-secundarias-inicio">
+        <button
+          id="botonComoJugar"
+          class="boton boton-secundario boton-compacto"
+          type="button"
+        >
+          Cómo jugar
+        </button>
+
+        <button
+          id="botonLimpiarRecords"
+          class="boton boton-secundario boton-limpiar-records boton-compacto"
+          type="button"
+        >
+          Limpiar récords
+        </button>
+      </div>
 
     </section>
     
+
+
+    <!-- DESAFÍO DIARIO -->
+    <section
+      id="pantallaDesafioDiario"
+      class="pantalla pantalla-desafio-diario oculto"
+    >
+      <header class="cabecera-desafio-diario">
+        <div>
+          <p class="marca">ROAD TO GOLD · DESAFÍO DIARIO</p>
+          <h1 id="nombreDesafioDiario">Desafío diario</h1>
+          <p id="descripcionDesafioDiario" class="texto-desafio-diario"></p>
+        </div>
+
+        <button
+          id="botonVolverInicioDesafio"
+          class="boton boton-secundario"
+          type="button"
+        >
+          Volver al inicio
+        </button>
+      </header>
+
+      <section class="resumen-desafio-diario">
+        <article class="tarjeta-desafio-diario tarjeta-desafio-destacada">
+          <span class="etiqueta-desafio">Regla especial</span>
+          <strong id="reglaDesafioDiario"></strong>
+        </article>
+
+        <article class="tarjeta-desafio-diario">
+          <span class="etiqueta-desafio">Intentos restantes</span>
+          <strong id="intentosRestantesDesafio">4 de 4</strong>
+        </article>
+
+        <article class="tarjeta-desafio-diario">
+          <span class="etiqueta-desafio">Mejor nivel</span>
+          <strong id="mejorNivelDesafio">Sin medalla</strong>
+        </article>
+
+        <article class="tarjeta-desafio-diario">
+          <span class="etiqueta-desafio">Mejor resultado</span>
+          <strong id="mejorResultadoDesafio">Sin intentos todavía</strong>
+        </article>
+      </section>
+
+      <section class="bloque-desafio-diario bloque-historial-desafio">
+        <div class="cabecera-bloque-historial-desafio">
+          <div>
+            <h2>Intentos de hoy</h2>
+            <p class="texto-secundario-desafio">El intento se consume al comenzar. Una recarga o abandono queda registrado.</p>
+          </div>
+          <button id="botonVerMejorIntentoDesafio" class="boton boton-secundario boton-compacto oculto" type="button">Ver mejor intento</button>
+        </div>
+        <div id="historialIntentosDesafio" class="historial-intentos-desafio" aria-live="polite"></div>
+      </section>
+
+      <section class="bloque-desafio-diario">
+        <h2>Objetivos</h2>
+        <div id="objetivosDesafioDiario" class="rejilla-objetivos-desafio"></div>
+      </section>
+
+      <section class="bloque-desafio-diario">
+        <h2>Deportes</h2>
+        <div id="deportesDesafioDiario" class="lista-configuracion-desafio"></div>
+      </section>
+
+      <section class="bloque-desafio-diario">
+        <h2>Países disponibles</h2>
+        <p id="resumenPaisesDesafio" class="texto-secundario-desafio"></p>
+        <div id="paisesDesafioDiario" class="lista-configuracion-desafio"></div>
+      </section>
+
+      <div class="acciones-desafio-diario">
+        <div class="botones-prueba-desafio">
+          <button
+            id="botonComenzarDesafio"
+            class="boton boton-principal"
+            type="button"
+          >
+            Comenzar desafío
+          </button>
+
+        </div>
+        <p class="nota-fase-desafio">
+          Los intentos se consumen al comenzar el draft. Recargar o abandonar también cuenta como intento.
+        </p>
+      </div>
+    </section>
 
 
     <!-- HUB PROVISIONAL DEL MODO CARRERA -->
@@ -648,6 +756,14 @@
     Los deportes de estos JJOO son...
   </h1>
 
+  <section class="contexto-desafio-partida oculto" aria-label="Información del desafío diario">
+    <div class="contexto-desafio-cabecera">
+      <span>DESAFÍO DIARIO</span>
+      <strong data-desafio-nombre>Desafío diario</strong>
+    </div>
+    <div class="contexto-desafio-objetivos" data-desafio-objetivos></div>
+  </section>
+
   <div
     id="presentacionDeportes"
     class="presentacion-deportes"
@@ -707,6 +823,14 @@
         </div>
 
       </header>
+
+  <section class="contexto-desafio-partida oculto" aria-label="Información del desafío diario">
+    <div class="contexto-desafio-cabecera">
+      <span>DESAFÍO DIARIO</span>
+      <strong data-desafio-nombre>Desafío diario</strong>
+    </div>
+    <div class="contexto-desafio-objetivos" data-desafio-objetivos></div>
+  </section>
 
 
       <section class="pais-actual">
@@ -1022,6 +1146,56 @@
       <small>Total</small>
     </div>
   </div>
+
+<section
+  id="resumenResultadoDesafio"
+  class="resumen-resultado-desafio oculto"
+>
+  <header class="cabecera-resultado-desafio">
+    <div>
+      <p class="marca">DESAFÍO DIARIO</p>
+      <h2 id="nombreResultadoDesafio">Desafío diario</h2>
+      <p id="fechaResultadoDesafio" class="fecha-resultado-desafio"></p>
+    </div>
+
+    <div id="insigniaNivelResultadoDesafio" class="insignia-nivel-desafio nivel-sin-medalla">
+      <span>Nivel conseguido</span>
+      <strong id="nivelResultadoDesafio">Sin medalla</strong>
+    </div>
+  </header>
+
+  <div id="nivelesResultadoDesafio" class="niveles-resultado-desafio" aria-label="Objetivos del desafío"></div>
+
+  <div class="destacado-resultado-desafio">
+    <p id="datoPrincipalResultadoDesafio" class="dato-principal-desafio"></p>
+    <p id="detalleResultadoDesafio" class="detalle-resultado-desafio"></p>
+    <p id="progresoResultadoDesafio" class="progreso-resultado-desafio"></p>
+  </div>
+
+  <div class="resumen-ciclo-resultado-desafio">
+    <div>
+      <span>Intento</span>
+      <strong id="intentoResultadoDesafio">Prueba</strong>
+    </div>
+    <div>
+      <span>Intentos restantes</span>
+      <strong id="intentosRestantesResultadoDesafio">—</strong>
+    </div>
+    <div>
+      <span>Mejor nivel del día</span>
+      <strong id="mejorNivelResultadoDesafio">—</strong>
+    </div>
+    <div>
+      <span>Mejor resultado</span>
+      <strong id="mejorMarcaResultadoDesafio">—</strong>
+    </div>
+  </div>
+
+  <section class="asignaciones-resultado-desafio">
+    <h3>Tu delegación</h3>
+    <div id="listaAsignacionesResultadoDesafio" class="rejilla-asignaciones-resultado-desafio"></div>
+  </section>
+</section>
 
 <section
   id="resumenProgresoCarrera"
@@ -1926,6 +2100,67 @@
   </div>
 </div>
 
+
+  <div id="modalComoJugar" class="modal-carrera modal-como-jugar oculto" role="dialog" aria-modal="true" aria-labelledby="tituloComoJugar">
+    <div class="contenido-modal-carrera contenido-modal-como-jugar">
+      <button id="botonCerrarComoJugar" class="boton-cerrar-modal" type="button" aria-label="Cerrar">×</button>
+
+      <p class="marca">ROAD TO GOLD</p>
+      <h2 id="tituloComoJugar">Cómo jugar</h2>
+      <p class="subtitulo-como-jugar">Construye la mejor delegación posible y saca el máximo partido a cada país.</p>
+
+      <section class="seccion-como-jugar seccion-como-jugar-destacada">
+        <h3>Cómo funciona una partida</h3>
+        <ol class="pasos-como-jugar">
+          <li>Se sortean varios <strong>deportes</strong> para esa edición.</li>
+          <li>Los <strong>países</strong> aparecen uno a uno durante el draft.</li>
+          <li>Debes asignar cada país a un deporte todavía libre.</li>
+          <li>Al final se simulan las pruebas y se muestra el medallero.</li>
+        </ol>
+        <p class="nota-como-jugar">Cuando esté disponible, el <strong>reroll</strong> te permite cambiar una vez el país ofrecido.</p>
+      </section>
+
+      <section class="seccion-como-jugar">
+        <h3>Qué significan los colores</h3>
+        <div class="leyenda-colores-como-jugar" aria-label="Significado de los colores">
+          <span class="color-como-jugar color-rojo"><b>Rojo</b><small>Muy débil</small></span>
+          <span class="color-como-jugar color-amarillo"><b>Amarillo</b><small>Puede sumar</small></span>
+          <span class="color-como-jugar color-verde"><b>Verde</b><small>Buena elección</small></span>
+          <span class="color-como-jugar color-azul"><b>Azul</b><small>Especialista</small></span>
+        </div>
+        <p class="nota-como-jugar">Las notas exactas están ocultas: los colores te orientan sobre la fuerza de un país en cada deporte.</p>
+      </section>
+
+      <section class="seccion-como-jugar">
+        <h3>Modos de juego</h3>
+        <div class="modos-como-jugar">
+          <article class="modo-como-jugar">
+            <h4>Partida rápida</h4>
+            <ul>
+              <li>Una edición independiente.</li>
+              <li>Intenta lograr tu mejor medallero y superar tus récords.</li>
+            </ul>
+          </article>
+          <article class="modo-como-jugar">
+            <h4>Modo Carrera</h4>
+            <ul>
+              <li>Conserva tu progreso entre ediciones.</li>
+              <li>Desbloquea países, deportes y ventajas hasta el nivel 8.</li>
+            </ul>
+          </article>
+          <article class="modo-como-jugar">
+            <h4>Desafío diario</h4>
+            <ul>
+              <li>Cada día hay un reto distinto con objetivos propios.</li>
+              <li>Tienes 4 intentos oficiales y se guarda tu mejor resultado.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <button id="botonEntendidoComoJugar" class="boton boton-principal" type="button">Entendido</button>
+    </div>
+  </div>
   </main>
 
 
@@ -1940,6 +2175,7 @@
   <script src="js/records.js"></script>
   <script src="js/logros.js"></script>
   <script src="js/carrera.js"></script>
+  <script src="js/desafios.js"></script>
   <script src="js/draft.js"></script>
   <script src="js/simulacion.js"></script>
 

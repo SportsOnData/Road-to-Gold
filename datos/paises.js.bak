@@ -843,5 +843,34 @@ const PAISES = [
       "rugby": 8,
       "tiroarco": 1
     }
+  },
+  {
+    "id": 30,
+    "codigo": "CZE",
+    "nombre": "República Checa",
+    "continente": "Europa",
+    "activo": true,
+    "notas": {
+      "atletismo": 4,
+      "natacion": 2,
+      "gimnasia": 1,
+      "remo": 4,
+      "boxeo": 1,
+      "piraguismo": 8,
+      "ciclismo": 4,
+      "judo": 5,
+      "tiro": 6,
+      "futbol": 2,
+      "baloncesto": 4,
+      "waterpolo": 1,
+      "balonmano": 2,
+      "voleibol": 5,
+      "tenis": 9,
+      "escalada": 7,
+      "tenismesa": 2,
+      "badminton": 2,
+      "rugby": 1,
+      "tiroarco": 1
+    }
   }
 ];

@@ -75,9 +75,24 @@ function obtenerPaisesDisponiblesPartida() {
     (pais) => estaActivo(pais)
   );
 
-  if (
-    modoJuegoActual !== MODO_CARRERA
-  ) {
+  if (modoJuegoActual === MODO_DESAFIO_DIARIO) {
+    const paisesDesafio = obtenerPaisesConfiguradosDesafio();
+
+    if (paisesDesafio.length < deportesPartida.length) {
+      console.error(
+        "El Desafío diario no tiene suficientes países configurados.",
+        {
+          paisesDisponibles: paisesDesafio.length,
+          paisesNecesarios: deportesPartida.length,
+          desafio: configuracionDesafioEnCurso?.desafioId || "desconocido"
+        }
+      );
+    }
+
+    return paisesDesafio;
+  }
+
+  if (modoJuegoActual !== MODO_CARRERA) {
     return paisesActivos;
   }
 

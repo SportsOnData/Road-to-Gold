@@ -30,10 +30,13 @@ function iniciarPartidaCarrera() {
 }
 
 function gestionarBotonNuevaPartida() {
-  if (
-    modoJuegoActual === MODO_CARRERA
-  ) {
+  if (modoJuegoActual === MODO_CARRERA) {
     iniciarModoCarrera();
+    return;
+  }
+
+  if (modoJuegoActual === MODO_DESAFIO_DIARIO) {
+    continuarDesdeResultadoDesafio();
     return;
   }
 
@@ -63,16 +66,23 @@ function actualizarIndicadoresModo() {
     "oculto",
     !esCarrera
   );
+
+  if (typeof renderizarContextoDesafioEnPartida === "function") {
+    renderizarContextoDesafioEnPartida();
+  }
 }
 
 function iniciarPartida() {
   actualizarIndicadoresModo();
   limpiarCelebracionRecords();
   
-  deportesPartida =
-    modoJuegoActual === MODO_CARRERA
-      ? seleccionarDeportesCarrera()
-      : seleccionarDeportes();
+  if (modoJuegoActual === MODO_CARRERA) {
+    deportesPartida = seleccionarDeportesCarrera();
+  } else if (modoJuegoActual === MODO_DESAFIO_DIARIO) {
+    deportesPartida = obtenerDeportesConfiguradosDesafio();
+  } else {
+    deportesPartida = seleccionarDeportes();
+  }
 
   const paisesDisponibles =
     obtenerPaisesDisponiblesPartida();
@@ -896,6 +906,15 @@ function descargarImagenResultado(blob) {
   );
 }
 
+async function gestionarCompartirResultado() {
+  if (modoJuegoActual === MODO_DESAFIO_DIARIO) {
+    await compartirResultadoDesafioDiario();
+    return;
+  }
+
+  await compartirResultadoPartidaRapida();
+}
+
 async function compartirResultadoPartidaRapida() {
   if (
     modoJuegoActual !==
@@ -983,6 +1002,11 @@ async function compartirResultadoPartidaRapida() {
 }
 
 function volverAlInicioDesdeResultados() {
+  if (modoJuegoActual === MODO_DESAFIO_DIARIO) {
+    volverAlDesafioDesdeResultados();
+    return;
+  }
+
   mostrarPantalla(pantallaInicio);
 }
 
@@ -999,6 +1023,13 @@ botonEmpezar.addEventListener(
 botonModoCarrera.addEventListener("click", () => {
   iniciarModoCarrera();
 });
+
+botonDesafioDiario.addEventListener("click", abrirDesafioDiario);
+
+botonVolverInicioDesafio.addEventListener("click", volverInicioDesdeDesafio);
+
+botonComenzarDesafio.addEventListener("click", iniciarDesafioDiarioJugable);
+botonVerMejorIntentoDesafio?.addEventListener("click", mostrarMejorIntentoGuardadoDesafio);
 
 botonVolverInicioCarrera.addEventListener("click", () => {
   mostrarPantalla(pantallaInicio);
@@ -1106,6 +1137,28 @@ filtrosLogros.addEventListener(
 );
 
 
+function abrirModalComoJugar() {
+  modalComoJugar?.classList.remove("oculto");
+  botonCerrarComoJugar?.focus();
+}
+
+function cerrarModalComoJugar() {
+  modalComoJugar?.classList.add("oculto");
+  botonComoJugar?.focus();
+}
+
+botonComoJugar?.addEventListener("click", abrirModalComoJugar);
+botonCerrarComoJugar?.addEventListener("click", cerrarModalComoJugar);
+botonEntendidoComoJugar?.addEventListener("click", cerrarModalComoJugar);
+modalComoJugar?.addEventListener("click", (evento) => {
+  if (evento.target === modalComoJugar) cerrarModalComoJugar();
+});
+document.addEventListener("keydown", (evento) => {
+  if (evento.key === "Escape" && !modalComoJugar?.classList.contains("oculto")) {
+    cerrarModalComoJugar();
+  }
+});
+
 botonLimpiarRecords.addEventListener(
   "click",
   limpiarRecordsGuardados
@@ -1117,7 +1170,7 @@ botonNuevaPartida.addEventListener(
 
 botonCompartirResultado.addEventListener(
   "click",
-  compartirResultadoPartidaRapida
+  gestionarCompartirResultado
 );
 
 botonVolverInicioResultados.addEventListener(

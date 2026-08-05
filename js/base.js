@@ -19,6 +19,9 @@ const MOSTRAR_MODO_CARRERA = true;
 const CLAVE_CARRERA =
   "roadToGold_estadoCarrera";
 
+const CLAVE_DESAFIO_DIARIO =
+  "roadToGold_desafioDiario_v1";
+
 const EXP_ORO = 10;
 const EXP_PLATA = 6;
 const EXP_BRONCE = 4;
@@ -135,12 +138,14 @@ let estadoCarrera = null;
 
 const MODO_PARTIDA_RAPIDA = "rapida";
 const MODO_CARRERA = "carrera";
+const MODO_DESAFIO_DIARIO = "desafio_diario";
 
 let modoJuegoActual =
   MODO_PARTIDA_RAPIDA;
 
 const pantallaInicio = document.querySelector("#pantallaInicio");
 const pantallaCarrera = document.querySelector("#pantallaCarrera");
+const pantallaDesafioDiario = document.querySelector("#pantallaDesafioDiario");
 const pantallaDeportes = document.querySelector("#pantallaDeportes");
 const pantallaJuego = document.querySelector("#pantallaJuego");
 const pantallaFinal = document.querySelector("#pantallaFinal");
@@ -175,6 +180,36 @@ const pantallaTutorialInicial =
   );
 const botonEmpezar = document.querySelector("#botonEmpezar");
 const botonModoCarrera = document.querySelector("#botonModoCarrera");
+const botonDesafioDiario = document.querySelector("#botonDesafioDiario");
+const botonVolverInicioDesafio = document.querySelector("#botonVolverInicioDesafio");
+const botonComenzarDesafio = document.querySelector("#botonComenzarDesafio");
+
+const nombreDesafioDiario = document.querySelector("#nombreDesafioDiario");
+const descripcionDesafioDiario = document.querySelector("#descripcionDesafioDiario");
+const reglaDesafioDiario = document.querySelector("#reglaDesafioDiario");
+const intentosRestantesDesafio = document.querySelector("#intentosRestantesDesafio");
+const mejorNivelDesafio = document.querySelector("#mejorNivelDesafio");
+const mejorResultadoDesafio = document.querySelector("#mejorResultadoDesafio");
+const objetivosDesafioDiario = document.querySelector("#objetivosDesafioDiario");
+const deportesDesafioDiario = document.querySelector("#deportesDesafioDiario");
+const paisesDesafioDiario = document.querySelector("#paisesDesafioDiario");
+const resumenPaisesDesafio = document.querySelector("#resumenPaisesDesafio");
+const historialIntentosDesafio = document.querySelector("#historialIntentosDesafio");
+const botonVerMejorIntentoDesafio = document.querySelector("#botonVerMejorIntentoDesafio");
+const resumenResultadoDesafio = document.querySelector("#resumenResultadoDesafio");
+const nombreResultadoDesafio = document.querySelector("#nombreResultadoDesafio");
+const fechaResultadoDesafio = document.querySelector("#fechaResultadoDesafio");
+const insigniaNivelResultadoDesafio = document.querySelector("#insigniaNivelResultadoDesafio");
+const nivelResultadoDesafio = document.querySelector("#nivelResultadoDesafio");
+const nivelesResultadoDesafio = document.querySelector("#nivelesResultadoDesafio");
+const datoPrincipalResultadoDesafio = document.querySelector("#datoPrincipalResultadoDesafio");
+const detalleResultadoDesafio = document.querySelector("#detalleResultadoDesafio");
+const progresoResultadoDesafio = document.querySelector("#progresoResultadoDesafio");
+const intentoResultadoDesafio = document.querySelector("#intentoResultadoDesafio");
+const intentosRestantesResultadoDesafio = document.querySelector("#intentosRestantesResultadoDesafio");
+const mejorNivelResultadoDesafio = document.querySelector("#mejorNivelResultadoDesafio");
+const mejorMarcaResultadoDesafio = document.querySelector("#mejorMarcaResultadoDesafio");
+const listaAsignacionesResultadoDesafio = document.querySelector("#listaAsignacionesResultadoDesafio");
 const botonVolverInicioCarrera = document.querySelector(
   "#botonVolverInicioCarrera"
 );
@@ -701,6 +736,10 @@ const nombreDelegacionResultados =
 const botonLimpiarRecords = document.querySelector(
   "#botonLimpiarRecords"
 );
+const botonComoJugar = document.querySelector("#botonComoJugar");
+const modalComoJugar = document.querySelector("#modalComoJugar");
+const botonCerrarComoJugar = document.querySelector("#botonCerrarComoJugar");
+const botonEntendidoComoJugar = document.querySelector("#botonEntendidoComoJugar");
 const botonReroll = document.querySelector("#botonReroll");
 
 const botonVolverInicioDraft =
