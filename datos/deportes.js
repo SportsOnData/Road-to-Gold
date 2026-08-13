@@ -281,5 +281,47 @@ const DEPORTES = [
     "icono": null,
     "medallasPorPrueba": 3,
     "categoria": "precision"
+  },
+  {
+    "id": 21,
+    "codigo": "hockey",
+    "nombre": "Hockey hierba",
+    "grupo": "pequeno",
+    "tamanoSimulacion": 2,
+    "variabilidad": 3,
+    "pesoAparicion": 100,
+    "permiteEventos": true,
+    "activo": true,
+    "icono": null,
+    "medallasPorPrueba": 3,
+    "categoria": "equipo"
+  },
+  {
+    "id": 22,
+    "codigo": "esgrima",
+    "nombre": "Esgrima",
+    "grupo": "grande",
+    "tamanoSimulacion": 14,
+    "variabilidad": 4,
+    "pesoAparicion": 100,
+    "permiteEventos": true,
+    "activo": true,
+    "icono": null,
+    "medallasPorPrueba": 3,
+    "categoria": "combate"
+  },
+  {
+    "id": 23,
+    "codigo": "saltos",
+    "nombre": "Saltos",
+    "grupo": "mediano",
+    "tamanoSimulacion": 5,
+    "variabilidad": 2,
+    "pesoAparicion": 100,
+    "permiteEventos": true,
+    "activo": true,
+    "icono": null,
+    "medallasPorPrueba": 3,
+    "categoria": "acuatico"
   }
 ];

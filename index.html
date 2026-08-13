@@ -22,7 +22,7 @@
         alt="Sports Data"
 >
 
-      <span class="etiqueta-beta" aria-label="Versión beta">BETA</span>
+      <button id="botonNovedadesBeta" class="etiqueta-beta etiqueta-beta-boton" type="button" aria-haspopup="dialog" aria-controls="modalNovedadesBeta">BETA 0.2</button>
 
       <h1>Road to Gold</h1>
 
@@ -64,6 +64,7 @@
         >
           Cómo jugar
         </button>
+
 
         <button
           id="botonLimpiarRecords"
@@ -127,15 +128,13 @@
       </section>
 
       <div class="acciones-desafio-diario acciones-desafio-principales">
-        <div class="botones-prueba-desafio">
-          <button
-            id="botonComenzarDesafio"
-            class="boton boton-principal"
-            type="button"
-          >
-            Comenzar desafío
-          </button>
-        </div>
+        <button
+          id="botonComenzarDesafio"
+          class="boton boton-principal"
+          type="button"
+        >
+          Comenzar desafío
+        </button>
         <p class="nota-fase-desafio">
           El intento se consume al comenzar el draft. Recargar o abandonar también cuenta.
         </p>
@@ -2103,6 +2102,23 @@
 </div>
 
 
+
+  <div id="modalNovedadesBeta" class="modal-carrera modal-novedades-beta oculto" role="dialog" aria-modal="true" aria-labelledby="tituloNovedadesBeta">
+    <div class="contenido-modal-carrera contenido-modal-novedades-beta">
+      <button id="botonCerrarNovedadesBeta" class="boton-cerrar-modal" type="button" aria-label="Cerrar">×</button>
+      <p class="marca">ROAD TO GOLD · BETA 0.2</p>
+      <h2 id="tituloNovedadesBeta">Novedades</h2>
+      <ul class="lista-novedades-beta">
+        <li><strong>Nuevos deportes:</strong> Hockey hierba, Esgrima y Saltos.</li>
+        <li><strong>Nuevos desafíos diarios:</strong> En equipo y Juegos 15x15.</li>
+        <li><strong>Mejoras para móvil</strong> en la pantalla de Desafío diario.</li>
+        <li><strong>Analítica anónima opcional</strong> para entender qué funciona y seguir mejorando el juego.</li>
+      </ul>
+      <p class="nota-novedades-beta">Esta versión sigue en pruebas. Si encuentras un error, puedes contármelo en <strong>@SportsOnData</strong>.</p>
+      <button id="botonEntendidoNovedadesBeta" class="boton boton-principal" type="button">Entendido</button>
+    </div>
+  </div>
+
   <div id="modalComoJugar" class="modal-carrera modal-como-jugar oculto" role="dialog" aria-modal="true" aria-labelledby="tituloComoJugar">
     <div class="contenido-modal-carrera contenido-modal-como-jugar">
       <button id="botonCerrarComoJugar" class="boton-cerrar-modal" type="button" aria-label="Cerrar">×</button>
@@ -2165,6 +2181,17 @@
   </div>
   </main>
 
+  <aside id="avisoAnalitica" class="aviso-analitica oculto" role="dialog" aria-live="polite" aria-label="Preferencias de analítica">
+    <div class="contenido-aviso-analitica">
+      <strong>Ayúdanos a mejorar Road to Gold</strong>
+      <p>Podemos medir de forma estadística qué modos se juegan, decisiones del draft, abandonos y tipo de dispositivo. No pedimos nombre, email ni datos escritos por ti.</p>
+      <div class="acciones-aviso-analitica">
+        <button id="botonAceptarAnalitica" class="boton boton-principal boton-compacto" type="button">Aceptar analítica</button>
+        <button id="botonRechazarAnalitica" class="boton boton-secundario boton-compacto" type="button">Rechazar</button>
+      </div>
+      <small>Tu elección se guardará en este navegador.</small>
+    </div>
+  </aside>
 
   <!-- Primero se cargan los datos -->
   <script src="datos/deportes.js"></script>
@@ -2172,6 +2199,7 @@
 
   <!-- Después se cargan los sistemas del juego -->
   <script src="js/base.js"></script>
+  <script src="js/analytics.js"></script>
   <script src="js/utilidades.js"></script>
   <script src="js/motor.js"></script>
   <script src="js/records.js"></script>

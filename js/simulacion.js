@@ -5,6 +5,7 @@
 */
 
 function comenzarJuegos() {
+  cambiarEtapaAnalitica("simulation", "simulation_start");
   resumenLogrosConseguidos.classList.add(
     "oculto"
   );
@@ -446,6 +447,13 @@ return `
   totalMedallas.textContent =
     numeroTotalMedallas;
 
+  completarRunAnalitica({
+    medals_total: numeroTotalMedallas,
+    gold_total: orosAcumulados,
+    silver_total: platasAcumuladas,
+    bronze_total: broncesAcumulados
+  });
+
   resumenResultadoDesafio.classList.add("oculto");
 
   if (
@@ -518,6 +526,20 @@ return `
 
   const resumenCarrera =
     registrarResultadosCarrera();
+
+  registrarEventoAnalitica("career_edition_complete", {
+    edition_number: estadoCarrera.juegosDisputados || 0,
+    career_level: estadoCarrera.nivel || 1,
+    medals_total: numeroTotalMedallas,
+    gold_total: orosAcumulados
+  });
+
+  if (resumenCarrera && resumenCarrera.nivelActual > resumenCarrera.nivelAnterior) {
+    registrarEventoAnalitica("career_level_up", {
+      level_from: resumenCarrera.nivelAnterior,
+      level_to: resumenCarrera.nivelActual
+    });
+  }
 
   mostrarProgresoResultadoCarrera(
     resumenCarrera

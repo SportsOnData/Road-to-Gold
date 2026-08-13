@@ -98,13 +98,14 @@ function iniciarPartida() {
   esperandoPaisReroll = false;
   codigoPaisRerollEnEdicion = "";
   const rerollDisponibleEnEsteModo =
-    modoJuegoActual ===
-      MODO_PARTIDA_RAPIDA ||
+    modoJuegoActual === MODO_PARTIDA_RAPIDA ||
     (
-      modoJuegoActual ===
-        MODO_CARRERA &&
-      estadoCarrera
-        ?.rerollDesbloqueado
+      modoJuegoActual === MODO_CARRERA &&
+      estadoCarrera?.rerollDesbloqueado
+    ) ||
+    (
+      modoJuegoActual === MODO_DESAFIO_DIARIO &&
+      configuracionDesafioEnCurso?.permiteReroll
     );
 
   rerollDisponible =
@@ -126,6 +127,10 @@ botonReroll.textContent =
   "↻ Usar reroll";
 
 botonDraftAleatorio.disabled = false;
+
+  iniciarRunAnalitica({
+    sports_count: deportesPartida.length
+  });
 
   botonComenzarDraft.disabled = true;
 
@@ -907,6 +912,7 @@ function descargarImagenResultado(blob) {
 }
 
 async function gestionarCompartirResultado() {
+  registrarEventoAnalitica("share_result", { share_surface: "results" });
   if (modoJuegoActual === MODO_DESAFIO_DIARIO) {
     await compartirResultadoDesafioDiario();
     return;
@@ -1017,14 +1023,30 @@ function volverAlInicioDesdeResultados() {
 
 botonEmpezar.addEventListener(
   "click",
-  iniciarPartidaRapida
+  () => {
+    modoJuegoActual = MODO_PARTIDA_RAPIDA;
+    registrarEventoAnalitica("mode_start", { mode: "quick" });
+    iniciarPartidaRapida();
+  }
 );
 
 botonModoCarrera.addEventListener("click", () => {
   iniciarModoCarrera();
+  registrarEventoAnalitica("mode_start", {
+    mode: "career",
+    career_level: estadoCarrera?.nivel || 1,
+    editions_played: estadoCarrera?.juegosDisputados || 0
+  });
 });
 
-botonDesafioDiario.addEventListener("click", abrirDesafioDiario);
+botonDesafioDiario.addEventListener("click", () => {
+  abrirDesafioDiario();
+  const desafioActual = obtenerDesafioDelDia();
+  registrarEventoAnalitica("mode_start", {
+    mode: "daily",
+    challenge_id: desafioActual?.id || ""
+  });
+});
 
 botonVolverInicioDesafio.addEventListener("click", volverInicioDesdeDesafio);
 
@@ -1138,6 +1160,7 @@ filtrosLogros.addEventListener(
 
 
 function abrirModalComoJugar() {
+  registrarEventoAnalitica("how_to_play_open");
   modalComoJugar?.classList.remove("oculto");
   botonCerrarComoJugar?.focus();
 }
@@ -1184,6 +1207,7 @@ botonReroll.addEventListener("click", usarReroll);
 botonVolverInicioDraft.addEventListener(
   "click",
   () => {
+    registrarAbandonoAnalitica("back_to_menu");
     mostrarPantalla(pantallaInicio);
   }
 );
@@ -1323,3 +1347,23 @@ botonVolverResultados.addEventListener(
 
 configurarVisibilidadModoCarrera();
 actualizarTarjetasRecords();
+
+function abrirNovedadesBeta() {
+  modalNovedadesBeta?.classList.remove("oculto");
+}
+
+function cerrarNovedadesBeta() {
+  modalNovedadesBeta?.classList.add("oculto");
+}
+
+botonNovedadesBeta?.addEventListener("click", abrirNovedadesBeta);
+botonCerrarNovedadesBeta?.addEventListener("click", cerrarNovedadesBeta);
+botonEntendidoNovedadesBeta?.addEventListener("click", cerrarNovedadesBeta);
+modalNovedadesBeta?.addEventListener("click", (evento) => {
+  if (evento.target === modalNovedadesBeta) cerrarNovedadesBeta();
+});
+document.addEventListener("keydown", (evento) => {
+  if (evento.key === "Escape" && modalNovedadesBeta && !modalNovedadesBeta.classList.contains("oculto")) {
+    cerrarNovedadesBeta();
+  }
+});

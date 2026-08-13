@@ -8,7 +8,7 @@
 
 const VERSION_GUARDADO_DESAFIOS = 2;
 const INTENTOS_DIARIOS_DESAFIO = 4;
-const FECHA_INICIO_CICLO_DESAFIOS = "2026-07-30";
+const FECHA_INICIO_CICLO_DESAFIOS = "2026-08-09";
 
 let desafioForzadoParaPruebas = null;
 let configuracionDesafioEnCurso = null;
@@ -73,7 +73,7 @@ const DESAFIOS_DIARIOS = Object.freeze([
     deportes: ["atletismo", "natacion", "remo", "piraguismo", "futbol", "voleibol", "escalada"],
     objetivos: [
       { nivel: "bronce", texto: "La delegación consigue al menos 25 medallas." },
-      { nivel: "plata", texto: "La delegación consigue al menos 45 medallas." },
+      { nivel: "plata", texto: "La delegación consigue al menos 40 medallas." },
       { nivel: "oro", texto: "La delegación consigue al menos 48 medallas, incluidas 20 de oro." }
     ],
     tipoEvaluacion: "europeos"
@@ -88,7 +88,7 @@ const DESAFIOS_DIARIOS = Object.freeze([
     objetivos: [
       { nivel: "bronce", texto: "La delegación consigue al menos 8 medallas." },
       { nivel: "plata", texto: "La delegación consigue al menos 12 medallas." },
-      { nivel: "oro", texto: "La delegación consigue al menos 12 medallas, incluidas 4 de oro." }
+      { nivel: "oro", texto: "La delegación consigue al menos 14 medallas, incluidas 4 de oro." }
     ],
     tipoEvaluacion: "contra_las_cuerdas"
   },
@@ -116,7 +116,7 @@ const DESAFIOS_DIARIOS = Object.freeze([
     objetivos: [
       { nivel: "bronce", texto: "La delegación consigue 15 medallas o menos." },
       { nivel: "plata", texto: "La delegación consigue 8 medallas o menos." },
-      { nivel: "oro", texto: "La delegación consigue 3 medallas o menos." }
+      { nivel: "oro", texto: "La delegación consigue 4 medallas o menos." }
     ],
     tipoEvaluacion: "mundo_al_reves"
   },
@@ -133,6 +133,36 @@ const DESAFIOS_DIARIOS = Object.freeze([
       { nivel: "oro", texto: "Las 7 asignaciones son azules." }
     ],
     tipoEvaluacion: "cielo_es_limite"
+  },
+  {
+    id: "en_equipo",
+    nombre: "En equipo",
+    descripcion: "Triunfa en los siete deportes de equipo de Road to Gold con una delegación diseñada para competir en todos.",
+    reglaEspecial: "Aquí importa conquistar deportes: reparte bien a tus especialistas y evita dejar un deporte colectivo sin opciones de medalla.",
+    paises: ["ESP", "NED", "AUS", "FRA", "GER", "USA", "IND", "NZL", "FIJ", "BRA"],
+    deportes: ["futbol", "baloncesto", "waterpolo", "balonmano", "voleibol", "rugby", "hockey"],
+    rerolls: 1,
+    objetivos: [
+      { nivel: "bronce", texto: "Consigue medalla en al menos 5 de los 7 deportes." },
+      { nivel: "plata", texto: "Consigue medalla en al menos 6 deportes y oro en 2 deportes distintos." },
+      { nivel: "oro", texto: "Consigue medalla en los 7 deportes y oro en al menos 3 deportes distintos." }
+    ],
+    tipoEvaluacion: "en_equipo"
+  },
+  {
+    id: "juegos_15x15",
+    nombre: "Juegos 15x15",
+    descripcion: "Unos Juegos gigantes: quince países, quince deportes y un draft mucho más largo de lo habitual.",
+    reglaEspecial: "Gestiona una superdelegación de 15 países. La profundidad importa tanto como acertar con las grandes potencias.",
+    paises: ["ESP", "USA", "ITA", "FRA", "CHN", "JAM", "KEN", "CUB", "GER", "JPN", "GBR", "KOR", "ETH", "AUS", "IND", "HUN", "NED", "SMR", "MEX", "BRA", "ARG", "TPE", "AUT", "FIJ", "NZL", "BUL", "CAN", "ROU", "RSA", "CZE"],
+    deportes: ["atletismo", "natacion", "gimnasia", "remo", "boxeo", "piraguismo", "ciclismo", "judo", "futbol", "baloncesto", "waterpolo", "balonmano", "tenis", "hockey", "esgrima"],
+    rerolls: 1,
+    objetivos: [
+      { nivel: "bronce", texto: "La delegación consigue al menos 70 medallas." },
+      { nivel: "plata", texto: "La delegación consigue al menos 85 medallas." },
+      { nivel: "oro", texto: "La delegación consigue al menos 95 medallas, incluidas 30 de oro." }
+    ],
+    tipoEvaluacion: "juegos_15x15"
   }
 ]);
 
@@ -334,7 +364,11 @@ function renderizarConfiguracionDesafio(desafio) {
     paisesDesafioDiario.append(crearChipConfiguracion(pais.nombre));
   });
 
-  resumenPaisesDesafio.textContent = `${paises.length} países disponibles · utilizarás 7 en cada intento.`;
+  const cantidadParticipantes = desafio.deportes.length;
+  const textoReroll = Number(desafio.rerolls) > 0
+    ? ` · ${desafio.rerolls} reroll${desafio.rerolls === 1 ? "" : "s"}`
+    : "";
+  resumenPaisesDesafio.textContent = `${paises.length} países disponibles · utilizarás ${cantidadParticipantes} en cada intento${textoReroll}.`;
 }
 
 
@@ -500,7 +534,8 @@ function crearConfiguracionPartidaDesafio(desafio) {
     paisesPermitidos: [...desafio.paises],
     deportesPermitidos: [...desafio.deportes],
     cantidadParticipantes: desafio.deportes.length,
-    permiteReroll: false,
+    permiteReroll: Number(desafio.rerolls) > 0,
+    rerollsDisponibles: Math.max(0, Number(desafio.rerolls) || 0),
     evaluador: desafio.tipoEvaluacion
   };
 }
@@ -665,7 +700,9 @@ function evaluarResultadoDesafio(resultados) {
     contra_las_cuerdas: evaluarContraLasCuerdas,
     todos_deben_contar: evaluarTodosDebenContar,
     mundo_al_reves: evaluarMundoAlReves,
-    cielo_es_limite: evaluarCieloEsLimite
+    cielo_es_limite: evaluarCieloEsLimite,
+    en_equipo: evaluarEnEquipo,
+    juegos_15x15: evaluarJuegos15x15
   };
 
   const evaluador = evaluadores[configuracionDesafioEnCurso.evaluador];
@@ -717,7 +754,7 @@ function textoObjetivoAlcanzado(nivel) {
 function evaluarEuropeos(resultados) {
   const metricas = obtenerMetricasComunesDesafio(resultados);
   const cumpleBronce = metricas.medallasTotales >= 25;
-  const cumplePlata = metricas.medallasTotales >= 45;
+  const cumplePlata = metricas.medallasTotales >= 40;
   const cumpleOro =
     metricas.medallasTotales >= 48 &&
     metricas.orosTotales >= 20;
@@ -733,7 +770,7 @@ function evaluarEuropeos(resultados) {
       `Para el bronce faltan ${Math.max(0, 25 - metricas.medallasTotales)} medalla(s).`;
   } else if (nivel === NIVELES_DESAFIO.BRONCE) {
     progresoSiguienteNivel =
-      `Para la plata faltan ${Math.max(0, 45 - metricas.medallasTotales)} medalla(s).`;
+      `Para la plata faltan ${Math.max(0, 40 - metricas.medallasTotales)} medalla(s).`;
   } else if (nivel === NIVELES_DESAFIO.PLATA) {
     const faltanMedallas = Math.max(0, 48 - metricas.medallasTotales);
     const faltanOros = Math.max(0, 20 - metricas.orosTotales);
@@ -760,7 +797,7 @@ function evaluarContraLasCuerdas(resultados) {
   const cumpleBronce = metricas.medallasTotales >= 8;
   const cumplePlata = metricas.medallasTotales >= 12;
   const cumpleOro =
-    metricas.medallasTotales >= 12 &&
+    metricas.medallasTotales >= 14 &&
     metricas.orosTotales >= 4;
 
   let nivel = NIVELES_DESAFIO.SIN_MEDALLA;
@@ -777,8 +814,10 @@ function evaluarContraLasCuerdas(resultados) {
     progresoSiguienteNivel =
       `Para la plata faltan ${Math.max(0, 12 - metricas.medallasTotales)} medalla(s).`;
   } else if (nivel === NIVELES_DESAFIO.PLATA) {
+    const faltanMedallas = Math.max(0, 14 - metricas.medallasTotales);
+    const faltanOros = Math.max(0, 4 - metricas.orosTotales);
     progresoSiguienteNivel =
-      `Para el oro faltan ${Math.max(0, 4 - metricas.orosTotales)} oro(s).`;
+      `Para el oro faltan ${faltanMedallas} medalla(s) y ${faltanOros} oro(s).`;
   }
 
   return crearEvaluacionDesafio({
@@ -840,7 +879,7 @@ function evaluarMundoAlReves(resultados) {
   let nivel = NIVELES_DESAFIO.SIN_MEDALLA;
   if (metricas.medallasTotales <= 15) nivel = NIVELES_DESAFIO.BRONCE;
   if (metricas.medallasTotales <= 8) nivel = NIVELES_DESAFIO.PLATA;
-  if (metricas.medallasTotales <= 3) nivel = NIVELES_DESAFIO.ORO;
+  if (metricas.medallasTotales <= 4) nivel = NIVELES_DESAFIO.ORO;
 
   let progresoSiguienteNivel = textoObjetivoAlcanzado(nivel);
   if (nivel === NIVELES_DESAFIO.SIN_MEDALLA) {
@@ -848,7 +887,7 @@ function evaluarMundoAlReves(resultados) {
   } else if (nivel === NIVELES_DESAFIO.BRONCE) {
     progresoSiguienteNivel = `Para la plata debes reducir ${metricas.medallasTotales - 8} medalla(s).`;
   } else if (nivel === NIVELES_DESAFIO.PLATA) {
-    progresoSiguienteNivel = `Para el oro debes reducir ${metricas.medallasTotales - 3} medalla(s).`;
+    progresoSiguienteNivel = `Para el oro debes reducir ${metricas.medallasTotales - 4} medalla(s).`;
   }
 
   return crearEvaluacionDesafio({
@@ -897,6 +936,94 @@ function evaluarCieloEsLimite(resultados) {
       metricas.orosTotales
     ]
   });
+}
+
+function evaluarEnEquipo(resultados) {
+  const metricas = obtenerMetricasComunesDesafio(resultados);
+  const deportesConMedalla = resultados.filter(resultado => contarMedallasResultado(resultado) > 0).length;
+  const deportesConOro = resultados.filter(resultado => (resultado.oros || 0) > 0).length;
+  const metricasEquipo = { ...metricas, deportesConMedalla, deportesConOro };
+
+  let nivel = NIVELES_DESAFIO.SIN_MEDALLA;
+  if (deportesConMedalla >= 5) nivel = NIVELES_DESAFIO.BRONCE;
+  if (deportesConMedalla >= 6 && deportesConOro >= 2) nivel = NIVELES_DESAFIO.PLATA;
+  if (deportesConMedalla === 7 && deportesConOro >= 3) nivel = NIVELES_DESAFIO.ORO;
+
+  let progresoSiguienteNivel = textoObjetivoAlcanzado(nivel);
+  if (nivel === NIVELES_DESAFIO.SIN_MEDALLA) {
+    progresoSiguienteNivel = `Para el bronce faltan ${Math.max(0, 5 - deportesConMedalla)} deporte(s) con medalla.`;
+  } else if (nivel === NIVELES_DESAFIO.BRONCE) {
+    const faltanMedalla = Math.max(0, 6 - deportesConMedalla);
+    const faltanOro = Math.max(0, 2 - deportesConOro);
+    progresoSiguienteNivel = `Para la plata faltan ${faltanMedalla} deporte(s) con medalla y ${faltanOro} deporte(s) con oro.`;
+  } else if (nivel === NIVELES_DESAFIO.PLATA) {
+    const faltanMedalla = Math.max(0, 7 - deportesConMedalla);
+    const faltanOro = Math.max(0, 3 - deportesConOro);
+    progresoSiguienteNivel = `Para el oro faltan ${faltanMedalla} deporte(s) con medalla y ${faltanOro} deporte(s) con oro.`;
+  }
+
+  return crearEvaluacionDesafio({
+    desafioId: "en_equipo",
+    nivel,
+    resumen: `${deportesConMedalla}/7 deportes con medalla · ${deportesConOro} con oro`,
+    detalle: `La delegación consiguió medalla en ${deportesConMedalla} deportes y oro en ${deportesConOro}.`,
+    progresoSiguienteNivel,
+    metricas: metricasEquipo,
+    claveDesempate: [
+      deportesConMedalla,
+      deportesConOro,
+      metricas.medallasTotales,
+      metricas.orosTotales
+    ]
+  });
+}
+
+function evaluarJuegos15x15(resultados) {
+  const metricas = obtenerMetricasComunesDesafio(resultados);
+  const cumpleBronce = metricas.medallasTotales >= 70;
+  const cumplePlata = metricas.medallasTotales >= 85;
+  const cumpleOro = metricas.medallasTotales >= 95 && metricas.orosTotales >= 30;
+
+  let nivel = NIVELES_DESAFIO.SIN_MEDALLA;
+  if (cumpleBronce) nivel = NIVELES_DESAFIO.BRONCE;
+  if (cumplePlata) nivel = NIVELES_DESAFIO.PLATA;
+  if (cumpleOro) nivel = NIVELES_DESAFIO.ORO;
+
+  let progresoSiguienteNivel = textoObjetivoAlcanzado(nivel);
+  if (nivel === NIVELES_DESAFIO.SIN_MEDALLA) {
+    progresoSiguienteNivel = `Para el bronce faltan ${Math.max(0, 70 - metricas.medallasTotales)} medalla(s).`;
+  } else if (nivel === NIVELES_DESAFIO.BRONCE) {
+    progresoSiguienteNivel = `Para la plata faltan ${Math.max(0, 85 - metricas.medallasTotales)} medalla(s).`;
+  } else if (nivel === NIVELES_DESAFIO.PLATA) {
+    const faltanMedallas = Math.max(0, 95 - metricas.medallasTotales);
+    const faltanOros = Math.max(0, 30 - metricas.orosTotales);
+    progresoSiguienteNivel = `Para el oro faltan ${faltanMedallas} medalla(s) y ${faltanOros} oro(s).`;
+  }
+
+  return crearEvaluacionDesafio({
+    desafioId: "juegos_15x15",
+    nivel,
+    resumen: `${metricas.medallasTotales} medallas · ${metricas.orosTotales} oros`,
+    detalle: `La superdelegación terminó los 15 deportes con ${metricas.medallasTotales} medallas, incluidas ${metricas.orosTotales} de oro.`,
+    progresoSiguienteNivel,
+    metricas,
+    claveDesempate: [
+      metricas.medallasTotales,
+      metricas.orosTotales,
+      metricas.paisesConMedalla
+    ]
+  });
+}
+
+function avanzarDesafioParaPruebas() {
+  const actual = obtenerDesafioDelDia();
+  const indiceActual = Math.max(0, DESAFIOS_DIARIOS.findIndex(desafio => desafio.id === actual.id));
+  const siguiente = DESAFIOS_DIARIOS[(indiceActual + 1) % DESAFIOS_DIARIOS.length];
+  desafioForzadoParaPruebas = siguiente.id;
+  configuracionDesafioEnCurso = null;
+  ultimoCicloResultadoDesafio = null;
+  ultimoResultadoCompartibleDesafio = null;
+  renderizarPantallaDesafioDiario();
 }
 
 function obtenerClaseNivelResultadoDesafio(nivel) {
@@ -1056,6 +1183,14 @@ function mostrarResumenResultadoDesafio(evaluacion) {
     intento: ciclo?.intento || null,
     esPrueba: Boolean(desafioForzadoParaPruebas)
   };
+
+  registrarEventoAnalitica("daily_complete", {
+    challenge_id: evaluacion.desafioId,
+    attempt_number: ciclo?.intento || 0,
+    medal_tier: evaluacion.nivel || "sin_medalla",
+    medals_total: evaluacion.medallasTotales || 0,
+    gold_total: evaluacion.orosTotales || 0
+  });
 
   completarPantallaResultadoDesafio(evaluacion, resultadosJuegos, ciclo, {
     claveFecha,

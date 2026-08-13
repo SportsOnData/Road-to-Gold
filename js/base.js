@@ -737,6 +737,10 @@ const botonLimpiarRecords = document.querySelector(
   "#botonLimpiarRecords"
 );
 const botonComoJugar = document.querySelector("#botonComoJugar");
+const botonNovedadesBeta = document.querySelector("#botonNovedadesBeta");
+const modalNovedadesBeta = document.querySelector("#modalNovedadesBeta");
+const botonCerrarNovedadesBeta = document.querySelector("#botonCerrarNovedadesBeta");
+const botonEntendidoNovedadesBeta = document.querySelector("#botonEntendidoNovedadesBeta");
 const modalComoJugar = document.querySelector("#modalComoJugar");
 const botonCerrarComoJugar = document.querySelector("#botonCerrarComoJugar");
 const botonEntendidoComoJugar = document.querySelector("#botonEntendidoComoJugar");

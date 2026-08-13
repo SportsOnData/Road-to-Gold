@@ -64,6 +64,9 @@ function actualizarInformacionDelegacionDraft() {
 }
 
 function comenzarDraft() {
+  cambiarEtapaAnalitica("draft", "draft_start", {
+    sports_count: deportesPartida.length
+  });
   mostrarPantalla(pantallaJuego);
   actualizarInformacionDelegacionDraft();
   renderizarDeportes();
@@ -633,6 +636,14 @@ function colocarPais(deporte, tarjeta) {
     color: color
   });
 
+  registrarEventoAnalitica("draft_pick", {
+    pick_number: asignaciones.length,
+    country_code: paisColocado.codigo,
+    sport_code: deporte.codigo,
+    pick_color: color,
+    auto_draft: false
+  });
+
   tarjeta.classList.add("ocupada");
   tarjeta.classList.add(color);
 
@@ -696,6 +707,11 @@ function usarReroll() {
   }
 
   const paisDescartado = paisActual;
+
+  registrarEventoAnalitica("reroll_use", {
+    pick_number: asignaciones.length + 1,
+    country_before: paisDescartado.codigo
+  });
 
   rerollDisponible = false;
   rerollUsadoEnEdicion = true;
@@ -766,12 +782,30 @@ function hacerDraftAleatorio() {
     }
   );
 
+  asignaciones.forEach((asignacion, indice) => {
+    registrarEventoAnalitica("draft_pick", {
+      pick_number: indice + 1,
+      country_code: asignacion.pais.codigo,
+      sport_code: asignacion.deporte.codigo,
+      pick_color: asignacion.color,
+      auto_draft: true
+    });
+  });
+
   paisActual = null;
 
   terminarPartida();
 }
 
 function terminarPartida() {
+  cambiarEtapaAnalitica("draft_complete", "draft_complete", {
+    picks_count: asignaciones.length,
+    blue_picks: asignaciones.filter(a => a.color === "azul").length,
+    green_picks: asignaciones.filter(a => a.color === "verde").length,
+    yellow_picks: asignaciones.filter(a => a.color === "amarillo").length,
+    red_picks: asignaciones.filter(a => a.color === "rojo").length
+  });
+
   resumenFinal.innerHTML = asignaciones
     .map(({ deporte, pais, color }) => {
       return `

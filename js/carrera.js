@@ -3201,6 +3201,7 @@ async function generarImagenResumenCarrera() {
 }
 
 async function compartirResumenCarrera() {
+  registrarEventoAnalitica("share_result", { share_surface: "career_summary" });
   const medallero = estadoCarrera.medalleroTotal;
   const total =
     medallero.oros +

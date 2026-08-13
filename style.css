@@ -6046,3 +6046,126 @@ button {
     padding: 0 0.9rem 0.9rem;
   }
 }
+
+/* ================================= */
+/* ANALÍTICA Y CONSENTIMIENTO         */
+/* ================================= */
+.aviso-analitica {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(2, 6, 23, 0.58);
+}
+
+.aviso-analitica.oculto { display: none; }
+
+.contenido-aviso-analitica {
+  width: min(680px, 100%);
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 214, 74, 0.35);
+  border-radius: 16px;
+  background: #111a34;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  color: #f8fafc;
+}
+
+.contenido-aviso-analitica strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+.contenido-aviso-analitica p {
+  margin: 0;
+  color: #dbe4f3;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.contenido-aviso-analitica small {
+  display: block;
+  margin-top: 10px;
+  color: #aebbd0;
+  line-height: 1.4;
+}
+
+.acciones-aviso-analitica {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+@media (max-width: 560px) {
+  .aviso-analitica { padding: 10px; }
+  .contenido-aviso-analitica { padding: 16px; }
+  .acciones-aviso-analitica .boton { flex: 1 1 150px; }
+}
+
+
+/* BETA 0.2 · NOVEDADES */
+.etiqueta-beta-boton {
+  border: 1px solid rgba(22, 163, 74, 0.42);
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.etiqueta-beta-boton:hover,
+.etiqueta-beta-boton:focus-visible {
+  background: #16a34a;
+  border-color: #22c55e;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.28);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.modal-novedades-beta {
+  z-index: 1210;
+}
+
+.contenido-modal-novedades-beta {
+  position: relative;
+  width: min(560px, calc(100vw - 2rem));
+  text-align: left;
+}
+
+.contenido-modal-novedades-beta > .marca,
+.contenido-modal-novedades-beta > h2 {
+  text-align: center;
+}
+
+.lista-novedades-beta {
+  margin: 1rem 0;
+  padding-left: 1.2rem;
+}
+
+.lista-novedades-beta li {
+  margin: 0.7rem 0;
+  line-height: 1.5;
+}
+
+.nota-novedades-beta {
+  margin: 1rem 0 0;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  line-height: 1.5;
+  color: var(--texto-secundario);
+}
+
+.contenido-modal-novedades-beta > .boton-principal {
+  display: block;
+  margin: 1.1rem auto 0;
+}

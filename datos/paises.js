@@ -29,7 +29,10 @@ const PAISES = [
       "tenismesa": 2,
       "badminton": 4,
       "rugby": 5,
-      "tiroarco": 5
+      "tiroarco": 5,
+      "hockey": 6,
+      "esgrima": 5,
+      "saltos": 3
     }
   },
   {
@@ -58,7 +61,10 @@ const PAISES = [
       "tenismesa": 1,
       "badminton": 1,
       "rugby": 7,
-      "tiroarco": 7
+      "tiroarco": 7,
+      "hockey": 3,
+      "esgrima": 8,
+      "saltos": 7
     }
   },
   {
@@ -87,7 +93,10 @@ const PAISES = [
       "tenismesa": 1,
       "badminton": 0,
       "rugby": 1,
-      "tiroarco": 6
+      "tiroarco": 6,
+      "hockey": 2,
+      "esgrima": 9,
+      "saltos": 6
     }
   },
   {
@@ -116,7 +125,10 @@ const PAISES = [
       "tenismesa": 4,
       "badminton": 1,
       "rugby": 8,
-      "tiroarco": 7
+      "tiroarco": 7,
+      "hockey": 3,
+      "esgrima": 9,
+      "saltos": 3
     }
   },
   {
@@ -145,7 +157,10 @@ const PAISES = [
       "tenismesa": 10,
       "badminton": 9,
       "rugby": 4,
-      "tiroarco": 7
+      "tiroarco": 7,
+      "hockey": 5,
+      "esgrima": 6,
+      "saltos": 10
     }
   },
   {
@@ -174,7 +189,10 @@ const PAISES = [
       "tenismesa": 0,
       "badminton": 0,
       "rugby": 0,
-      "tiroarco": 0
+      "tiroarco": 0,
+      "hockey": 1,
+      "esgrima": 0,
+      "saltos": 0
     }
   },
   {
@@ -203,7 +221,10 @@ const PAISES = [
       "tenismesa": 0,
       "badminton": 0,
       "rugby": 5,
-      "tiroarco": 0
+      "tiroarco": 0,
+      "hockey": 1,
+      "esgrima": 1,
+      "saltos": 0
     }
   },
   {
@@ -232,7 +253,10 @@ const PAISES = [
       "tenismesa": 1,
       "badminton": 0,
       "rugby": 1,
-      "tiroarco": 2
+      "tiroarco": 2,
+      "hockey": 1,
+      "esgrima": 3,
+      "saltos": 3
     }
   },
   {
@@ -261,7 +285,10 @@ const PAISES = [
       "tenismesa": 4,
       "badminton": 2,
       "rugby": 1,
-      "tiroarco": 6
+      "tiroarco": 6,
+      "hockey": 9,
+      "esgrima": 5,
+      "saltos": 5
     }
   },
   {
@@ -290,7 +317,10 @@ const PAISES = [
       "tenismesa": 8,
       "badminton": 7,
       "rugby": 3,
-      "tiroarco": 6
+      "tiroarco": 6,
+      "hockey": 3,
+      "esgrima": 8,
+      "saltos": 5
     }
   },
   {
@@ -319,7 +349,10 @@ const PAISES = [
       "tenismesa": 2,
       "badminton": 4,
       "rugby": 8,
-      "tiroarco": 5
+      "tiroarco": 5,
+      "hockey": 7,
+      "esgrima": 3,
+      "saltos": 8
     }
   },
   {
@@ -348,7 +381,10 @@ const PAISES = [
       "tenismesa": 6,
       "badminton": 8,
       "rugby": 1,
-      "tiroarco": 10
+      "tiroarco": 10,
+      "hockey": 4,
+      "esgrima": 7,
+      "saltos": 2
     }
   },
   {
@@ -377,7 +413,10 @@ const PAISES = [
       "tenismesa": 0,
       "badminton": 0,
       "rugby": 1,
-      "tiroarco": 0
+      "tiroarco": 0,
+      "hockey": 0,
+      "esgrima": 0,
+      "saltos": 0
     }
   },
   {
@@ -406,7 +445,10 @@ const PAISES = [
       "tenismesa": 1,
       "badminton": 1,
       "rugby": 9,
-      "tiroarco": 3
+      "tiroarco": 3,
+      "hockey": 8,
+      "esgrima": 1,
+      "saltos": 7
     }
   },
   {
@@ -435,7 +477,10 @@ const PAISES = [
       "tenismesa": 4,
       "badminton": 6,
       "rugby": 0,
-      "tiroarco": 6
+      "tiroarco": 6,
+      "hockey": 7,
+      "esgrima": 2,
+      "saltos": 1
     }
   },
   {
@@ -464,7 +509,10 @@ const PAISES = [
       "tenismesa": 2,
       "badminton": 1,
       "rugby": 0,
-      "tiroarco": 1
+      "tiroarco": 1,
+      "hockey": 0,
+      "esgrima": 8,
+      "saltos": 1
     }
   },
   {
@@ -493,7 +541,10 @@ const PAISES = [
       "tenismesa": 1,
       "badminton": 1,
       "rugby": 2,
-      "tiroarco": 6
+      "tiroarco": 6,
+      "hockey": 10,
+      "esgrima": 3,
+      "saltos": 3
     }
   },
   {
@@ -522,7 +573,10 @@ const PAISES = [
       "tenismesa": 0,
       "badminton": 0,
       "rugby": 0,
-      "tiroarco": 0
+      "tiroarco": 0,
+      "hockey": 0,
+      "esgrima": 1,
+      "saltos": 0
     }
   },
   {
@@ -551,7 +605,10 @@ const PAISES = [
       "tenismesa": 1,
       "badminton": 1,
       "rugby": 1,
-      "tiroarco": 7
+      "tiroarco": 7,
+      "hockey": 1,
+      "esgrima": 2,
+      "saltos": 8
     }
   },
   {
@@ -580,7 +637,10 @@ const PAISES = [
       "tenismesa": 3,
       "badminton": 1,
       "rugby": 2,
-      "tiroarco": 4
+      "tiroarco": 4,
+      "hockey": 1,
+      "esgrima": 4,
+      "saltos": 2
     }
   },
   {
@@ -609,7 +669,10 @@ const PAISES = [
       "tenismesa": 1,
       "badminton": 0,
       "rugby": 7,
-      "tiroarco": 2
+      "tiroarco": 2,
+      "hockey": 8,
+      "esgrima": 2,
+      "saltos": 1
     }
   },
   {
@@ -638,7 +701,10 @@ const PAISES = [
       "tenismesa": 6,
       "badminton": 8,
       "rugby": 0,
-      "tiroarco": 7
+      "tiroarco": 7,
+      "hockey": 1,
+      "esgrima": 2,
+      "saltos": 1
     }
   },
   {
@@ -667,7 +733,10 @@ const PAISES = [
       "tenismesa": 3,
       "badminton": 2,
       "rugby": 0,
-      "tiroarco": 1
+      "tiroarco": 1,
+      "hockey": 2,
+      "esgrima": 3,
+      "saltos": 2
     }
   },
   {
@@ -696,7 +765,10 @@ const PAISES = [
       "tenismesa": 0,
       "badminton": 0,
       "rugby": 10,
-      "tiroarco": 0
+      "tiroarco": 0,
+      "hockey": 0,
+      "esgrima": 0,
+      "saltos": 0
     }
   },
   {
@@ -725,7 +797,10 @@ const PAISES = [
       "tenismesa": 0,
       "badminton": 0,
       "rugby": 10,
-      "tiroarco": 0
+      "tiroarco": 0,
+      "hockey": 5,
+      "esgrima": 1,
+      "saltos": 3
     }
   },
   {
@@ -754,7 +829,10 @@ const PAISES = [
       "tenismesa": 1,
       "badminton": 2,
       "rugby": 0,
-      "tiroarco": 0
+      "tiroarco": 0,
+      "hockey": 0,
+      "esgrima": 2,
+      "saltos": 1
     }
   },
   {
@@ -783,7 +861,10 @@ const PAISES = [
       "tenismesa": 2,
       "badminton": 1,
       "rugby": 8,
-      "tiroarco": 3
+      "tiroarco": 3,
+      "hockey": 2,
+      "esgrima": 5,
+      "saltos": 6
     }
   },
   {
@@ -812,7 +893,10 @@ const PAISES = [
       "tenismesa": 3,
       "badminton": 0,
       "rugby": 1,
-      "tiroarco": 2
+      "tiroarco": 2,
+      "hockey": 0,
+      "esgrima": 6,
+      "saltos": 2
     }
   },
   {
@@ -841,7 +925,10 @@ const PAISES = [
       "tenismesa": 0,
       "badminton": 1,
       "rugby": 8,
-      "tiroarco": 1
+      "tiroarco": 1,
+      "hockey": 3,
+      "esgrima": 1,
+      "saltos": 2
     }
   },
   {
@@ -870,7 +957,10 @@ const PAISES = [
       "tenismesa": 2,
       "badminton": 2,
       "rugby": 1,
-      "tiroarco": 1
+      "tiroarco": 1,
+      "hockey": 1,
+      "esgrima": 5,
+      "saltos": 1
     }
   }
 ];
